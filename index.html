@@ -2,297 +2,445 @@
 <html lang="ms">
 <head>
   <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Sistem RAMS IPG KDA</title>
   <script src="https://cdn.tailwindcss.com"></script>
   <style>
     @import url('https://fonts.googleapis.com/css2?family=Times+New+Roman&display=swap');
     
+    /* Format Khas untuk Template Cetakan Kertas A4 */
     .print-template { display: none; font-family: 'Times New Roman', serif; background: white; width: 21cm; min-height: 29.7cm; padding: 1.5cm; margin: 0 auto; }
     .print-template table { width: 100%; border-collapse: collapse; margin-bottom: -1.5px; }
-    .print-template th, .print-template td { border: 1.5px solid black; padding: 6px; font-size: 10pt; vertical-align: top; }
+    .print-template th, .print-template td { border: 1.5px solid black; padding: 5px; font-size: 10pt; vertical-align: top; }
     .header-title { font-size: 11pt; font-weight: bold; text-align: center; text-transform: uppercase; line-height: 1.3; }
     .bold-label { font-weight: bold; text-transform: uppercase; font-size: 9pt; }
 
+    /* Pengurusan Muka Surat (Pagination) untuk Borang B1 yang panjang */
+    .page-break-avoid { page-break-inside: avoid; }
+
+    /* CSS Khas Semasa Proses Print / Cetak */
     @media print {
       body { background: white; margin: 0; padding: 0; }
-      #form-section, .no-print { display: none !important; }
+      .sidebar-menu, .form-view, .no-print { display: none !important; }
+      .main-content { margin: 0 !important; padding: 0 !important; width: 100% !important; }
       .print-template { display: block !important; border: none; width: 100%; padding: 0.5cm; margin: 0; }
     }
   </style>
 </head>
-<body class="bg-slate-100 min-h-screen">
+<body class="bg-slate-100 min-h-screen flex">
 
-  <div id="form-section" class="max-w-7xl mx-auto py-8 px-4">
-    <div class="bg-indigo-900 text-white p-6 rounded-t-xl shadow-lg flex justify-between items-center sticky top-0 z-50">
-      <div>
-        <h1 class="text-2xl font-bold">RAMS e-RMS IPG KDA</h1>
-        <p class="text-indigo-200 text-sm">Sokongan Berbilang Risiko & Borang A1 Lengkap</p>
-      </div>
-      <div class="flex gap-3">
-        <button onclick="simpanKeCloud()" class="bg-blue-600 hover:bg-blue-500 px-5 py-2 rounded-lg font-bold transition">Simpan Cloud</button>
-        <button onclick="janaCetakan()" class="bg-green-500 hover:bg-green-400 text-white px-5 py-2 rounded-lg font-bold transition">Jana Cetakan A1</button>
-      </div>
+  <aside class="sidebar-menu w-64 bg-indigo-900 text-white min-h-screen flex flex-col fixed shadow-xl z-40">
+    <div class="p-6 border-b border-indigo-700">
+      <h1 class="text-xl font-bold uppercase tracking-wider">RAMS IPG KDA</h1>
+      <p class="text-xs text-indigo-300 mt-1">Sistem Keselamatan Rekreasi</p>
     </div>
+    <nav class="flex-1 p-4 space-y-2">
+      <button onclick="bukaMenu('a1')" id="btn-menu-a1" class="w-full text-left px-4 py-3 rounded bg-indigo-800 hover:bg-indigo-700 font-bold transition">Borang A1 (RAMS)</button>
+      <button onclick="bukaMenu('b1')" id="btn-menu-b1" class="w-full text-left px-4 py-3 rounded hover:bg-indigo-700 font-bold transition">Borang B1 (Kesihatan)</button>
+    </nav>
+  </aside>
 
-    <form class="bg-white p-8 rounded-b-xl shadow-xl space-y-8 border border-gray-200">
-      
-      <div>
-        <h2 class="text-lg font-bold text-indigo-900 border-b-2 border-indigo-100 pb-2 mb-4">1. Maklumat Am Penganjuran</h2>
-        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-          <div><label class="block text-xs font-bold mb-1">Penganjur</label><input type="text" id="in_penganjur" class="w-full border p-2 rounded"></div>
-          <div><label class="block text-xs font-bold mb-1">Nama Pegawai Melapor</label><input type="text" id="in_pegawai" class="w-full border p-2 rounded"></div>
-          <div><label class="block text-xs font-bold mb-1">Aktiviti / Program</label><input type="text" id="in_aktiviti" class="w-full border p-2 rounded"></div>
-          <div class="grid grid-cols-2 gap-2">
-            <div><label class="block text-xs font-bold mb-1">Tarikh Lapor</label><input type="date" id="in_tarikh_lapor" class="w-full border p-2 rounded"></div>
-            <div><label class="block text-xs font-bold mb-1">Tarikh Aktiviti</label><input type="text" id="in_tarikh_aktiviti" placeholder="Cth: 18-20 Okt" class="w-full border p-2 rounded"></div>
+  <main class="main-content flex-1 ml-64 p-8">
+
+    <div id="view-a1">
+      <div id="view-a1-form" class="form-view max-w-7xl mx-auto">
+        <div class="bg-white p-6 rounded-t-xl shadow-lg flex justify-between items-center border-b-4 border-indigo-600">
+          <div>
+            <h1 class="text-2xl font-bold text-gray-800">Borang A1: Penilaian Risiko</h1>
+            <p class="text-gray-500 text-sm">Pengurusan & Penilaian Risiko (RAMS)</p>
           </div>
-          <div class="col-span-2"><label class="block text-xs font-bold mb-1">Sasaran Aktiviti</label><textarea id="in_sasaran" rows="2" class="w-full border p-2 rounded"></textarea></div>
+          <div class="flex gap-2">
+            <button onclick="simpanCloudA1()" class="bg-blue-600 hover:bg-blue-500 text-white px-4 py-2 rounded font-bold transition">Simpan Cloud</button>
+            <button onclick="janaCetakanA1()" class="bg-green-500 hover:bg-green-400 text-white px-4 py-2 rounded font-bold transition">Jana Cetakan A1</button>
+          </div>
+        </div>
+
+        <div class="bg-white p-8 rounded-b-xl shadow-lg space-y-8">
+          <div>
+            <h2 class="text-lg font-bold text-indigo-900 border-b-2 border-indigo-100 pb-2 mb-4">1. Maklumat Am Penganjuran</h2>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <div><label class="block text-xs font-bold mb-1">Penganjur</label><input type="text" id="a1_penganjur" class="w-full border p-2 rounded"></div>
+              <div><label class="block text-xs font-bold mb-1">Nama Pegawai Melapor</label><input type="text" id="a1_pegawai" class="w-full border p-2 rounded"></div>
+              <div><label class="block text-xs font-bold mb-1">Aktiviti / Program</label><input type="text" id="a1_aktiviti" class="w-full border p-2 rounded"></div>
+              <div class="grid grid-cols-2 gap-2">
+                <div><label class="block text-xs font-bold mb-1">Tarikh Lapor</label><input type="date" id="a1_tarikh_lapor" class="w-full border p-2 rounded"></div>
+                <div><label class="block text-xs font-bold mb-1">Tarikh Aktiviti</label><input type="text" id="a1_tarikh_aktiviti" placeholder="Cth: 18-20 Okt" class="w-full border p-2 rounded"></div>
+              </div>
+              <div class="col-span-2"><label class="block text-xs font-bold mb-1">Sasaran Aktiviti</label><textarea id="a1_sasaran" rows="2" class="w-full border p-2 rounded"></textarea></div>
+            </div>
+          </div>
+
+          <div>
+            <h2 class="text-lg font-bold text-indigo-900 border-b-2 border-indigo-100 pb-2 mb-4">2. Analisa Risiko (Dinamik)</h2>
+            <div class="bg-blue-50 p-4 rounded-lg mb-4">
+              <div class="flex justify-between items-center mb-2">
+                <h3 class="font-bold text-blue-800 uppercase">Risiko: Manusia</h3>
+                <button onclick="tambahBaris('manusia')" class="bg-blue-600 text-white text-xs px-3 py-1 rounded font-bold">+ Tambah</button>
+              </div>
+              <div id="container_manusia"></div>
+            </div>
+            <div class="bg-orange-50 p-4 rounded-lg mb-4">
+              <div class="flex justify-between items-center mb-2">
+                <h3 class="font-bold text-orange-800 uppercase">Risiko: Peralatan</h3>
+                <button onclick="tambahBaris('peralatan')" class="bg-orange-600 text-white text-xs px-3 py-1 rounded font-bold">+ Tambah</button>
+              </div>
+              <div id="container_peralatan"></div>
+            </div>
+            <div class="bg-green-50 p-4 rounded-lg mb-4">
+              <div class="flex justify-between items-center mb-2">
+                <h3 class="font-bold text-green-800 uppercase">Risiko: Persekitaran</h3>
+                <button onclick="tambahBaris('persekitaran')" class="bg-green-600 text-white text-xs px-3 py-1 rounded font-bold">+ Tambah</button>
+              </div>
+              <div id="container_persekitaran"></div>
+            </div>
+          </div>
+
+          <div>
+            <h2 class="text-lg font-bold text-indigo-900 border-b-2 border-indigo-100 pb-2 mb-4">3. Strategi & Rujukan</h2>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
+              <div><label class="block text-xs font-bold mb-1">Strategi Pelaksanaan Biasa</label><textarea id="a1_s_normal" rows="3" class="w-full border p-2 rounded"></textarea></div>
+              <div><label class="block text-xs font-bold mb-1 text-red-600">Strategi Situasi Kecemasan</label><textarea id="a1_s_kecemasan" rows="3" class="w-full border p-2 rounded bg-red-50"></textarea></div>
+            </div>
+            <div class="grid grid-cols-1 gap-4">
+              <div><label class="block text-xs font-bold mb-1">Rujukan Standard Keselamatan</label><input type="text" id="a1_rujukan" class="w-full border p-2 rounded"></div>
+              <div><label class="block text-xs font-bold mb-1">Saranan Polisi Dan Garis Panduan</label><textarea id="a1_saranan" rows="2" class="w-full border p-2 rounded"></textarea></div>
+              <div><label class="block text-xs font-bold mb-1">Kemahiran Yang Diperlukan Oleh Pegawai/Jurulatih</label><input type="text" id="a1_kemahiran" class="w-full border p-2 rounded"></div>
+              <div class="p-3 bg-gray-100 rounded-lg">
+                <label class="block text-sm font-bold mb-2">Keputusan Pelaksanaan Aktiviti</label>
+                <select id="a1_keputusan" class="w-full border p-2 rounded font-bold">
+                  <option value="Diluluskan">Diluluskan</option>
+                  <option value="Tidak Diluluskan">Tidak Diluluskan</option>
+                </select>
+              </div>
+            </div>
+          </div>
         </div>
       </div>
 
-      <div>
-        <h2 class="text-lg font-bold text-indigo-900 border-b-2 border-indigo-100 pb-2 mb-4">2. Analisa Risiko (Boleh Tambah Berbilang Baris)</h2>
+      <div id="view-a1-print" class="print-template shadow-2xl relative">
+        <div class="no-print mb-4 text-center">
+          <button onclick="kembaliEdit('a1')" class="bg-gray-800 text-white px-4 py-2 rounded font-bold mr-2">&larr; Kembali Edit</button>
+          <button onclick="window.print()" class="bg-green-600 text-white px-6 py-2 rounded font-bold">Cetak Dokumen Ini</button>
+        </div>
+        <div class="header-title mb-4">
+          PROSEDUR OPERASI STANDARD REKREASI LUAR PELAJAR<br>
+          BINA INSAN GURU IPG KAMPUS DARULAMAN<br>
+          <span class="text-[10pt] font-normal underline">BORANG A1: SISTEM PENGURUSAN & PENILAIAN RISIKO (RAMS)</span>
+        </div>
+        <table>
+          <tr>
+            <td width="60%"><span class="bold-label">Penganjur:</span><br><span id="out_a1_penganjur"></span></td>
+            <td width="40%"><span class="bold-label">Nama Pegawai Melapor:</span> <span id="out_a1_pegawai"></span><br><br><span class="bold-label">Tarikh:</span> <span id="out_a1_tarikh_lapor"></span></td>
+          </tr>
+          <tr>
+            <td><span class="bold-label">Aktiviti:</span><br><span id="out_a1_aktiviti"></span></td>
+            <td><span class="bold-label">Tarikh Aktiviti:</span><br><span id="out_a1_tarikh_aktiviti"></span></td>
+          </tr>
+          <tr><td colspan="2"><span class="bold-label">Sasaran Aktiviti:</span><br><span id="out_a1_sasaran"></span></td></tr>
+        </table>
+        <table>
+          <tr style="background-color: #f3f4f6; text-align: center; font-weight: bold; font-size: 9pt;">
+            <td width="15%">ANALISA</td><td>PERINCIAN (Risiko, Punca & Impak)</td><td width="12%">Tarikh Kenalpasti</td><td width="12%">Tarikh Tindakan</td><td width="15%">Tindakan Oleh</td>
+          </tr>
+          <tbody id="print_tbody_a1_analisa"></tbody>
+        </table>
+        <table>
+          <tr>
+            <td width="50%"><span class="bold-label underline">STRATEGI PENGURUSAN RISIKO (Normal)</span><br><br><span id="out_a1_normal" style="white-space: pre-wrap;"></span></td>
+            <td width="50%"><span class="bold-label underline">STRATEGI SITUASI KECEMASAN</span><br><br><span id="out_a1_kecemasan" style="white-space: pre-wrap;"></span></td>
+          </tr>
+        </table>
+        <table>
+          <tr><td width="30%" class="bold-label">RUJUKAN STANDARD KESELAMATAN</td><td id="out_a1_rujukan"></td></tr>
+          <tr><td class="bold-label">SARANAN POLISI DAN GARIS PANDUAN</td><td id="out_a1_saranan"></td></tr>
+          <tr><td class="bold-label">KEMAHIRAN YANG DIPERLUKAN...</td><td id="out_a1_kemahiran"></td></tr>
+          <tr>
+            <td class="bold-label">KEPUTUSAN PELAKSANAAN AKTIVITI</td>
+            <td>
+              <span id="out_a1_lulus" style="font-weight:bold;">[ &nbsp; ] Diluluskan</span> &nbsp;&nbsp; 
+              <span id="out_a1_gagal" style="font-weight:bold;">[ &nbsp; ] Tidak diluluskan</span><br><br>
+              Ulasan: _____________________________________
+            </td>
+          </tr>
+        </table>
+        <div style="border: 1.5px solid black; padding: 10px; font-size: 9pt; margin-top: -1.5px;">
+          <div style="font-weight: bold; text-decoration: underline; margin-bottom: 20px;">UNTUK KEGUNAAN PEJABAT</div>
+          <div style="display: flex; justify-content: space-between;">
+            <div>RAMS telah diperiksa: <br><br>[ &nbsp; ] Diluluskan &nbsp; &nbsp; [ &nbsp; ] Tidak Diluluskan</div>
+            <div>Nama & Cop Rasmi: ____________________________<br><br>Tarikh: _______/_______/_______</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+
+    <div id="view-b1" style="display:none;">
+      <div id="view-b1-form" class="form-view max-w-4xl mx-auto">
+        <div class="bg-blue-800 text-white p-6 rounded-t-xl shadow-md text-center">
+          <h1 class="text-2xl font-bold">Borang B1: Akuan Status Kesihatan</h1>
+          <p class="text-sm mt-2 text-blue-200">Sila isi semua ruangan dengan teliti dan jujur.</p>
+        </div>
+        <div class="bg-white p-6 rounded-b-xl shadow-lg space-y-6">
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div>
+              <label class="block font-bold text-gray-700 mb-1 text-sm">Nama Penuh</label>
+              <input type="text" id="b1_nama" class="w-full border-2 border-gray-300 p-3 rounded-lg uppercase" placeholder="Nama Penuh Anda" required>
+            </div>
+            <div>
+              <label class="block font-bold text-gray-700 mb-1 text-sm">No. Kad Pengenalan</label>
+              <input type="text" id="b1_nokp" class="w-full border-2 border-gray-300 p-3 rounded-lg" placeholder="Contoh: 010203040506" required>
+            </div>
+          </div>
+          
+          <div class="bg-yellow-50 border-l-4 border-yellow-500 p-4 text-sm text-yellow-800">
+            <strong>ARAHAN:</strong> Sila tandakan <strong>YA</strong> atau <strong>TIDAK</strong>. Jika "YA", nyatakan perincian/rawatan di ruangan catatan.
+          </div>
+          
+          <div id="soalan-container" class="space-y-3"></div>
+          
+          <div class="pt-6 border-t border-gray-200 flex gap-3">
+            <button onclick="simpanCloudB1()" class="w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-3 rounded-lg transition shadow-md">Simpan Rekod (Cloud)</button>
+            <button onclick="janaCetakanB1()" class="w-full bg-green-600 hover:bg-green-700 text-white font-bold py-3 rounded-lg transition shadow-md">Jana Cetakan (PDF)</button>
+          </div>
+        </div>
+      </div>
+
+      <div id="view-b1-print" class="print-template shadow-2xl">
+        <div class="no-print mb-4 text-center border-b pb-4">
+          <button onclick="kembaliEdit('b1')" class="bg-gray-800 text-white px-4 py-2 rounded font-bold mr-2">&larr; Kembali Edit</button>
+          <button onclick="window.print()" class="bg-green-600 text-white px-6 py-2 rounded font-bold shadow-lg">Cetak Borang B1</button>
+        </div>
         
-        <div class="bg-blue-50 p-4 rounded-lg mb-4">
-          <div class="flex justify-between items-center mb-2">
-            <h3 class="font-bold text-blue-800 uppercase">Risiko: Manusia</h3>
-            <button type="button" onclick="tambahBaris('manusia')" class="bg-blue-600 text-white text-xs px-3 py-1 rounded font-bold">+ Tambah Risiko</button>
-          </div>
-          <div id="container_manusia"></div>
-        </div>
-
-        <div class="bg-orange-50 p-4 rounded-lg mb-4">
-          <div class="flex justify-between items-center mb-2">
-            <h3 class="font-bold text-orange-800 uppercase">Risiko: Peralatan</h3>
-            <button type="button" onclick="tambahBaris('peralatan')" class="bg-orange-600 text-white text-xs px-3 py-1 rounded font-bold">+ Tambah Risiko</button>
-          </div>
-          <div id="container_peralatan"></div>
-        </div>
-
-        <div class="bg-green-50 p-4 rounded-lg mb-4">
-          <div class="flex justify-between items-center mb-2">
-            <h3 class="font-bold text-green-800 uppercase">Risiko: Persekitaran</h3>
-            <button type="button" onclick="tambahBaris('persekitaran')" class="bg-green-600 text-white text-xs px-3 py-1 rounded font-bold">+ Tambah Risiko</button>
-          </div>
-          <div id="container_persekitaran"></div>
-        </div>
-      </div>
-
-      <div>
-        <h2 class="text-lg font-bold text-indigo-900 border-b-2 border-indigo-100 pb-2 mb-4">3. Strategi, Standard & Keputusan</h2>
-        <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
-          <div><label class="block text-xs font-bold mb-1">Strategi Pelaksanaan Biasa</label><textarea id="in_s_normal" rows="3" class="w-full border p-2 rounded bg-gray-50"></textarea></div>
-          <div><label class="block text-xs font-bold mb-1 text-red-600">Strategi Situasi Kecemasan</label><textarea id="in_s_kecemasan" rows="3" class="w-full border p-2 rounded bg-red-50"></textarea></div>
-        </div>
+        <div class="font-bold text-right text-sm mb-2">Borang B1</div>
+        <div class="header-title mb-4">BORANG AKUAN STATUS KESIHATAN</div>
+        <p class="text-[10pt] mb-2 italic">(**Diisi dan dikembalikan kepada pegawai bertanggungjawab.)</p>
         
-        <div class="grid grid-cols-1 gap-4">
-          <div><label class="block text-xs font-bold mb-1">Rujukan Standard Keselamatan</label><input type="text" id="in_rujukan" class="w-full border p-2 rounded" placeholder="Cth: Standard Persatuan Kanu Malaysia / Bomba"></div>
-          <div><label class="block text-xs font-bold mb-1">Saranan Polisi Dan Garis Panduan</label><textarea id="in_saranan" rows="2" class="w-full border p-2 rounded" placeholder="Cth: Ratio 1 jurulatih : 8 peserta"></textarea></div>
-          <div><label class="block text-xs font-bold mb-1">Kemahiran Yang Diperlukan Oleh Pegawai/Jurulatih</label><input type="text" id="in_kemahiran" class="w-full border p-2 rounded" placeholder="Cth: Sijil Penyelamat Kehidupan Akuatik"></div>
-          <div class="p-3 bg-gray-100 rounded-lg">
-            <label class="block text-sm font-bold mb-2">Keputusan Pelaksanaan Aktiviti</label>
-            <select id="in_keputusan" class="w-full border p-2 rounded font-bold">
-              <option value="Diluluskan">Diluluskan</option>
-              <option value="Tidak Diluluskan">Tidak Diluluskan</option>
-            </select>
-          </div>
+        <p class="text-[10pt] mb-4 text-justify leading-relaxed">
+          Saya <span id="out_b1_nama" class="font-bold border-b border-black inline-block min-w-[280px] text-center px-2 uppercase"></span>, Nombor K/P <span id="out_b1_nokp" class="font-bold border-b border-black inline-block min-w-[150px] text-center px-2"></span> mengaku tidak mempunyai sebarang penyakit, kecederaan atau cacat anggota seperti yang dikategorikan di bawah ini. Saya juga mengakui segala maklumat yang diberi adalah benar.
+        </p>
+        <p class="text-[9pt] mb-3">
+          <span class="font-bold underline">Arahan:</span> Sila tandakan (/) di ruangan YA atau TIDAK. Jika YA sila nyatakan perincian penyakit, rawatan dan ubat-ubatan di dalam ruangan CATATAN.
+        </p>
+
+        <table>
+          <thead>
+            <tr class="bg-gray-100 font-bold text-center text-[9pt]">
+              <th width="8%">BHG</th>
+              <th width="45%">KENYATAAN / PENYAKIT</th>
+              <th width="6%">YA</th>
+              <th width="6%">TIDAK</th>
+              <th width="35%">CATATAN</th>
+            </tr>
+          </thead>
+          <tbody id="print_tbody_b1"></tbody>
+        </table>
+        
+        <div class="mt-8 flex justify-between text-[10pt]">
+          <div class="w-1/2"><p>T/Tangan Penama: ________________________</p></div>
+          <div class="w-1/2"><p>Tarikh: ________________________</p></div>
         </div>
       </div>
-    </form>
-  </div>
-
-
-  <div id="print-section" class="print-template shadow-2xl relative">
-    
-    <div class="no-print mb-4 text-center">
-      <button onclick="kembaliKeBorang()" class="bg-gray-800 text-white px-4 py-2 rounded font-bold mr-2">&larr; Kembali Edit</button>
-      <button onclick="window.print()" class="bg-green-600 text-white px-6 py-2 rounded font-bold">Cetak Dokumen Ini</button>
     </div>
 
-    <div class="header-title mb-4">
-      PROSEDUR OPERASI STANDARD REKREASI LUAR PELAJAR<br>
-      BINA INSAN GURU IPG KAMPUS DARULAMAN<br>
-      <span class="text-[10pt] font-normal underline">BORANG A1: SISTEM PENGURUSAN & PENILAIAN RISIKO (RAMS)</span>
-    </div>
-
-    <table>
-      <tr>
-        <td width="60%"><span class="bold-label">Penganjur:</span><br><span id="out_penganjur"></span></td>
-        <td width="40%"><span class="bold-label">Nama Pegawai Melapor:</span> <span id="out_pegawai"></span><br><br><span class="bold-label">Tarikh:</span> <span id="out_tarikh_lapor"></span></td>
-      </tr>
-      <tr>
-        <td><span class="bold-label">Aktiviti:</span><br><span id="out_aktiviti"></span></td>
-        <td><span class="bold-label">Tarikh Aktiviti:</span><br><span id="out_tarikh_aktiviti"></span></td>
-      </tr>
-      <tr>
-        <td colspan="2"><span class="bold-label">Sasaran Aktiviti:</span><br><span id="out_sasaran"></span></td>
-      </tr>
-    </table>
-
-    <table>
-      <tr style="background-color: #f3f4f6; text-align: center; font-weight: bold; font-size: 9pt;">
-        <td width="15%">ANALISA</td>
-        <td>PERINCIAN (Risiko, Punca & Impak)</td>
-        <td width="12%">Tarikh Kenalpasti</td>
-        <td width="12%">Tarikh Tindakan</td>
-        <td width="15%">Tindakan Oleh</td>
-      </tr>
-      <tbody id="print_tbody_analisa">
-        </tbody>
-    </table>
-
-    <table>
-      <tr>
-        <td width="50%"><span class="bold-label underline">STRATEGI PENGURUSAN RISIKO (Normal)</span><br><br><span id="out_s_normal" style="white-space: pre-wrap;"></span></td>
-        <td width="50%"><span class="bold-label underline">STRATEGI SITUASI KECEMASAN</span><br><br><span id="out_s_kecemasan" style="white-space: pre-wrap;"></span></td>
-      </tr>
-    </table>
-
-    <table>
-      <tr><td width="30%" class="bold-label">RUJUKAN STANDARD KESELAMATAN</td><td id="out_rujukan"></td></tr>
-      <tr><td class="bold-label">SARANAN POLISI DAN GARIS PANDUAN</td><td id="out_saranan"></td></tr>
-      <tr><td class="bold-label">KEMAHIRAN YANG DIPERLUKAN OLEH PEGAWAI / JURULATIH</td><td id="out_kemahiran"></td></tr>
-      <tr>
-        <td class="bold-label">KEPUTUSAN BAGI PERLAKSANAAN AKTIVITI</td>
-        <td>
-          Sila pilih satu (1) (/) <br><br>
-          <span id="out_keputusan_lulus" style="font-weight:bold;">[ &nbsp; ] Diluluskan</span> &nbsp;&nbsp;&nbsp; 
-          <span id="out_keputusan_gagal" style="font-weight:bold;">[ &nbsp; ] Tidak diluluskan</span><br><br>
-          Ulasan: _________________________________________________
-        </td>
-      </tr>
-    </table>
-
-    <div style="border: 1.5px solid black; padding: 10px; font-size: 9pt; margin-top: -1.5px;">
-      <div style="font-weight: bold; text-decoration: underline; margin-bottom: 20px;">UNTUK KEGUNAAN PEJABAT</div>
-      <div style="display: flex; justify-content: space-between;">
-        <div>RAMS telah diperiksa: <br><br>[ &nbsp; ] Diluluskan &nbsp; &nbsp; [ &nbsp; ] Tidak Diluluskan</div>
-        <div>Nama & Cop Rasmi: ____________________________<br><br>Tarikh: _______/_______/_______</div>
-      </div>
-    </div>
-  </div>
+  </main>
 
   <script>
-    // Fungsi Menjana Baris Dinamik dalam Form
+    // --- LOGIK NAVIGASI MENU ---
+    function bukaMenu(menu) {
+      document.getElementById('view-a1').style.display = 'none';
+      document.getElementById('view-b1').style.display = 'none';
+      document.getElementById('view-' + menu).style.display = 'block';
+      
+      kembaliEdit(menu);
+      
+      document.getElementById('btn-menu-a1').classList.remove('bg-indigo-800');
+      document.getElementById('btn-menu-b1').classList.remove('bg-indigo-800');
+      document.getElementById('btn-menu-' + menu).classList.add('bg-indigo-800');
+    }
+
+    function kembaliEdit(menu) {
+      document.getElementById('view-' + menu + '-form').style.display = 'block';
+      document.getElementById('view-' + menu + '-print').style.display = 'none';
+    }
+
+
+    // --- LOGIK BORANG A1 ---
     function tambahBaris(kategori) {
       const container = document.getElementById(`container_${kategori}`);
       const div = document.createElement('div');
-      div.className = `grid grid-cols-1 md:grid-cols-12 gap-2 mb-2 items-end risk-row-${kategori} bg-white p-2 rounded border`;
+      div.className = `grid grid-cols-1 md:grid-cols-12 gap-2 mb-2 risk-row-${kategori} bg-white p-2 rounded border`;
       div.innerHTML = `
         <div class="md:col-span-5"><input type="text" class="w-full border-b outline-none text-sm i-perincian" placeholder="Perincian Risiko"></div>
-        <div class="md:col-span-2"><input type="date" class="w-full border-b outline-none text-sm i-tkenal" title="Tarikh Kenalpasti"></div>
-        <div class="md:col-span-2"><input type="date" class="w-full border-b outline-none text-sm i-ttindak" title="Tarikh Tindakan"></div>
+        <div class="md:col-span-2"><input type="date" class="w-full border-b outline-none text-sm i-tkenal"></div>
+        <div class="md:col-span-2"><input type="date" class="w-full border-b outline-none text-sm i-ttindak"></div>
         <div class="md:col-span-3 flex gap-2">
-          <input type="text" class="w-full border-b outline-none text-sm i-oleh" placeholder="Tindakan Oleh">
-          <button type="button" onclick="this.parentElement.parentElement.remove()" class="bg-red-500 text-white px-3 font-bold rounded hover:bg-red-600">X</button>
-        </div>
-      `;
+          <input type="text" class="w-full border-b outline-none text-sm i-oleh" placeholder="Oleh">
+          <button onclick="this.parentElement.parentElement.remove()" class="bg-red-500 text-white px-2 font-bold rounded">X</button>
+        </div>`;
       container.appendChild(div);
     }
 
-    // Inisialisasi 1 baris kosong untuk setiap kategori pada permulaan
-    window.onload = () => {
-      tambahBaris('manusia');
-      tambahBaris('peralatan');
-      tambahBaris('persekitaran');
-    };
-
-    // Fungsi membina baris HTML untuk Mod Cetakan (mercantumkan Rowspan)
-    function binaBarisCetakan(kategori, tajuk) {
+    function binaBarisA1(kategori, tajuk) {
       const rows = document.querySelectorAll(`.risk-row-${kategori}`);
       let html = '';
-      if(rows.length === 0) {
-        return `<tr><td align="center" style="font-weight:bold;">${tajuk}</td><td colspan="4" align="center">Tiada rekod</td></tr>`;
-      }
+      if(rows.length === 0) return `<tr><td align="center" style="font-weight:bold;">${tajuk}</td><td colspan="4" align="center">Tiada rekod</td></tr>`;
       rows.forEach((row, index) => {
-        let perincian = row.querySelector('.i-perincian').value;
-        let tkenal = row.querySelector('.i-tkenal').value;
-        let ttindak = row.querySelector('.i-ttindak').value;
-        let oleh = row.querySelector('.i-oleh').value;
-
+        let p = row.querySelector('.i-perincian').value;
+        let tk = row.querySelector('.i-tkenal').value;
+        let tt = row.querySelector('.i-ttindak').value;
+        let o = row.querySelector('.i-oleh').value;
         html += `<tr>`;
-        if (index === 0) {
-          html += `<td rowspan="${rows.length}" align="center" style="font-weight:bold; vertical-align:middle; background:#f9fafb;">${tajuk}</td>`;
-        }
-        html += `<td>${perincian}</td><td align="center">${tkenal}</td><td align="center">${ttindak}</td><td align="center">${oleh}</td></tr>`;
+        if (index === 0) html += `<td rowspan="${rows.length}" align="center" style="font-weight:bold; vertical-align:middle; background:#f9fafb;">${tajuk}</td>`;
+        html += `<td>${p}</td><td align="center">${tk}</td><td align="center">${tt}</td><td align="center">${o}</td></tr>`;
       });
       return html;
     }
 
-    // Fungsi Utama: Jana Print
-    function janaCetakan() {
-      // Maklumat Am
-      document.getElementById('out_penganjur').innerText = document.getElementById('in_penganjur').value;
-      document.getElementById('out_pegawai').innerText = document.getElementById('in_pegawai').value;
-      document.getElementById('out_aktiviti').innerText = document.getElementById('in_aktiviti').value;
-      document.getElementById('out_tarikh_lapor').innerText = document.getElementById('in_tarikh_lapor').value;
-      document.getElementById('out_tarikh_aktiviti').innerText = document.getElementById('in_tarikh_aktiviti').value;
-      document.getElementById('out_sasaran').innerText = document.getElementById('in_sasaran').value;
+    function janaCetakanA1() {
+      document.getElementById('out_a1_penganjur').innerText = document.getElementById('a1_penganjur').value;
+      document.getElementById('out_a1_pegawai').innerText = document.getElementById('a1_pegawai').value;
+      document.getElementById('out_a1_aktiviti').innerText = document.getElementById('a1_aktiviti').value;
+      document.getElementById('out_a1_tarikh_lapor').innerText = document.getElementById('a1_tarikh_lapor').value;
+      document.getElementById('out_a1_tarikh_aktiviti').innerText = document.getElementById('a1_tarikh_aktiviti').value;
+      document.getElementById('out_a1_sasaran').innerText = document.getElementById('a1_sasaran').value;
 
-      // Bina Jadual Analisa Dinamik
-      let tableHtml = binaBarisCetakan('manusia', 'MANUSIA');
-      tableHtml += binaBarisCetakan('peralatan', 'PERALATAN');
-      tableHtml += binaBarisCetakan('persekitaran', 'PERSEKITARAN');
-      document.getElementById('print_tbody_analisa').innerHTML = tableHtml;
+      document.getElementById('print_tbody_a1_analisa').innerHTML = binaBarisA1('manusia', 'MANUSIA') + binaBarisA1('peralatan', 'PERALATAN') + binaBarisA1('persekitaran', 'PERSEKITARAN');
 
-      // Strategi & Tambahan
-      document.getElementById('out_s_normal').innerText = document.getElementById('in_s_normal').value;
-      document.getElementById('out_s_kecemasan').innerText = document.getElementById('in_s_kecemasan').value;
-      document.getElementById('out_rujukan').innerText = document.getElementById('in_rujukan').value;
-      document.getElementById('out_saranan').innerText = document.getElementById('in_saranan').value;
-      document.getElementById('out_kemahiran').innerText = document.getElementById('in_kemahiran').value;
-      
-      // Logik Keputusan Lulus/Tidak (Tandakan [ / ])
-      let k = document.getElementById('in_keputusan').value;
-      document.getElementById('out_keputusan_lulus').innerText = k === "Diluluskan" ? "[ / ] Diluluskan" : "[   ] Diluluskan";
-      document.getElementById('out_keputusan_gagal').innerText = k === "Tidak Diluluskan" ? "[ / ] Tidak diluluskan" : "[   ] Tidak diluluskan";
+      document.getElementById('out_a1_normal').innerText = document.getElementById('a1_s_normal').value;
+      document.getElementById('out_a1_kecemasan').innerText = document.getElementById('a1_s_kecemasan').value;
+      document.getElementById('out_a1_rujukan').innerText = document.getElementById('a1_rujukan').value;
+      document.getElementById('out_a1_saranan').innerText = document.getElementById('a1_saranan').value;
+      document.getElementById('out_a1_kemahiran').innerText = document.getElementById('a1_kemahiran').value;
 
-      // Tukar UI ke Mod Print
-      document.getElementById('form-section').style.display = 'none';
-      document.getElementById('print-section').style.display = 'block';
+      let k = document.getElementById('a1_keputusan').value;
+      document.getElementById('out_a1_lulus').innerText = k === "Diluluskan" ? "[ / ] Diluluskan" : "[   ] Diluluskan";
+      document.getElementById('out_a1_gagal').innerText = k === "Tidak Diluluskan" ? "[ / ] Tidak diluluskan" : "[   ] Tidak diluluskan";
+
+      document.getElementById('view-a1-form').style.display = 'none';
+      document.getElementById('view-a1-print').style.display = 'block';
     }
 
-    function kembaliKeBorang() {
-      document.getElementById('form-section').style.display = 'block';
-      document.getElementById('print-section').style.display = 'none';
-    }
-
-    // Kumpul data array untuk di hantar ke Cloud
-    function ekstrakData(kategori) {
-      let data = [];
-      document.querySelectorAll(`.risk-row-${kategori}`).forEach(row => {
-        data.push({
-          perincian: row.querySelector('.i-perincian').value,
-          tkenal: row.querySelector('.i-tkenal').value,
-          ttindak: row.querySelector('.i-ttindak').value,
-          oleh: row.querySelector('.i-oleh').value
-        });
-      });
-      return data;
-    }
-
-    function simpanKeCloud() {
+    function simpanCloudA1() {
+      let ekstrak = (k) => Array.from(document.querySelectorAll(`.risk-row-${k}`)).map(r => ({ p: r.querySelector('.i-perincian').value, tk: r.querySelector('.i-tkenal').value, tt: r.querySelector('.i-ttindak').value, o: r.querySelector('.i-oleh').value }));
       const data = {
-        penganjur: document.getElementById('in_penganjur').value,
-        pegawai: document.getElementById('in_pegawai').value,
-        tarikh_lapor: document.getElementById('in_tarikh_lapor').value,
-        aktiviti: document.getElementById('in_aktiviti').value,
-        tarikh_aktiviti: document.getElementById('in_tarikh_aktiviti').value,
-        sasaran: document.getElementById('in_sasaran').value,
-        risiko: {
-          manusia: ekstrakData('manusia'),
-          peralatan: ekstrakData('peralatan'),
-          persekitaran: ekstrakData('persekitaran')
-        },
-        s_normal: document.getElementById('in_s_normal').value,
-        s_kecemasan: document.getElementById('in_s_kecemasan').value,
-        rujukan: document.getElementById('in_rujukan').value,
-        saranan: document.getElementById('in_saranan').value,
-        kemahiran: document.getElementById('in_kemahiran').value,
-        keputusan: document.getElementById('in_keputusan').value
+        penganjur: document.getElementById('a1_penganjur').value, pegawai: document.getElementById('a1_pegawai').value,
+        tarikh_lapor: document.getElementById('a1_tarikh_lapor').value, aktiviti: document.getElementById('a1_aktiviti').value,
+        tarikh_aktiviti: document.getElementById('a1_tarikh_aktiviti').value, sasaran: document.getElementById('a1_sasaran').value,
+        risiko: { manusia: ekstrak('manusia'), peralatan: ekstrak('peralatan'), persekitaran: ekstrak('persekitaran') },
+        s_normal: document.getElementById('a1_s_normal').value, s_kecemasan: document.getElementById('a1_s_kecemasan').value,
+        rujukan: document.getElementById('a1_rujukan').value, saranan: document.getElementById('a1_saranan').value, kemahiran: document.getElementById('a1_kemahiran').value, keputusan: document.getElementById('a1_keputusan').value
       };
-      
       google.script.run.withSuccessHandler(res => alert(res)).simpanDaftarRisiko(data);
     }
+
+
+    // --- LOGIK BORANG B1 (LENGKAP 27 SOALAN) ---
+    const soalanData = [
+      // Bahagian A
+      { isHeader: true, bhg: 'A', text: 'KENYATAAN' },
+      { id: 'a1', bhg: 'A', no: '1', soalan: 'Adakah anda sedang menerima rawatan? Jika Ada, sila nyatakan.' },
+      { id: 'a2', bhg: '', no: '2', soalan: 'Adakah anda pernah dimasukkan ke hospital atas apa-apa penyakit? Jika Ada, sila nyatakan.' },
+      // Bahagian B
+      { isHeader: true, bhg: 'B', text: 'PERNAHKAH ANDA MENGHIDAP PENYAKIT-PENYAKIT BERIKUT?' },
+      { id: 'b1', bhg: 'B', no: '1', soalan: 'Masalah pening, pitam atau pengsan' },
+      { id: 'b2', bhg: '', no: '2', soalan: 'Sawan atau kelumpuhan' },
+      { id: 'b3', bhg: '', no: '3', soalan: 'Sakit kepala atau migrain' },
+      { id: 'b4', bhg: '', no: '4', soalan: 'Gangguan mental atau halusinasi' },
+      { id: 'b5', bhg: '', no: '5', soalan: 'Kencing manis' },
+      { id: 'b6', bhg: '', no: '6', soalan: 'Tekanan darah tinggi / tekanan darah rendah' },
+      { id: 'b7', bhg: '', no: '7', soalan: 'Penyakit jantung' },
+      { id: 'b8', bhg: '', no: '8', soalan: 'Demam berpanjangan' },
+      { id: 'b9', bhg: '', no: '9', soalan: 'Asthma, lelah atau semput' },
+      { id: 'b10', bhg: '', no: '10', soalan: 'Batuk kering' },
+      { id: 'b11', bhg: '', no: '11', soalan: 'Batuk berterusan lebih dari 2 minggu' },
+      { id: 'b12', bhg: '', no: '12', soalan: 'Gastrik atau kerap sakit dibahagian perut' },
+      { id: 'b13', bhg: '', no: '13', soalan: 'Masalah buah pinggang' },
+      { id: 'b14', bhg: '', no: '14', soalan: 'Angin pasang' },
+      { id: 'b15', bhg: '', no: '15', soalan: 'Buasir' },
+      { id: 'b16', bhg: '', no: '16', soalan: 'Pernah menjalani sebarang pembedahan' },
+      { id: 'b17', bhg: '', no: '17', soalan: 'Pernah mengalami kecederaan anggota badan yang teruk' },
+      { id: 'b18', bhg: '', no: '18', soalan: 'Kecacatan anggota' },
+      { id: 'b19', bhg: '', no: '19', soalan: 'Penyakit kurang darah dan mudah berdarah' },
+      { id: 'b20', bhg: '', no: '20', soalan: 'Adakah anda merokok' },
+      { id: 'b21', bhg: '', no: '21', soalan: 'Adakah anda meminum arak' },
+      { id: 'b22', bhg: '', no: '22', soalan: 'Lain-lain penyakit untuk makluman' },
+      // Bahagian C
+      { isHeader: true, bhg: 'C', text: 'PEREMPUAN (**Soalan tambahan bagi peserta perempuan)' },
+      { id: 'c1', bhg: 'C', no: '1', soalan: 'Adakah anda mempunyai sebarang masalah haid' },
+      { id: 'c2', bhg: '', no: '2', soalan: 'Pernahkah anda dirawat bagi sakit puan' },
+      { id: 'c3', bhg: '', no: '3', soalan: 'Adakah anda mengandung' }
+    ];
+
+    function binaSoalanB1() {
+      let html = '';
+      soalanData.forEach(item => {
+        if (item.isHeader) {
+          let bgClass = item.bhg === 'A' || item.bhg === 'B' ? 'text-blue-900 border-blue-200' : 'text-pink-700 border-pink-200';
+          html += `<h3 class="font-bold text-lg ${bgClass} border-b-2 pb-1 mt-6 mb-3 uppercase">BAHAGIAN ${item.bhg}: ${item.text}</h3>`;
+        } else {
+          html += `
+            <div class="bg-gray-50 p-3 rounded border hover:shadow-sm transition flex flex-col md:flex-row justify-between md:items-center gap-2">
+              <p class="font-semibold text-sm w-full md:w-1/2">${item.no}. ${item.soalan}</p>
+              <div class="flex gap-4 items-center w-full md:w-1/2">
+                <label class="flex items-center gap-1 cursor-pointer"><input type="radio" name="${item.id}" value="YA" class="w-4 h-4"> <span class="text-sm font-bold text-red-600">YA</span></label>
+                <label class="flex items-center gap-1 cursor-pointer"><input type="radio" name="${item.id}" value="TIDAK" class="w-4 h-4" checked> <span class="text-sm font-bold text-green-700">TIDAK</span></label>
+                <input type="text" id="catatan_${item.id}" placeholder="Catatan (Jika Ya)" class="w-full border-b bg-transparent outline-none p-1 text-sm">
+              </div>
+            </div>`;
+        }
+      });
+      document.getElementById('soalan-container').innerHTML = html;
+    }
+
+    function janaCetakanB1() {
+      let nama = document.getElementById('b1_nama').value;
+      let nokp = document.getElementById('b1_nokp').value;
+      
+      if(!nama || !nokp){ alert("Sila isi Nama dan No. KP"); return; }
+      
+      document.getElementById('out_b1_nama').innerText = nama;
+      document.getElementById('out_b1_nokp').innerText = nokp;
+
+      let printHtml = '';
+      soalanData.forEach(item => {
+        if (item.isHeader) {
+          printHtml += `<tr class="bg-gray-100 font-bold"><td align="center">${item.bhg}</td><td colspan="4" class="uppercase">${item.text}</td></tr>`;
+        } else {
+          let val = document.querySelector(`input[name="${item.id}"]:checked`).value;
+          let cat = document.getElementById(`catatan_${item.id}`).value;
+          printHtml += `
+            <tr class="page-break-avoid">
+              <td align="center" class="font-bold">${item.bhg}</td>
+              <td class="text-[9pt]">${item.no}. ${item.soalan}</td>
+              <td align="center" class="font-bold">${val === 'YA' ? '/' : ''}</td>
+              <td align="center" class="font-bold">${val === 'TIDAK' ? '/' : ''}</td>
+              <td class="italic text-[9pt]">${cat}</td>
+            </tr>`;
+        }
+      });
+      document.getElementById('print_tbody_b1').innerHTML = printHtml;
+
+      document.getElementById('view-b1-form').style.display = 'none';
+      document.getElementById('view-b1-print').style.display = 'block';
+    }
+
+    function simpanCloudB1() {
+      let jawapan = {};
+      soalanData.forEach(item => { 
+        if(!item.isHeader){
+          jawapan[item.id] = { soalan: item.soalan, status: document.querySelector(`input[name="${item.id}"]:checked`).value, catatan: document.getElementById(`catatan_${item.id}`).value }; 
+        }
+      });
+      const data = { nama: document.getElementById('b1_nama').value, nokp: document.getElementById('b1_nokp').value, jawapan: jawapan };
+      if(!data.nama) { alert("Isi Nama Dahulu"); return; }
+      google.script.run.withSuccessHandler(res => alert(res)).simpanBorangB1(data);
+    }
+
+    // Initialize
+    window.onload = function() {
+      tambahBaris('manusia'); tambahBaris('peralatan'); tambahBaris('persekitaran');
+      binaSoalanB1();
+    };
   </script>
 </body>
 </html>
