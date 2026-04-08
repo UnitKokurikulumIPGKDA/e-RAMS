@@ -179,6 +179,7 @@
       { id: 'c1', bhg: 'C', no: '1', soalan: 'Masalah haid' }, { id: 'c2', bhg: '', no: '2', soalan: 'Dirawat sakit puan' }, { id: 'c3', bhg: '', no: '3', soalan: 'Mengandung' }
     ];
 
+    // --- LOGIK NAVIGASI ---
     function bukaMenu(m) {
       ['a1','senarai-a1','b1','c1'].forEach(x => {
         document.getElementById('view-'+x).style.display = (x===m)?'block':'none';
@@ -189,20 +190,20 @@
       document.getElementById('btn-'+m).classList.remove('hover:bg-indigo-700');
       if(m !== 'senarai-a1') editMode(m);
     }
-    
     function editMode(m) {
       document.getElementById(m+'-form').style.display = 'block';
       document.getElementById(m+'-print').style.display = 'none';
     }
 
+    // --- LOGIK SEMAKAN SENARAI REAL-TIME (FETCH) ---
     function muatSenaraiA1() {
-      document.getElementById('jadual-senarai-a1').innerHTML = `<tr><td colspan="5" class="text-center p-4 italic text-gray-500">Memuatkan data secara Real-Time... Sila tunggu sebentar.</td></tr>`;
+      document.getElementById('jadual-senarai-a1').innerHTML = `<tr><td colspan="5" class="text-center p-4 italic text-gray-500">Memuatkan data dari Pangkalan Data... Sila tunggu.</td></tr>`;
       
       fetch(API_URL)
         .then(response => response.json())
         .then(data => {
           if(!data || data.length === 0) {
-            document.getElementById('jadual-senarai-a1').innerHTML = `<tr><td colspan="5" class="text-center p-4 text-red-500 font-bold">Tiada rekod pendaftaran RAMS dijumpai di dalam pangkalan data.</td></tr>`;
+            document.getElementById('jadual-senarai-a1').innerHTML = `<tr><td colspan="5" class="text-center p-4 text-red-500 font-bold">Tiada rekod RAMS dijumpai.</td></tr>`;
             return;
           }
           let html = '';
@@ -212,10 +213,11 @@
           document.getElementById('jadual-senarai-a1').innerHTML = html;
         })
         .catch(err => {
-          document.getElementById('jadual-senarai-a1').innerHTML = `<tr><td colspan="5" class="text-center p-4 text-red-500 font-bold">Gagal memuatkan data. Sila periksa pautan atau sambungan internet.</td></tr>`;
+          document.getElementById('jadual-senarai-a1').innerHTML = `<tr><td colspan="5" class="text-center p-4 text-red-500 font-bold">Gagal memuatkan data. Sila periksa Web App anda.</td></tr>`;
         });
     }
 
+    // --- LOGIK BORANG A1 ---
     function tambahBaris(k) {
       const d = document.createElement('div');
       d.className = `grid grid-cols-12 gap-2 mb-2 r-row-${k}`;
@@ -251,32 +253,25 @@
     function simpanA1() {
       let btn = document.getElementById('btnSimpanA1');
       btn.innerText = "MENYIMPAN...";
-      try {
-        let ekstrak = (k) => Array.from(document.querySelectorAll(`.r-row-${k}`)).map(r => ({ p: r.querySelector('.r-p').value, tk: r.querySelector('.r-tk').value, tt: r.querySelector('.r-tt').value, o: r.querySelector('.r-o').value }));
-        const data = {
-          penganjur: document.getElementById('a1_penganjur').value, pegawai: document.getElementById('a1_pegawai').value,
-          tarikh_lapor: document.getElementById('a1_tarikh_lapor').value, aktiviti: document.getElementById('a1_aktiviti').value,
-          tarikh_aktiviti: document.getElementById('a1_tarikh_aktiviti').value, sasaran: document.getElementById('a1_sasaran').value,
-          risiko: { manusia: ekstrak('manusia'), peralatan: ekstrak('peralatan'), persekitaran: ekstrak('persekitaran') },
-          s_normal: document.getElementById('a1_normal').value, s_kecemasan: document.getElementById('a1_kecemasan').value,
-          rujukan: document.getElementById('a1_rujukan').value, saranan: document.getElementById('a1_saranan').value, kemahiran: document.getElementById('a1_kemahiran').value, keputusan: document.getElementById('a1_keputusan').value
-        };
-        
-        fetch(API_URL, {
-          method: 'POST',
-          headers: { 'Content-Type': 'text/plain;charset=utf-8' },
-          body: JSON.stringify({ type: 'A1', data: data })
-        }).then(response => response.json()).then(res => {
-          alert(res.mesej);
-          btn.innerText = "SIMPAN CLOUD";
-        }).catch(err => {
-          alert("Gagal menghubungi pangkalan data.");
-          btn.innerText = "SIMPAN CLOUD";
-        });
-      } catch(e) {
-        alert("Ralat Borang: " + e.message);
-        btn.innerText = "SIMPAN CLOUD";
-      }
+      let ekstrak = (k) => Array.from(document.querySelectorAll(`.r-row-${k}`)).map(r => ({ p: r.querySelector('.r-p').value, tk: r.querySelector('.r-tk').value, tt: r.querySelector('.r-tt').value, o: r.querySelector('.r-o').value }));
+      const data = {
+        penganjur: document.getElementById('a1_penganjur').value, pegawai: document.getElementById('a1_pegawai').value,
+        tarikh_lapor: document.getElementById('a1_tarikh_lapor').value, aktiviti: document.getElementById('a1_aktiviti').value,
+        tarikh_aktiviti: document.getElementById('a1_tarikh_aktiviti').value, sasaran: document.getElementById('a1_sasaran').value,
+        risiko: { manusia: ekstrak('manusia'), peralatan: ekstrak('peralatan'), persekitaran: ekstrak('persekitaran') },
+        s_normal: document.getElementById('a1_normal').value, s_kecemasan: document.getElementById('a1_kecemasan').value,
+        rujukan: document.getElementById('a1_rujukan').value, saranan: document.getElementById('a1_saranan').value, kemahiran: document.getElementById('a1_kemahiran').value, keputusan: document.getElementById('a1_keputusan').value
+      };
+      
+      fetch(API_URL, {
+        method: 'POST',
+        headers: { 'Content-Type': 'text/plain;charset=utf-8' },
+        body: JSON.stringify({ type: 'A1', data: data })
+      }).then(response => response.json()).then(res => {
+        alert(res.mesej); btn.innerText = "SIMPAN CLOUD";
+      }).catch(err => {
+        alert("Gagal menyimpan data."); btn.innerText = "SIMPAN CLOUD";
+      });
     }
 
     function binaB1() {
@@ -307,27 +302,20 @@
     function simpanB1() {
       let btn = document.getElementById('btnSimpanB1');
       btn.innerText = "MENYIMPAN...";
-      try {
-        let jawapan = {};
-        B1_SOALAN.forEach(item => { if(!item.isHeader) { jawapan[item.id] = { soalan: item.soalan, status: document.querySelector(`input[name="q_${item.id}"]:checked`).value, catatan: document.getElementById(`cat_${item.id}`).value }; } });
-        const data = { nama: document.getElementById('b1_nama').value, nokp: document.getElementById('b1_nokp').value, jawapan: jawapan };
-        if(!data.nama) { alert("Sila isi Nama Dahulu"); btn.innerText = "SIMPAN CLOUD"; return; }
-        
-        fetch(API_URL, {
-          method: 'POST',
-          headers: { 'Content-Type': 'text/plain;charset=utf-8' },
-          body: JSON.stringify({ type: 'B1', data: data })
-        }).then(response => response.json()).then(res => {
-          alert(res.mesej);
-          btn.innerText = "SIMPAN CLOUD";
-        }).catch(err => {
-          alert("Gagal menghubungi pangkalan data.");
-          btn.innerText = "SIMPAN CLOUD";
-        });
-      } catch(e) {
-        alert("Ralat Borang: " + e.message);
-        btn.innerText = "SIMPAN CLOUD";
-      }
+      let jawapan = {};
+      B1_SOALAN.forEach(item => { if(!item.isHeader) { jawapan[item.id] = { soalan: item.soalan, status: document.querySelector(`input[name="q_${item.id}"]:checked`).value, catatan: document.getElementById(`cat_${item.id}`).value }; } });
+      const data = { nama: document.getElementById('b1_nama').value, nokp: document.getElementById('b1_nokp').value, jawapan: jawapan };
+      if(!data.nama) { alert("Sila isi Nama Dahulu"); btn.innerText = "SIMPAN CLOUD"; return; }
+      
+      fetch(API_URL, {
+        method: 'POST',
+        headers: { 'Content-Type': 'text/plain;charset=utf-8' },
+        body: JSON.stringify({ type: 'B1', data: data })
+      }).then(response => response.json()).then(res => {
+        alert(res.mesej); btn.innerText = "SIMPAN CLOUD";
+      }).catch(err => {
+        alert("Gagal menyimpan data."); btn.innerText = "SIMPAN CLOUD";
+      });
     }
 
     function cetakC1() {
@@ -343,25 +331,18 @@
     function simpanC1() {
       let btn = document.getElementById('btnSimpanC1');
       btn.innerText = "MENYIMPAN...";
-      try {
-        const data = { program: document.getElementById('c1_program').value, tarikh: document.getElementById('c1_tarikh').value, nama: document.getElementById('c1_nama').value, nokp: document.getElementById('c1_nokp').value, institusi: document.getElementById('c1_institusi').value };
-        if(!data.nama || !data.program) { alert("Lengkapkan borang dahulu."); btn.innerText = "SIMPAN CLOUD"; return; }
-        
-        fetch(API_URL, {
-          method: 'POST',
-          headers: { 'Content-Type': 'text/plain;charset=utf-8' },
-          body: JSON.stringify({ type: 'C1', data: data })
-        }).then(response => response.json()).then(res => {
-          alert(res.mesej);
-          btn.innerText = "SIMPAN CLOUD";
-        }).catch(err => {
-          alert("Gagal menghubungi pangkalan data.");
-          btn.innerText = "SIMPAN CLOUD";
-        });
-      } catch(e) {
-        alert("Ralat Borang: " + e.message);
-        btn.innerText = "SIMPAN CLOUD";
-      }
+      const data = { program: document.getElementById('c1_program').value, tarikh: document.getElementById('c1_tarikh').value, nama: document.getElementById('c1_nama').value, nokp: document.getElementById('c1_nokp').value, institusi: document.getElementById('c1_institusi').value };
+      if(!data.nama || !data.program) { alert("Lengkapkan borang dahulu."); btn.innerText = "SIMPAN CLOUD"; return; }
+      
+      fetch(API_URL, {
+        method: 'POST',
+        headers: { 'Content-Type': 'text/plain;charset=utf-8' },
+        body: JSON.stringify({ type: 'C1', data: data })
+      }).then(response => response.json()).then(res => {
+        alert(res.mesej); btn.innerText = "SIMPAN CLOUD";
+      }).catch(err => {
+        alert("Gagal menyimpan data."); btn.innerText = "SIMPAN CLOUD";
+      });
     }
 
     window.onload = () => { ['manusia','peralatan','persekitaran'].forEach(tambahBaris); binaB1(); };
