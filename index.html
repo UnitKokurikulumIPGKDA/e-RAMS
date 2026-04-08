@@ -167,7 +167,20 @@
   </main>
 
   <script>
-    // --- NAVIGASI ---
+    // URL API ANDA YANG RASMI (Mesti digunakan untuk memintas isu google.script.run)
+    const API_URL = "https://script.google.com/macros/s/AKfycbycOlQR2plUHk3kGVAxNKPstPjQAtcNIJ_-XA5XSyAYMuDlTZrsUMyIq63NDDGdeUSE/exec";
+
+    // --- SUSUNAN DATA 27 SOALAN B1 ---
+    const B1_SOALAN = [
+      { isHeader: true, bhg: 'A', text: 'KENYATAAN' },
+      { id: 'a1', bhg: 'A', no: '1', soalan: 'Sedang menerima rawatan?' }, { id: 'a2', bhg: '', no: '2', soalan: 'Pernah masuk hospital?' },
+      { isHeader: true, bhg: 'B', text: 'MENGHIDAP PENYAKIT-PENYAKIT BERIKUT?' },
+      { id: 'b1', bhg: 'B', no: '1', soalan: 'Pening, pitam/pengsan' }, { id: 'b2', bhg: '', no: '2', soalan: 'Sawan / kelumpuhan' }, { id: 'b3', bhg: '', no: '3', soalan: 'Migrain' }, { id: 'b4', bhg: '', no: '4', soalan: 'Gangguan mental' }, { id: 'b5', bhg: '', no: '5', soalan: 'Kencing manis' }, { id: 'b6', bhg: '', no: '6', soalan: 'Tekanan darah' }, { id: 'b7', bhg: '', no: '7', soalan: 'Sakit jantung' }, { id: 'b8', bhg: '', no: '8', soalan: 'Demam berpanjangan' }, { id: 'b9', bhg: '', no: '9', soalan: 'Asma, lelah' }, { id: 'b10', bhg: '', no: '10', soalan: 'Batuk kering' }, { id: 'b11', bhg: '', no: '11', soalan: 'Batuk > 2 minggu' }, { id: 'b12', bhg: '', no: '12', soalan: 'Gastrik / sakit perut' }, { id: 'b13', bhg: '', no: '13', soalan: 'Masalah buah pinggang' }, { id: 'b14', bhg: '', no: '14', soalan: 'Angin pasang' }, { id: 'b15', bhg: '', no: '15', soalan: 'Buasir' }, { id: 'b16', bhg: '', no: '16', soalan: 'Pernah pembedahan' }, { id: 'b17', bhg: '', no: '17', soalan: 'Kecederaan teruk' }, { id: 'b18', bhg: '', no: '18', soalan: 'Kecacatan anggota' }, { id: 'b19', bhg: '', no: '19', soalan: 'Kurang darah' }, { id: 'b20', bhg: '', no: '20', soalan: 'Merokok' }, { id: 'b21', bhg: '', no: '21', soalan: 'Minum arak' }, { id: 'b22', bhg: '', no: '22', soalan: 'Lain-lain penyakit' },
+      { isHeader: true, bhg: 'C', text: 'PEREMPUAN' },
+      { id: 'c1', bhg: 'C', no: '1', soalan: 'Masalah haid' }, { id: 'c2', bhg: '', no: '2', soalan: 'Dirawat sakit puan' }, { id: 'c3', bhg: '', no: '3', soalan: 'Mengandung' }
+    ];
+
+    // --- LOGIK NAVIGASI ---
     function bukaMenu(m) {
       ['a1','senarai-a1','b1','c1'].forEach(x => {
         document.getElementById('view-'+x).style.display = (x===m)?'block':'none';
@@ -183,42 +196,38 @@
       document.getElementById(m+'-print').style.display = 'none';
     }
 
-    // --- LOGIK SEMAKAN SENARAI REAL-TIME ---
+    // --- LOGIK SEMAKAN SENARAI REAL-TIME MENGGUNAKAN FETCH API ---
     function muatSenaraiA1() {
-      document.getElementById('jadual-senarai-a1').innerHTML = `<tr><td colspan="5" class="text-center p-4 italic text-gray-500">Memuatkan data dari sistem... Sila tunggu sebentar.</td></tr>`;
+      document.getElementById('jadual-senarai-a1').innerHTML = `<tr><td colspan="5" class="text-center p-4 italic text-gray-500">Memuatkan data secara Real-Time... Sila tunggu sebentar.</td></tr>`;
       
-      google.script.run
-        .withSuccessHandler(data => {
+      fetch(API_URL)
+        .then(response => response.json())
+        .then(data => {
           if(!data || data.length === 0) {
             document.getElementById('jadual-senarai-a1').innerHTML = `<tr><td colspan="5" class="text-center p-4 text-red-500 font-bold">Tiada rekod pendaftaran RAMS dijumpai di dalam pangkalan data.</td></tr>`;
             return;
           }
           let html = '';
           data.forEach(row => {
-            html += `<tr class="border-b hover:bg-slate-50 transition">
-              <td class="p-3 text-sm">${row.timestamp}</td>
-              <td class="p-3 text-sm font-bold uppercase text-indigo-800">${row.aktiviti}</td>
-              <td class="p-3 text-sm">${row.tarikhAktiviti}</td>
-              <td class="p-3 text-sm">${row.penganjur}</td>
-              <td class="p-3 text-sm">${row.pegawai}</td>
-            </tr>`;
+            html += `<tr class="border-b hover:bg-slate-50 transition"><td class="p-3 text-sm">${row.timestamp}</td><td class="p-3 text-sm font-bold uppercase text-indigo-800">${row.aktiviti}</td><td class="p-3 text-sm">${row.tarikhAktiviti}</td><td class="p-3 text-sm">${row.penganjur}</td><td class="p-3 text-sm">${row.pegawai}</td></tr>`;
           });
           document.getElementById('jadual-senarai-a1').innerHTML = html;
         })
-        .withFailureHandler(err => {
+        .catch(err => {
           document.getElementById('jadual-senarai-a1').innerHTML = `<tr><td colspan="5" class="text-center p-4 text-red-500 font-bold">Gagal memuatkan data. Sila periksa sambungan.</td></tr>`;
-        })
-        .getSenaraiRAMS();
+        });
     }
 
-    // --- LOGIK SIMPAN A1 YANG DIPERBAIKI ---
+    // --- LOGIK BORANG A1 ---
     function tambahBaris(k) {
       const d = document.createElement('div');
       d.className = `grid grid-cols-12 gap-2 mb-2 r-row-${k}`;
       d.innerHTML = `<div class="col-span-5"><input type="text" class="w-full border-b outline-none p-1 text-sm r-p" placeholder="Perincian Risiko"></div><div class="col-span-2"><input type="date" class="w-full border-b outline-none p-1 text-sm r-tk"></div><div class="col-span-2"><input type="date" class="w-full border-b outline-none p-1 text-sm r-tt"></div><div class="col-span-3 flex gap-1"><input type="text" class="w-full border-b outline-none p-1 text-sm r-o" placeholder="Oleh"><button onclick="this.parentElement.parentElement.remove()" class="text-red-600 font-bold px-2">X</button></div>`;
       document.getElementById('cont_'+k).appendChild(d);
     }
+
     function cetakA1() {
+      // (Kod cetak dikekalkan kerana ia hanya merubah UI tempatan)
       document.getElementById('out_a1_penganjur').innerText = document.getElementById('a1_penganjur').value;
       document.getElementById('out_a1_pegawai').innerText = document.getElementById('a1_pegawai').value;
       document.getElementById('out_a1_tarikh').innerText = document.getElementById('a1_tarikh_lapor').value;
@@ -233,22 +242,16 @@
       let k = document.getElementById('a1_keputusan').value;
       document.getElementById('out_a1_lulus').innerText = k === "Diluluskan" ? "[ / ] Diluluskan" : "[   ] Diluluskan";
       document.getElementById('out_a1_gagal').innerText = k === "Tidak Diluluskan" ? "[ / ] Tidak diluluskan" : "[   ] Tidak diluluskan";
-
       let html = '';
       ['manusia','peralatan','persekitaran'].forEach(kategori => {
         const rows = document.querySelectorAll('.r-row-'+kategori);
-        if(rows.length === 0) {
-          html += `<tr><td class="font-bold text-center">${kategori.toUpperCase()}</td><td colspan="4" class="text-center italic">Tiada Rekod</td></tr>`;
-        } else {
-          rows.forEach((r,i) => {
-            html += `<tr>${i===0?`<td rowspan="${rows.length}" class="font-bold text-center align-middle bg-slate-50">${kategori.toUpperCase()}</td>`:''}<td>${r.querySelector('.r-p').value}</td><td class="text-center">${r.querySelector('.r-tk').value}</td><td class="text-center">${r.querySelector('.r-tt').value}</td><td class="text-center">${r.querySelector('.r-o').value}</td></tr>`;
-          });
-        }
+        if(rows.length === 0) { html += `<tr><td class="font-bold text-center">${kategori.toUpperCase()}</td><td colspan="4" class="text-center italic">Tiada Rekod</td></tr>`; } 
+        else { rows.forEach((r,i) => { html += `<tr>${i===0?`<td rowspan="${rows.length}" class="font-bold text-center align-middle bg-slate-50">${kategori.toUpperCase()}</td>`:''}<td>${r.querySelector('.r-p').value}</td><td class="text-center">${r.querySelector('.r-tk').value}</td><td class="text-center">${r.querySelector('.r-tt').value}</td><td class="text-center">${r.querySelector('.r-o').value}</td></tr>`; }); }
       });
       document.getElementById('out_a1_tbody').innerHTML = html;
-      document.getElementById('a1-form').style.display = 'none';
-      document.getElementById('a1-print').style.display = 'block';
+      document.getElementById('a1-form').style.display = 'none'; document.getElementById('a1-print').style.display = 'block';
     }
+
     function simpanA1() {
       let btn = document.getElementById('btnSimpanA1');
       btn.innerText = "MENYIMPAN...";
@@ -263,85 +266,70 @@
         rujukan: document.getElementById('a1_rujukan').value, saranan: document.getElementById('a1_saranan').value, kemahiran: document.getElementById('a1_kemahiran').value, keputusan: document.getElementById('a1_keputusan').value
       };
       
-      google.script.run
-        .withSuccessHandler(res => {
-          if (res.status === "berjaya") alert(res.mesej);
-          else alert("Ralat Server: " + res.mesej);
-          btn.innerText = "SIMPAN CLOUD";
-        })
-        .withFailureHandler(err => {
-          alert("Gagal menghubungi pangkalan data: " + err.message);
-          btn.innerText = "SIMPAN CLOUD";
-        })
-        .simpanDaftarRisiko(data);
+      // Menggunakan FETCH API menggantikan google.script.run
+      fetch(API_URL, {
+        method: 'POST',
+        body: JSON.stringify({ type: 'A1', data: data })
+      })
+      .then(response => response.json())
+      .then(res => {
+        alert(res.mesej);
+        btn.innerText = "SIMPAN CLOUD";
+      })
+      .catch(err => {
+        alert("Gagal menghubungi pangkalan data.");
+        btn.innerText = "SIMPAN CLOUD";
+      });
     }
 
     // --- LOGIK BORANG B1 ---
-    const B1_SOALAN = [
-      { isHeader: true, bhg: 'A', text: 'KENYATAAN' },
-      { id: 'a1', bhg: 'A', no: '1', soalan: 'Sedang menerima rawatan?' }, { id: 'a2', bhg: '', no: '2', soalan: 'Pernah masuk hospital?' },
-      { isHeader: true, bhg: 'B', text: 'MENGHIDAP PENYAKIT-PENYAKIT BERIKUT?' },
-      { id: 'b1', bhg: 'B', no: '1', soalan: 'Pening, pitam/pengsan' }, { id: 'b2', bhg: '', no: '2', soalan: 'Sawan / kelumpuhan' }, { id: 'b3', bhg: '', no: '3', soalan: 'Migrain' }, { id: 'b4', bhg: '', no: '4', soalan: 'Gangguan mental' }, { id: 'b5', bhg: '', no: '5', soalan: 'Kencing manis' }, { id: 'b6', bhg: '', no: '6', soalan: 'Tekanan darah' }, { id: 'b7', bhg: '', no: '7', soalan: 'Sakit jantung' }, { id: 'b8', bhg: '', no: '8', soalan: 'Demam berpanjangan' }, { id: 'b9', bhg: '', no: '9', soalan: 'Asma, lelah' }, { id: 'b10', bhg: '', no: '10', soalan: 'Batuk kering' }, { id: 'b11', bhg: '', no: '11', soalan: 'Batuk > 2 minggu' }, { id: 'b12', bhg: '', no: '12', soalan: 'Gastrik / sakit perut' }, { id: 'b13', bhg: '', no: '13', soalan: 'Masalah buah pinggang' }, { id: 'b14', bhg: '', no: '14', soalan: 'Angin pasang' }, { id: 'b15', bhg: '', no: '15', soalan: 'Buasir' }, { id: 'b16', bhg: '', no: '16', soalan: 'Pernah pembedahan' }, { id: 'b17', bhg: '', no: '17', soalan: 'Kecederaan teruk' }, { id: 'b18', bhg: '', no: '18', soalan: 'Kecacatan anggota' }, { id: 'b19', bhg: '', no: '19', soalan: 'Kurang darah' }, { id: 'b20', bhg: '', no: '20', soalan: 'Merokok' }, { id: 'b21', bhg: '', no: '21', soalan: 'Minum arak' }, { id: 'b22', bhg: '', no: '22', soalan: 'Lain-lain penyakit' },
-      { isHeader: true, bhg: 'C', text: 'PEREMPUAN' },
-      { id: 'c1', bhg: 'C', no: '1', soalan: 'Masalah haid' }, { id: 'c2', bhg: '', no: '2', soalan: 'Dirawat sakit puan' }, { id: 'c3', bhg: '', no: '3', soalan: 'Mengandung' }
-    ];
     function binaB1() {
       let html = '';
       B1_SOALAN.forEach(item => {
-        if (item.isHeader) {
-          html += `<h3 class="font-bold text-[11pt] bg-slate-100 p-2 mt-4 mb-2 uppercase border-b-2">BAHAGIAN ${item.bhg}: ${item.text}</h3>`;
-        } else {
-          html += `
-            <div class="bg-gray-50 p-2 border-b flex flex-col md:flex-row justify-between items-center gap-2">
-              <span class="text-sm w-full md:w-1/2">${item.no}. ${item.soalan}</span>
-              <div class="flex gap-4 items-center w-full md:w-1/2">
-                <label class="flex items-center gap-1 cursor-pointer"><input type="radio" name="q_${item.id}" value="YA" class="w-4 h-4"> <span class="text-xs font-bold text-red-600">YA</span></label>
-                <label class="flex items-center gap-1 cursor-pointer"><input type="radio" name="q_${item.id}" value="TIDAK" class="w-4 h-4" checked> <span class="text-xs font-bold text-green-700">TIDAK</span></label>
-                <input type="text" id="cat_${item.id}" placeholder="Catatan" class="w-full border-b bg-transparent outline-none p-1 text-xs">
-              </div>
-            </div>`;
-        }
+        if (item.isHeader) { html += `<h3 class="font-bold text-[11pt] bg-slate-100 p-2 mt-4 mb-2 uppercase border-b-2">BAHAGIAN ${item.bhg}: ${item.text}</h3>`; } 
+        else { html += `<div class="bg-gray-50 p-2 border-b flex flex-col md:flex-row justify-between items-center gap-2"><span class="text-sm w-full md:w-1/2">${item.no}. ${item.soalan}</span><div class="flex gap-4 items-center w-full md:w-1/2"><label class="flex items-center gap-1 cursor-pointer"><input type="radio" name="q_${item.id}" value="YA" class="w-4 h-4"> <span class="text-xs font-bold text-red-600">YA</span></label><label class="flex items-center gap-1 cursor-pointer"><input type="radio" name="q_${item.id}" value="TIDAK" class="w-4 h-4" checked> <span class="text-xs font-bold text-green-700">TIDAK</span></label><input type="text" id="cat_${item.id}" placeholder="Catatan" class="w-full border-b bg-transparent outline-none p-1 text-xs"></div></div>`; }
       });
       document.getElementById('b1_soalan_container').innerHTML = html;
     }
+
     function cetakB1() {
-      let n = document.getElementById('b1_nama').value;
-      let kp = document.getElementById('b1_nokp').value;
+      let n = document.getElementById('b1_nama').value, kp = document.getElementById('b1_nokp').value;
       if(!n || !kp) { alert("Sila isi Nama Penuh dan No. KP."); return; }
-      document.getElementById('out_b1_nama').innerText = n;
-      document.getElementById('out_b1_nokp').innerText = kp;
+      document.getElementById('out_b1_nama').innerText = n; document.getElementById('out_b1_nokp').innerText = kp;
       let html = '';
       B1_SOALAN.forEach(item => {
-        if (item.isHeader) {
-          html += `<tr class="bg-gray-100 font-bold"><td align="center">${item.bhg}</td><td colspan="4" class="uppercase">${item.text}</td></tr>`;
-        } else {
-          let val = document.querySelector(`input[name="q_${item.id}"]:checked`).value;
-          let cat = document.getElementById(`cat_${item.id}`).value;
+        if (item.isHeader) { html += `<tr class="bg-gray-100 font-bold"><td align="center">${item.bhg}</td><td colspan="4" class="uppercase">${item.text}</td></tr>`; } 
+        else {
+          let val = document.querySelector(`input[name="q_${item.id}"]:checked`).value, cat = document.getElementById(`cat_${item.id}`).value;
           html += `<tr style="page-break-inside: avoid;"><td align="center" class="font-bold">${item.bhg}</td><td class="text-[9pt]">${item.no}. ${item.soalan}</td><td align="center" class="font-bold">${val === 'YA' ? '/' : ''}</td><td align="center" class="font-bold">${val === 'TIDAK' ? '/' : ''}</td><td class="italic text-[8pt]">${cat}</td></tr>`;
         }
       });
       document.getElementById('out_b1_tbody').innerHTML = html;
-      document.getElementById('b1-form').style.display = 'none';
-      document.getElementById('b1-print').style.display = 'block';
+      document.getElementById('b1-form').style.display = 'none'; document.getElementById('b1-print').style.display = 'block';
     }
+
     function simpanB1() {
       let btn = document.getElementById('btnSimpanB1');
       btn.innerText = "MENYIMPAN...";
       let jawapan = {};
-      B1_SOALAN.forEach(item => { 
-        if(!item.isHeader) { jawapan[item.id] = { soalan: item.soalan, status: document.querySelector(`input[name="q_${item.id}"]:checked`).value, catatan: document.getElementById(`cat_${item.id}`).value }; }
-      });
+      B1_SOALAN.forEach(item => { if(!item.isHeader) { jawapan[item.id] = { soalan: item.soalan, status: document.querySelector(`input[name="q_${item.id}"]:checked`).value, catatan: document.getElementById(`cat_${item.id}`).value }; } });
       const data = { nama: document.getElementById('b1_nama').value, nokp: document.getElementById('b1_nokp').value, jawapan: jawapan };
       if(!data.nama) { alert("Sila isi Nama Dahulu"); btn.innerText = "SIMPAN CLOUD"; return; }
       
-      google.script.run
-        .withSuccessHandler(res => {
-          if(res.status === "berjaya") alert(res.mesej);
-          else alert("Ralat Server: " + res.mesej);
-          btn.innerText = "SIMPAN CLOUD";
-        })
-        .withFailureHandler(err => { alert("Ralat: " + err.message); btn.innerText = "SIMPAN CLOUD"; })
-        .simpanBorangB1(data);
+      // Menggunakan FETCH API
+      fetch(API_URL, {
+        method: 'POST',
+        body: JSON.stringify({ type: 'B1', data: data })
+      })
+      .then(response => response.json())
+      .then(res => {
+        alert(res.mesej);
+        btn.innerText = "SIMPAN CLOUD";
+      })
+      .catch(err => {
+        alert("Gagal menghubungi pangkalan data.");
+        btn.innerText = "SIMPAN CLOUD";
+      });
     }
 
     // --- LOGIK BORANG C1 ---
@@ -352,23 +340,29 @@
       document.getElementById('out_c1_nokp').innerText = document.getElementById('c1_nokp').value;
       document.getElementById('out_c1_institusi').innerText = document.getElementById('c1_institusi').value;
       document.getElementById('out_c1_program_inline').innerText = document.getElementById('c1_program').value;
-      document.getElementById('c1-form').style.display = 'none';
-      document.getElementById('c1-print').style.display = 'block';
+      document.getElementById('c1-form').style.display = 'none'; document.getElementById('c1-print').style.display = 'block';
     }
+
     function simpanC1() {
       let btn = document.getElementById('btnSimpanC1');
       btn.innerText = "MENYIMPAN...";
       const data = { program: document.getElementById('c1_program').value, tarikh: document.getElementById('c1_tarikh').value, nama: document.getElementById('c1_nama').value, nokp: document.getElementById('c1_nokp').value, institusi: document.getElementById('c1_institusi').value };
       if(!data.nama || !data.program) { alert("Lengkapkan borang dahulu."); btn.innerText = "SIMPAN CLOUD"; return; }
       
-      google.script.run
-        .withSuccessHandler(res => {
-          if (res.status === "berjaya") alert(res.mesej);
-          else alert("Ralat Server: " + res.mesej);
-          btn.innerText = "SIMPAN CLOUD";
-        })
-        .withFailureHandler(err => { alert("Ralat: " + err.message); btn.innerText = "SIMPAN CLOUD"; })
-        .simpanBorangC1(data);
+      // Menggunakan FETCH API
+      fetch(API_URL, {
+        method: 'POST',
+        body: JSON.stringify({ type: 'C1', data: data })
+      })
+      .then(response => response.json())
+      .then(res => {
+        alert(res.mesej);
+        btn.innerText = "SIMPAN CLOUD";
+      })
+      .catch(err => {
+        alert("Gagal menghubungi pangkalan data.");
+        btn.innerText = "SIMPAN CLOUD";
+      });
     }
 
     // INIT
