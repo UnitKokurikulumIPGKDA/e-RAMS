@@ -97,14 +97,14 @@
           <button onclick="muatSenaraiA1()" class="bg-blue-100 hover:bg-blue-200 text-blue-800 px-4 py-2 rounded font-bold transition">🔄 Refresh Data</button>
         </div>
         <div class="overflow-x-auto">
-          <table class="w-full text-left border-collapse">
+          <table class="w-full text-left border-collapse border border-gray-200">
             <thead>
               <tr class="bg-indigo-900 text-white">
-                <th class="p-3 border text-sm">Waktu Direkodkan</th>
-                <th class="p-3 border text-sm">Aktiviti / Program</th>
-                <th class="p-3 border text-sm">Tarikh Aktiviti</th>
-                <th class="p-3 border text-sm">Penganjur</th>
-                <th class="p-3 border text-sm">Pegawai Melapor</th>
+                <th class="p-3 border border-gray-300 text-sm">Waktu Direkodkan</th>
+                <th class="p-3 border border-gray-300 text-sm">Aktiviti / Program</th>
+                <th class="p-3 border border-gray-300 text-sm">Tarikh Aktiviti</th>
+                <th class="p-3 border border-gray-300 text-sm">Penganjur</th>
+                <th class="p-3 border border-gray-300 text-sm">Pegawai Melapor</th>
               </tr>
             </thead>
             <tbody id="jadual-senarai-a1">
@@ -167,10 +167,9 @@
   </main>
 
   <script>
-    // URL API ANDA YANG RASMI (Mesti digunakan untuk memintas isu google.script.run)
+    // URL API ANDA YANG RASMI
     const API_URL = "https://script.google.com/macros/s/AKfycbycOlQR2plUHk3kGVAxNKPstPjQAtcNIJ_-XA5XSyAYMuDlTZrsUMyIq63NDDGdeUSE/exec";
 
-    // --- SUSUNAN DATA 27 SOALAN B1 ---
     const B1_SOALAN = [
       { isHeader: true, bhg: 'A', text: 'KENYATAAN' },
       { id: 'a1', bhg: 'A', no: '1', soalan: 'Sedang menerima rawatan?' }, { id: 'a2', bhg: '', no: '2', soalan: 'Pernah masuk hospital?' },
@@ -180,7 +179,6 @@
       { id: 'c1', bhg: 'C', no: '1', soalan: 'Masalah haid' }, { id: 'c2', bhg: '', no: '2', soalan: 'Dirawat sakit puan' }, { id: 'c3', bhg: '', no: '3', soalan: 'Mengandung' }
     ];
 
-    // --- LOGIK NAVIGASI ---
     function bukaMenu(m) {
       ['a1','senarai-a1','b1','c1'].forEach(x => {
         document.getElementById('view-'+x).style.display = (x===m)?'block':'none';
@@ -191,12 +189,12 @@
       document.getElementById('btn-'+m).classList.remove('hover:bg-indigo-700');
       if(m !== 'senarai-a1') editMode(m);
     }
+    
     function editMode(m) {
       document.getElementById(m+'-form').style.display = 'block';
       document.getElementById(m+'-print').style.display = 'none';
     }
 
-    // --- LOGIK SEMAKAN SENARAI REAL-TIME MENGGUNAKAN FETCH API ---
     function muatSenaraiA1() {
       document.getElementById('jadual-senarai-a1').innerHTML = `<tr><td colspan="5" class="text-center p-4 italic text-gray-500">Memuatkan data secara Real-Time... Sila tunggu sebentar.</td></tr>`;
       
@@ -214,11 +212,10 @@
           document.getElementById('jadual-senarai-a1').innerHTML = html;
         })
         .catch(err => {
-          document.getElementById('jadual-senarai-a1').innerHTML = `<tr><td colspan="5" class="text-center p-4 text-red-500 font-bold">Gagal memuatkan data. Sila periksa sambungan.</td></tr>`;
+          document.getElementById('jadual-senarai-a1').innerHTML = `<tr><td colspan="5" class="text-center p-4 text-red-500 font-bold">Gagal memuatkan data. Sila periksa pautan atau sambungan internet.</td></tr>`;
         });
     }
 
-    // --- LOGIK BORANG A1 ---
     function tambahBaris(k) {
       const d = document.createElement('div');
       d.className = `grid grid-cols-12 gap-2 mb-2 r-row-${k}`;
@@ -227,7 +224,6 @@
     }
 
     function cetakA1() {
-      // (Kod cetak dikekalkan kerana ia hanya merubah UI tempatan)
       document.getElementById('out_a1_penganjur').innerText = document.getElementById('a1_penganjur').value;
       document.getElementById('out_a1_pegawai').innerText = document.getElementById('a1_pegawai').value;
       document.getElementById('out_a1_tarikh').innerText = document.getElementById('a1_tarikh_lapor').value;
@@ -255,34 +251,34 @@
     function simpanA1() {
       let btn = document.getElementById('btnSimpanA1');
       btn.innerText = "MENYIMPAN...";
-      
-      let ekstrak = (k) => Array.from(document.querySelectorAll(`.r-row-${k}`)).map(r => ({ p: r.querySelector('.r-p').value, tk: r.querySelector('.r-tk').value, tt: r.querySelector('.r-tt').value, o: r.querySelector('.r-o').value }));
-      const data = {
-        penganjur: document.getElementById('a1_penganjur').value, pegawai: document.getElementById('a1_pegawai').value,
-        tarikh_lapor: document.getElementById('a1_tarikh_lapor').value, aktiviti: document.getElementById('a1_aktiviti').value,
-        tarikh_aktiviti: document.getElementById('a1_tarikh_aktiviti').value, sasaran: document.getElementById('a1_sasaran').value,
-        risiko: { manusia: ekstrak('manusia'), peralatan: ekstrak('peralatan'), persekitaran: ekstrak('persekitaran') },
-        s_normal: document.getElementById('a1_normal').value, s_kecemasan: document.getElementById('a1_kecemasan').value,
-        rujukan: document.getElementById('a1_rujukan').value, saranan: document.getElementById('a1_saranan').value, kemahiran: document.getElementById('a1_kemahiran').value, keputusan: document.getElementById('a1_keputusan').value
-      };
-      
-      // Menggunakan FETCH API menggantikan google.script.run
-      fetch(API_URL, {
-        method: 'POST',
-        body: JSON.stringify({ type: 'A1', data: data })
-      })
-      .then(response => response.json())
-      .then(res => {
-        alert(res.mesej);
+      try {
+        let ekstrak = (k) => Array.from(document.querySelectorAll(`.r-row-${k}`)).map(r => ({ p: r.querySelector('.r-p').value, tk: r.querySelector('.r-tk').value, tt: r.querySelector('.r-tt').value, o: r.querySelector('.r-o').value }));
+        const data = {
+          penganjur: document.getElementById('a1_penganjur').value, pegawai: document.getElementById('a1_pegawai').value,
+          tarikh_lapor: document.getElementById('a1_tarikh_lapor').value, aktiviti: document.getElementById('a1_aktiviti').value,
+          tarikh_aktiviti: document.getElementById('a1_tarikh_aktiviti').value, sasaran: document.getElementById('a1_sasaran').value,
+          risiko: { manusia: ekstrak('manusia'), peralatan: ekstrak('peralatan'), persekitaran: ekstrak('persekitaran') },
+          s_normal: document.getElementById('a1_normal').value, s_kecemasan: document.getElementById('a1_kecemasan').value,
+          rujukan: document.getElementById('a1_rujukan').value, saranan: document.getElementById('a1_saranan').value, kemahiran: document.getElementById('a1_kemahiran').value, keputusan: document.getElementById('a1_keputusan').value
+        };
+        
+        fetch(API_URL, {
+          method: 'POST',
+          headers: { 'Content-Type': 'text/plain;charset=utf-8' },
+          body: JSON.stringify({ type: 'A1', data: data })
+        }).then(response => response.json()).then(res => {
+          alert(res.mesej);
+          btn.innerText = "SIMPAN CLOUD";
+        }).catch(err => {
+          alert("Gagal menghubungi pangkalan data.");
+          btn.innerText = "SIMPAN CLOUD";
+        });
+      } catch(e) {
+        alert("Ralat Borang: " + e.message);
         btn.innerText = "SIMPAN CLOUD";
-      })
-      .catch(err => {
-        alert("Gagal menghubungi pangkalan data.");
-        btn.innerText = "SIMPAN CLOUD";
-      });
+      }
     }
 
-    // --- LOGIK BORANG B1 ---
     function binaB1() {
       let html = '';
       B1_SOALAN.forEach(item => {
@@ -311,28 +307,29 @@
     function simpanB1() {
       let btn = document.getElementById('btnSimpanB1');
       btn.innerText = "MENYIMPAN...";
-      let jawapan = {};
-      B1_SOALAN.forEach(item => { if(!item.isHeader) { jawapan[item.id] = { soalan: item.soalan, status: document.querySelector(`input[name="q_${item.id}"]:checked`).value, catatan: document.getElementById(`cat_${item.id}`).value }; } });
-      const data = { nama: document.getElementById('b1_nama').value, nokp: document.getElementById('b1_nokp').value, jawapan: jawapan };
-      if(!data.nama) { alert("Sila isi Nama Dahulu"); btn.innerText = "SIMPAN CLOUD"; return; }
-      
-      // Menggunakan FETCH API
-      fetch(API_URL, {
-        method: 'POST',
-        body: JSON.stringify({ type: 'B1', data: data })
-      })
-      .then(response => response.json())
-      .then(res => {
-        alert(res.mesej);
+      try {
+        let jawapan = {};
+        B1_SOALAN.forEach(item => { if(!item.isHeader) { jawapan[item.id] = { soalan: item.soalan, status: document.querySelector(`input[name="q_${item.id}"]:checked`).value, catatan: document.getElementById(`cat_${item.id}`).value }; } });
+        const data = { nama: document.getElementById('b1_nama').value, nokp: document.getElementById('b1_nokp').value, jawapan: jawapan };
+        if(!data.nama) { alert("Sila isi Nama Dahulu"); btn.innerText = "SIMPAN CLOUD"; return; }
+        
+        fetch(API_URL, {
+          method: 'POST',
+          headers: { 'Content-Type': 'text/plain;charset=utf-8' },
+          body: JSON.stringify({ type: 'B1', data: data })
+        }).then(response => response.json()).then(res => {
+          alert(res.mesej);
+          btn.innerText = "SIMPAN CLOUD";
+        }).catch(err => {
+          alert("Gagal menghubungi pangkalan data.");
+          btn.innerText = "SIMPAN CLOUD";
+        });
+      } catch(e) {
+        alert("Ralat Borang: " + e.message);
         btn.innerText = "SIMPAN CLOUD";
-      })
-      .catch(err => {
-        alert("Gagal menghubungi pangkalan data.");
-        btn.innerText = "SIMPAN CLOUD";
-      });
+      }
     }
 
-    // --- LOGIK BORANG C1 ---
     function cetakC1() {
       document.getElementById('out_c1_program').innerText = document.getElementById('c1_program').value;
       document.getElementById('out_c1_tarikh').innerText = document.getElementById('c1_tarikh').value;
@@ -346,26 +343,27 @@
     function simpanC1() {
       let btn = document.getElementById('btnSimpanC1');
       btn.innerText = "MENYIMPAN...";
-      const data = { program: document.getElementById('c1_program').value, tarikh: document.getElementById('c1_tarikh').value, nama: document.getElementById('c1_nama').value, nokp: document.getElementById('c1_nokp').value, institusi: document.getElementById('c1_institusi').value };
-      if(!data.nama || !data.program) { alert("Lengkapkan borang dahulu."); btn.innerText = "SIMPAN CLOUD"; return; }
-      
-      // Menggunakan FETCH API
-      fetch(API_URL, {
-        method: 'POST',
-        body: JSON.stringify({ type: 'C1', data: data })
-      })
-      .then(response => response.json())
-      .then(res => {
-        alert(res.mesej);
+      try {
+        const data = { program: document.getElementById('c1_program').value, tarikh: document.getElementById('c1_tarikh').value, nama: document.getElementById('c1_nama').value, nokp: document.getElementById('c1_nokp').value, institusi: document.getElementById('c1_institusi').value };
+        if(!data.nama || !data.program) { alert("Lengkapkan borang dahulu."); btn.innerText = "SIMPAN CLOUD"; return; }
+        
+        fetch(API_URL, {
+          method: 'POST',
+          headers: { 'Content-Type': 'text/plain;charset=utf-8' },
+          body: JSON.stringify({ type: 'C1', data: data })
+        }).then(response => response.json()).then(res => {
+          alert(res.mesej);
+          btn.innerText = "SIMPAN CLOUD";
+        }).catch(err => {
+          alert("Gagal menghubungi pangkalan data.");
+          btn.innerText = "SIMPAN CLOUD";
+        });
+      } catch(e) {
+        alert("Ralat Borang: " + e.message);
         btn.innerText = "SIMPAN CLOUD";
-      })
-      .catch(err => {
-        alert("Gagal menghubungi pangkalan data.");
-        btn.innerText = "SIMPAN CLOUD";
-      });
+      }
     }
 
-    // INIT
     window.onload = () => { ['manusia','peralatan','persekitaran'].forEach(tambahBaris); binaB1(); };
   </script>
 </body>
