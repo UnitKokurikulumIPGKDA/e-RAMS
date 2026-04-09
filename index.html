@@ -19,7 +19,6 @@
     .menu-btn:hover { background: rgba(255, 255, 255, 0.3); transform: translateX(5px); }
     .menu-active { background: rgba(255, 255, 255, 0.6); color: #4338ca; box-shadow: 0 4px 15px rgba(0,0,0,0.05); border-left: 4px solid #4338ca; }
     
-    /* Format Cetak */
     .print-template { display: none; background: white; width: 21cm; min-height: 29.7cm; padding: 1.5cm; margin: 0 auto; font-family: 'Times New Roman', serif; }
     .print-template table { width: 100%; border-collapse: collapse; margin-bottom: -1px; }
     .print-template th, .print-template td { border: 1.5px solid black; padding: 5px; font-size: 10pt; vertical-align: top; }
@@ -36,12 +35,10 @@
 
   <aside class="sidebar-menu glass-panel border-r border-white/60">
     <div class="p-6 border-b border-white/50 text-center flex flex-col items-center">
-      
       <div class="relative w-24 h-24 mb-2 flex justify-center items-center">
-        <i id="logo-fallback" class="fa-solid fa-shield-halved text-5xl text-indigo-400 absolute transition-all" style="display:none;"></i>
-        <img src="https://i.imgur.com/6DTL6BE.png" onerror="this.style.display='none'; document.getElementById('logo-fallback').style.display='block';" alt="Logo e-RAMS" class="relative z-10 h-full w-auto drop-shadow-xl hover:scale-105 transition-transform duration-300">
+        <i id="logo-fallback" class="fa-solid fa-shield-halved text-5xl text-indigo-500 absolute transition-all" style="display:block;"></i>
+        <img src="https://i.imgur.com/6DTL6BE.png" onerror="this.style.display='none'; document.getElementById('logo-fallback').style.display='block';" alt="Logo e-RAMS" class="relative z-10 h-full w-auto drop-shadow-xl hover:scale-105 transition-transform duration-300" style="display:none;">
       </div>
-      
       <h1 class="text-xl font-bold uppercase tracking-tighter text-indigo-900 mt-2">RAMS IPG KDA</h1>
       <p class="text-[11px] font-bold text-indigo-700 uppercase mt-1 tracking-widest">Bina Insan Guru</p>
     </div>
@@ -103,9 +100,7 @@
           <div><label class="text-xs font-bold text-indigo-900 ml-1 uppercase"><i class="fa-solid fa-book text-indigo-500 mr-1"></i> Rujukan Standard</label><input type="text" id="a1_rujukan" class="glass-input w-full p-3 rounded-xl"></div>
           <div><label class="text-xs font-bold text-indigo-900 ml-1 uppercase"><i class="fa-solid fa-scale-balanced text-indigo-500 mr-1"></i> Saranan Polisi</label><input type="text" id="a1_saranan" class="glass-input w-full p-3 rounded-xl"></div>
           <div><label class="text-xs font-bold text-indigo-900 ml-1 uppercase"><i class="fa-solid fa-medal text-indigo-500 mr-1"></i> Kemahiran Pegawai</label><input type="text" id="a1_kemahiran" class="glass-input w-full p-3 rounded-xl"></div>
-          <div><label class="text-xs font-bold text-indigo-900 ml-1 uppercase"><i class="fa-solid fa-check-double text-indigo-500 mr-1"></i> Keputusan</label>
-            <select id="a1_keputusan" class="glass-input w-full p-3 rounded-xl font-bold text-indigo-900 cursor-pointer"><option value="Diluluskan">✅ Diluluskan</option><option value="Tidak Diluluskan">❌ Tidak Diluluskan</option></select>
-          </div>
+          <div><label class="text-xs font-bold text-indigo-900 ml-1 uppercase"><i class="fa-solid fa-check-double text-indigo-500 mr-1"></i> Keputusan</label><select id="a1_keputusan" class="glass-input w-full p-3 rounded-xl font-bold text-indigo-900 cursor-pointer"><option value="Diluluskan">✅ Diluluskan</option><option value="Tidak Diluluskan">❌ Tidak Diluluskan</option></select></div>
         </div>
         <div class="flex gap-4 pt-4 border-t border-white/50">
           <button onclick="simpanA1()" id="btnSimpanA1" class="w-full bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700 text-white py-4 rounded-xl font-bold uppercase shadow-xl transition transform hover:-translate-y-1"><i class="fa-solid fa-cloud-arrow-up mr-2"></i> Simpan Cloud</button>
@@ -114,13 +109,12 @@
       </div>
       
       <div id="a1-print" class="print-template">
-        <div class="no-print mb-4 text-center border-b pb-4"><button onclick="editMode('a1')" class="bg-slate-800 text-white px-5 py-2 rounded-lg font-bold mr-2 shadow-md"><i class="fa-solid fa-arrow-left mr-2"></i> Kembali Edit</button><button onclick="window.print()" class="bg-green-600 hover:bg-green-700 text-white px-6 py-2 rounded-lg font-bold shadow-md"><i class="fa-solid fa-print mr-2"></i> Cetak Borang A1</button></div>
+        <div class="no-print mb-4 text-center border-b pb-4"><button onclick="editMode('a1')" class="bg-slate-800 text-white px-5 py-2 rounded-lg font-bold mr-2"><i class="fa-solid fa-arrow-left mr-2"></i> Kembali Edit</button><button onclick="window.print()" class="bg-green-600 text-white px-6 py-2 rounded-lg font-bold shadow-md"><i class="fa-solid fa-print mr-2"></i> Cetak Borang A1</button></div>
         <div class="text-center mb-4 leading-tight font-['Times_New_Roman']"><h1 class="font-bold text-lg">PROSEDUR OPERASI STANDARD REKREASI LUAR PELAJAR</h1><h2 class="font-bold text-md mt-1">BINA INSAN GURU IPG KAMPUS DARULAMAN</h2><h3 class="font-bold underline mt-2 text-[10pt]">BORANG A1: SISTEM PENGURUSAN & PENILAIAN RISIKO (RAMS)</h3></div>
         <table><tr><td width="60%"><b>Penganjur:</b> <br><span id="out_a1_penganjur"></span></td><td width="40%"><b>Nama Pegawai Melapor:</b> <span id="out_a1_pegawai"></span><br><br><b>Tarikh:</b> <span id="out_a1_tarikh"></span></td></tr><tr><td><b>Aktiviti:</b> <br><span id="out_a1_aktiviti"></span></td><td><b>Tarikh Aktiviti:</b> <br><span id="out_a1_t_aktiviti"></span></td></tr><tr><td colspan="2"><b>Sasaran Aktiviti:</b> <br><span id="out_a1_sasaran"></span></td></tr></table>
         <table><tr class="bg-gray-100 text-center font-bold text-[9pt]"><td>ANALISA</td><td>PERINCIAN (Risiko, Punca & Impak)</td><td width="15%">Tarikh Kenalpasti</td><td width="15%">Tarikh Tindakan</td><td width="15%">Tindakan Oleh</td></tr><tbody id="out_a1_tbody"></tbody></table>
         <table><tr><td width="50%"><b>STRATEGI PENGURUSAN RISIKO (Normal):</b><br><br><span id="out_a1_normal" style="white-space:pre-wrap"></span></td><td width="50%"><b>STRATEGI SITUASI KECEMASAN:</b><br><br><span id="out_a1_kecemasan" style="white-space:pre-wrap"></span></td></tr></table>
         <table><tr><td width="30%" class="font-bold uppercase text-[9pt]">Rujukan Standard Keselamatan</td><td id="out_a1_rujukan"></td></tr><tr><td class="font-bold uppercase text-[9pt]">Saranan Polisi Dan Garis Panduan</td><td id="out_a1_saranan"></td></tr><tr><td class="font-bold uppercase text-[9pt]">Kemahiran Oleh Pegawai/Jurulatih</td><td id="out_a1_kemahiran"></td></tr><tr><td class="font-bold uppercase text-[9pt]">Keputusan Bagi Perlaksanaan</td><td><span id="out_a1_lulus" class="font-bold"></span> &nbsp;&nbsp;&nbsp; <span id="out_a1_gagal" class="font-bold"></span><br><br>Ulasan: ________________________________</td></tr></table>
-        <div class="mt-4 border border-black p-2 text-[9pt]"><b>UNTUK KEGUNAAN PEJABAT:</b><br><br><div class="flex justify-between"><div>RAMS diperiksa: <br><br>[ &nbsp; ] Lulus &nbsp; [ &nbsp; ] Tidak Lulus</div><div>Nama & Cop: ________________________<br><br>Tarikh: ___/___/___</div></div></div>
       </div>
     </div>
 
@@ -151,7 +145,9 @@
 
     <div id="view-b1" style="display:none">
       <div id="b1-form" class="form-view max-w-4xl mx-auto glass-panel p-8 rounded-3xl">
-        <h2 class="text-2xl font-bold text-indigo-900 border-b border-white/50 pb-4 mb-6 uppercase text-center flex justify-center items-center gap-3"><i class="fa-solid fa-notes-medical text-rose-500"></i> Borang B1: Akuan Kesihatan</h2>
+        <h2 class="text-2xl font-bold text-indigo-900 border-b border-white/50 pb-4 mb-6 uppercase text-center flex justify-center items-center gap-3">
+          <i class="fa-solid fa-notes-medical text-rose-500"></i> Borang B1: Akuan Kesihatan
+        </h2>
         <div class="grid grid-cols-1 md:grid-cols-2 gap-5 mb-6">
           <div><label class="text-xs font-bold text-indigo-900 ml-1 uppercase"><i class="fa-solid fa-user mr-1 text-indigo-500"></i> Nama Penuh</label><input type="text" id="b1_nama" class="glass-input w-full p-3 rounded-xl uppercase"></div>
           <div><label class="text-xs font-bold text-indigo-900 ml-1 uppercase"><i class="fa-solid fa-id-card mr-1 text-indigo-500"></i> No. Kad Pengenalan</label><input type="text" id="b1_nokp" class="glass-input w-full p-3 rounded-xl"></div>
@@ -176,14 +172,16 @@
 
     <div id="view-c1" style="display:none">
        <div id="c1-form" class="form-view max-w-4xl mx-auto glass-panel p-8 rounded-3xl">
-         <h2 class="text-2xl font-bold text-rose-800 border-b border-white/50 pb-4 mb-6 text-center uppercase flex justify-center items-center gap-3"><i class="fa-solid fa-handshake-angle text-rose-600"></i> Borang C1: Akuan Lepas Tanggung</h2>
+         <h2 class="text-2xl font-bold text-rose-800 border-b border-white/50 pb-4 mb-6 text-center uppercase flex justify-center items-center gap-3">
+           <i class="fa-solid fa-handshake-angle text-rose-600"></i> Borang C1: Akuan Lepas Tanggung
+         </h2>
          <div class="grid grid-cols-1 gap-5 mb-6">
-           <div><label class="font-bold text-xs text-rose-900 ml-1 uppercase"><i class="fa-solid fa-flag mr-1"></i> NAMA PROGRAM</label><input type="text" id="c1_program" class="glass-input w-full p-3 rounded-xl uppercase"></div>
-           <div><label class="font-bold text-xs text-rose-900 ml-1 uppercase"><i class="fa-regular fa-calendar-check mr-1"></i> TARIKH PROGRAM</label><input type="text" id="c1_tarikh" class="glass-input w-full p-3 rounded-xl"></div>
-           <div><label class="font-bold text-xs text-rose-900 ml-1 uppercase"><i class="fa-solid fa-user mr-1"></i> NAMA PENUH PELAJAR</label><input type="text" id="c1_nama" class="glass-input w-full p-3 rounded-xl uppercase"></div>
+           <div><label class="font-bold text-xs text-rose-900 ml-1 uppercase"><i class="fa-solid fa-flag mr-1"></i> Nama Program</label><input type="text" id="c1_program" class="glass-input w-full p-3 rounded-xl uppercase"></div>
+           <div><label class="font-bold text-xs text-rose-900 ml-1 uppercase"><i class="fa-regular fa-calendar-check mr-1"></i> Tarikh Program</label><input type="text" id="c1_tarikh" class="glass-input w-full p-3 rounded-xl"></div>
+           <div><label class="font-bold text-xs text-rose-900 ml-1 uppercase"><i class="fa-solid fa-user mr-1"></i> Nama Penuh Pelajar</label><input type="text" id="c1_nama" class="glass-input w-full p-3 rounded-xl uppercase"></div>
            <div class="grid grid-cols-2 gap-5">
-             <div><label class="font-bold text-xs text-rose-900 ml-1 uppercase"><i class="fa-solid fa-id-card mr-1"></i> NO K/P</label><input type="text" id="c1_nokp" class="glass-input w-full p-3 rounded-xl"></div>
-             <div><label class="font-bold text-xs text-rose-900 ml-1 uppercase"><i class="fa-solid fa-school mr-1"></i> INSTITUSI</label><input type="text" id="c1_institusi" value="IPG KAMPUS DARULAMAN" class="glass-input w-full p-3 rounded-xl uppercase font-bold"></div>
+             <div><label class="font-bold text-xs text-rose-900 ml-1 uppercase"><i class="fa-solid fa-id-card mr-1"></i> No K/P</label><input type="text" id="c1_nokp" class="glass-input w-full p-3 rounded-xl"></div>
+             <div><label class="font-bold text-xs text-rose-900 ml-1 uppercase"><i class="fa-solid fa-school mr-1"></i> Institusi</label><input type="text" id="c1_institusi" value="IPG KAMPUS DARULAMAN" class="glass-input w-full p-3 rounded-xl uppercase font-bold"></div>
            </div>
          </div>
          <div class="flex gap-4 mt-8 pt-4 border-t border-white/50">
@@ -191,8 +189,9 @@
            <button onclick="cetakC1()" class="w-full bg-gradient-to-r from-emerald-500 to-green-600 hover:from-emerald-600 hover:to-green-700 text-white py-4 rounded-xl font-bold uppercase shadow-xl transition transform hover:-translate-y-1"><i class="fa-solid fa-print mr-2"></i> Jana Cetakan</button>
          </div>
        </div>
+
        <div id="c1-print" class="print-template relative">
-         <div class="no-print mb-4 text-center border-b pb-4"><button onclick="editMode('c1')" class="bg-gray-800 text-white px-5 py-2 rounded-lg font-bold mr-2"><i class="fa-solid fa-arrow-left mr-2"></i> Kembali Edit</button><button onclick="window.print()" class="bg-green-600 text-white px-6 py-2 rounded-lg font-bold shadow-md"><i class="fa-solid fa-print mr-2"></i> Cetak Borang C1</button></div>
+         <div class="no-print mb-4 text-center border-b pb-4"><button onclick="editMode('c1')" class="bg-slate-800 text-white px-5 py-2 rounded-lg font-bold mr-2"><i class="fa-solid fa-arrow-left mr-2"></i> Kembali Edit</button><button onclick="window.print()" class="bg-green-600 text-white px-6 py-2 rounded-lg font-bold shadow-md"><i class="fa-solid fa-print mr-2"></i> Cetak Borang C1</button></div>
          <div class="font-bold text-right text-sm mb-4">Borang C1</div><div class="header-title mb-2">BORANG AKUAN LEPAS TANGGUNG PELAJAR / PESERTA</div><p class="text-[10pt] mb-8 italic text-center">(**Diisi dan dikembalikan kepada pegawai bertanggungjawab)</p>
          <div class="mb-6 text-[11pt] font-bold"><table style="border:none!important;"><tr style="border:none!important;"><td width="15%" style="border:none!important;padding:2px;">PROGRAM</td><td style="border:none!important;padding:2px;">: <span id="out_c1_program" class="uppercase"></span></td></tr><tr style="border:none!important;"><td style="border:none!important;padding:2px;">TARIKH</td><td style="border:none!important;padding:2px;">: <span id="out_c1_tarikh" class="uppercase"></span></td></tr></table></div>
          <p class="text-[11pt] mb-6 text-justify leading-loose">Bahawasanya, saya <span id="out_c1_nama" class="font-bold border-b border-black inline-block min-w-[280px] text-center px-2 uppercase"></span><br>No. Kad Pengenalan <span id="out_c1_nokp" class="font-bold border-b border-black inline-block min-w-[150px] text-center px-2"></span> dari <span id="out_c1_institusi" class="font-bold border-b border-black inline-block min-w-[250px] text-center px-2 uppercase"></span> bersetuju untuk mengikuti program <span id="out_c1_program_inline" class="font-bold border-b border-black inline-block min-w-[200px] text-center px-2 uppercase"></span> secara sukarela.</p>
@@ -203,7 +202,7 @@
     </div>
 
     <div id="view-d1" style="display:none">
-       <div id="d1-form" class="form-view max-w-6xl mx-auto glass-panel p-8 rounded-3xl">
+       <div id="d1-form" class="form-view max-w-5xl mx-auto glass-panel p-8 rounded-3xl">
          <h2 id="d1-tajuk" class="text-2xl font-bold text-amber-700 border-b border-white/50 pb-4 mb-6 text-center uppercase flex justify-center items-center gap-3">
            <i class="fa-solid fa-triangle-exclamation text-amber-500"></i> Borang D1: Laporan Kejadian Nyaris (Near Miss)
          </h2>
@@ -377,131 +376,4 @@
       let html = '';
       ['manusia','peralatan','persekitaran'].forEach(kategori => {
         const rows = document.querySelectorAll('.r-row-'+kategori);
-        if(rows.length === 0) { html += `<tr><td class="font-bold text-center">${kategori.toUpperCase()}</td><td colspan="4" class="text-center italic">Tiada Rekod</td></tr>`; } 
-        else { rows.forEach((r,i) => { html += `<tr>${i===0?`<td rowspan="${rows.length}" class="font-bold text-center align-middle bg-slate-50">${kategori.toUpperCase()}</td>`:''}<td>${r.querySelector('.r-p').value}</td><td class="text-center">${r.querySelector('.r-tk').value}</td><td class="text-center">${r.querySelector('.r-tt').value}</td><td class="text-center">${r.querySelector('.r-o').value}</td></tr>`; }); }
-      });
-      document.getElementById('out_a1_tbody').innerHTML = html; document.getElementById('a1-form').style.display = 'none'; document.getElementById('a1-print').style.display = 'block';
-    }
-
-    function simpanA1() {
-      let btn = document.getElementById('btnSimpanA1'); btn.innerHTML = `<i class="fa-solid fa-circle-notch fa-spin mr-2"></i> MENYIMPAN...`;
-      let ekstrak = (k) => Array.from(document.querySelectorAll(`.r-row-${k}`)).map(r => ({ p: r.querySelector('.r-p').value, tk: r.querySelector('.r-tk').value, tt: r.querySelector('.r-tt').value, o: r.querySelector('.r-o').value }));
-      const data = { penganjur: document.getElementById('a1_penganjur').value, pegawai: document.getElementById('a1_pegawai').value, tarikh_lapor: document.getElementById('a1_tarikh_lapor').value, aktiviti: document.getElementById('a1_aktiviti').value, tarikh_aktiviti: document.getElementById('a1_tarikh_aktiviti').value, sasaran: document.getElementById('a1_sasaran').value, risiko: { manusia: ekstrak('manusia'), peralatan: ekstrak('peralatan'), persekitaran: ekstrak('persekitaran') }, s_normal: document.getElementById('a1_normal').value, s_kecemasan: document.getElementById('a1_kecemasan').value, rujukan: document.getElementById('a1_rujukan').value, saranan: document.getElementById('a1_saranan').value, kemahiran: document.getElementById('a1_kemahiran').value, keputusan: document.getElementById('a1_keputusan').value };
-      let payload = { type: ID_EDIT_SEMASA_A1 ? 'EDIT_A1' : 'A1', data: data };
-      if(ID_EDIT_SEMASA_A1) payload.rowId = ID_EDIT_SEMASA_A1;
-      
-      fetch(API_URL, { method: 'POST', headers: { 'Content-Type': 'text/plain;charset=utf-8' }, body: JSON.stringify(payload) })
-      .then(res => res.json()).then(res => {
-        alert(res.mesej); btn.innerHTML = ID_EDIT_SEMASA_A1 ? `<i class="fa-solid fa-rotate mr-2"></i> KEMASKINI CLOUD` : `<i class="fa-solid fa-cloud-arrow-up mr-2"></i> SIMPAN CLOUD`;
-        if(ID_EDIT_SEMASA_A1) { bukaMenu('senarai-a1'); muatSenaraiA1(); }
-      }).catch(err => { alert("Gagal menyimpan."); btn.innerHTML = ID_EDIT_SEMASA_A1 ? `<i class="fa-solid fa-rotate mr-2"></i> KEMASKINI CLOUD` : `<i class="fa-solid fa-cloud-arrow-up mr-2"></i> SIMPAN CLOUD`; });
-    }
-
-    // --- LOGIK BORANG B1 ---
-    function binaB1() {
-      let html = '';
-      B1_SOALAN.forEach(item => {
-        if (item.isHeader) { let bgClass = item.bhg === 'A' || item.bhg === 'B' ? 'text-indigo-900 border-indigo-200' : 'text-rose-700 border-rose-200'; html += `<h3 class="font-bold text-[11pt] ${bgClass} bg-white/50 px-4 py-2 mt-6 mb-3 uppercase border-l-4 rounded-r-lg shadow-sm">${item.text}</h3>`; } 
-        else { html += `<div class="bg-white/30 p-3 rounded-xl border border-white/50 hover:bg-white/60 transition flex flex-col md:flex-row justify-between items-center gap-3 shadow-sm mb-2"><span class="text-sm w-full md:w-1/2 font-medium text-indigo-900">${item.no}. ${item.soalan}</span><div class="flex gap-4 items-center w-full md:w-1/2"><label class="flex items-center gap-2 cursor-pointer bg-white/50 px-3 py-1 rounded-lg border border-white hover:bg-white transition"><input type="radio" name="q_${item.id}" value="YA" class="w-4 h-4 accent-rose-500"> <span class="text-xs font-bold text-rose-600">YA</span></label><label class="flex items-center gap-2 cursor-pointer bg-white/50 px-3 py-1 rounded-lg border border-white hover:bg-white transition"><input type="radio" name="q_${item.id}" value="TIDAK" class="w-4 h-4 accent-emerald-600" checked> <span class="text-xs font-bold text-emerald-700">TIDAK</span></label><input type="text" id="cat_${item.id}" placeholder="Catatan (Jika YA)" class="glass-input w-full p-2 text-xs rounded-lg"></div></div>`; }
-      });
-      document.getElementById('b1_soalan_container').innerHTML = html;
-    }
-    function cetakB1() {
-      let n = document.getElementById('b1_nama').value, kp = document.getElementById('b1_nokp').value;
-      if(!n || !kp) { alert("Sila isi Nama Penuh dan No. KP."); return; }
-      document.getElementById('out_b1_nama').innerText = n; document.getElementById('out_b1_nokp').innerText = kp;
-      let html = '';
-      B1_SOALAN.forEach(item => {
-        if (item.isHeader) { html += `<tr class="bg-gray-100 font-bold"><td align="center">${item.bhg}</td><td colspan="4" class="uppercase">${item.text}</td></tr>`; } 
-        else { let val = document.querySelector(`input[name="q_${item.id}"]:checked`).value, cat = document.getElementById(`cat_${item.id}`).value; html += `<tr style="page-break-inside: avoid;"><td align="center" class="font-bold">${item.bhg}</td><td class="text-[9pt]">${item.no}. ${item.soalan}</td><td align="center" class="font-bold">${val === 'YA' ? '/' : ''}</td><td align="center" class="font-bold">${val === 'TIDAK' ? '/' : ''}</td><td class="italic text-[8pt]">${cat}</td></tr>`; }
-      });
-      document.getElementById('out_b1_tbody').innerHTML = html; document.getElementById('b1-form').style.display = 'none'; document.getElementById('b1-print').style.display = 'block';
-    }
-    function simpanB1() {
-      let btn = document.getElementById('btnSimpanB1'); btn.innerHTML = `<i class="fa-solid fa-spinner fa-spin mr-2"></i> MENYIMPAN...`;
-      let jawapan = {};
-      B1_SOALAN.forEach(item => { if(!item.isHeader) { jawapan[item.id] = { soalan: item.soalan, status: document.querySelector(`input[name="q_${item.id}"]:checked`).value, catatan: document.getElementById(`cat_${item.id}`).value }; } });
-      const data = { nama: document.getElementById('b1_nama').value, nokp: document.getElementById('b1_nokp').value, jawapan: jawapan };
-      if(!data.nama) { alert("Sila isi Nama Dahulu"); btn.innerHTML = `<i class="fa-solid fa-cloud-arrow-up mr-2"></i> SIMPAN CLOUD`; return; }
-      fetch(API_URL, { method: 'POST', headers: { 'Content-Type': 'text/plain;charset=utf-8' }, body: JSON.stringify({ type: 'B1', data: data }) }).then(res => res.json()).then(res => { alert(res.mesej); btn.innerHTML = `<i class="fa-solid fa-cloud-arrow-up mr-2"></i> SIMPAN CLOUD`; }).catch(err => { alert("Gagal menyimpan data."); btn.innerHTML = `<i class="fa-solid fa-cloud-arrow-up mr-2"></i> SIMPAN CLOUD`; });
-    }
-
-    // --- LOGIK BORANG C1 ---
-    function cetakC1() {
-      document.getElementById('out_c1_program').innerText = document.getElementById('c1_program').value; document.getElementById('out_c1_tarikh').innerText = document.getElementById('c1_tarikh').value; document.getElementById('out_c1_nama').innerText = document.getElementById('c1_nama').value; document.getElementById('out_c1_nokp').innerText = document.getElementById('c1_nokp').value; document.getElementById('out_c1_institusi').innerText = document.getElementById('c1_institusi').value; document.getElementById('out_c1_program_inline').innerText = document.getElementById('c1_program').value;
-      document.getElementById('c1-form').style.display = 'none'; document.getElementById('c1-print').style.display = 'block';
-    }
-    function simpanC1() {
-      let btn = document.getElementById('btnSimpanC1'); btn.innerHTML = `<i class="fa-solid fa-spinner fa-spin mr-2"></i> MENYIMPAN...`;
-      const data = { program: document.getElementById('c1_program').value, tarikh: document.getElementById('c1_tarikh').value, nama: document.getElementById('c1_nama').value, nokp: document.getElementById('c1_nokp').value, institusi: document.getElementById('c1_institusi').value };
-      if(!data.nama || !data.program) { alert("Lengkapkan borang dahulu."); btn.innerHTML = `<i class="fa-solid fa-cloud-arrow-up mr-2"></i> SIMPAN CLOUD`; return; }
-      fetch(API_URL, { method: 'POST', headers: { 'Content-Type': 'text/plain;charset=utf-8' }, body: JSON.stringify({ type: 'C1', data: data }) }).then(res => res.json()).then(res => { alert(res.mesej); btn.innerHTML = `<i class="fa-solid fa-cloud-arrow-up mr-2"></i> SIMPAN CLOUD`; }).catch(err => { alert("Gagal menyimpan data."); btn.innerHTML = `<i class="fa-solid fa-cloud-arrow-up mr-2"></i> SIMPAN CLOUD`; });
-    }
-
-    // --- LOGIK BORANG D1 (NEAR MISS) ---
-    function bukaBorangD1Baru() {
-      ID_EDIT_SEMASA_D1 = null;
-      document.getElementById('d1-tajuk').innerHTML = `<i class="fa-solid fa-triangle-exclamation text-amber-500"></i> Borang D1: Laporan Kejadian Nyaris (Daftar Baru)`;
-      document.getElementById('btnSimpanD1').innerHTML = `<i class="fa-solid fa-cloud-arrow-up mr-2"></i> SIMPAN LAPORAN D1`;
-      ['nama','nokp','peranan','aktiviti','tarikh','masa','lokasi','keterangan','tindakan','cadangan'].forEach(id => { document.getElementById('d1_'+id).value = ''; });
-      bukaMenu('d1');
-    }
-
-    function muatSenaraiD1() {
-      document.getElementById('jadual-senarai-d1').innerHTML = `<tr><td colspan="5" class="text-center p-8 italic text-amber-700">Memuatkan data dari pangkalan awan... <i class="fa-solid fa-circle-notch fa-spin ml-2"></i></td></tr>`;
-      fetch(API_URL + "?action=getD1").then(res => res.json()).then(data => {
-          REKOD_D1_SEMASA = data;
-          if(!data || data.length === 0) {
-            document.getElementById('jadual-senarai-d1').innerHTML = `<tr><td colspan="5" class="text-center p-8 text-rose-500 font-bold"><i class="fa-solid fa-folder-open mr-2"></i> Tiada rekod Near Miss (D1) dijumpai.</td></tr>`;
-            return;
-          }
-          let html = '';
-          data.forEach((row, index) => {
-            html += `<tr class="border-b border-white/40 hover:bg-white/40 transition"><td class="p-4 text-sm font-bold text-amber-900">${row.tarikh}</td><td class="p-4 text-sm uppercase text-amber-800">${row.aktiviti}</td><td class="p-4 text-sm uppercase text-amber-800">${row.nama}</td><td class="p-4 text-sm uppercase text-amber-800">${row.lokasi}</td><td class="p-4 text-sm text-center whitespace-nowrap"><button onclick="editD1(${index})" class="bg-amber-400 hover:bg-amber-300 text-amber-900 px-3 py-1.5 rounded-lg text-xs font-bold mr-1 shadow-sm transition"><i class="fa-solid fa-pen-to-square"></i> Edit</button><button onclick="padamD1(${row.rowId})" class="bg-rose-500 hover:bg-rose-400 text-white px-3 py-1.5 rounded-lg text-xs font-bold shadow-sm transition"><i class="fa-solid fa-trash"></i> Padam</button></td></tr>`;
-          });
-          document.getElementById('jadual-senarai-d1').innerHTML = html;
-        }).catch(err => { document.getElementById('jadual-senarai-d1').innerHTML = `<tr><td colspan="5" class="text-center p-8 text-rose-500 font-bold"><i class="fa-solid fa-triangle-exclamation mr-2"></i> Gagal memuatkan data.</td></tr>`; });
-    }
-
-    function editD1(index) {
-      const item = REKOD_D1_SEMASA[index];
-      ID_EDIT_SEMASA_D1 = item.rowId;
-      document.getElementById('d1-tajuk').innerHTML = `<i class="fa-solid fa-pen-to-square text-amber-500"></i> KEMASKINI NEAR MISS: ${item.tarikh}`;
-      document.getElementById('btnSimpanD1').innerHTML = `<i class="fa-solid fa-rotate mr-2"></i> KEMASKINI CLOUD`;
-      document.getElementById('d1_nama').value = item.nama; document.getElementById('d1_nokp').value = item.nokp; document.getElementById('d1_peranan').value = item.peranan; document.getElementById('d1_aktiviti').value = item.aktiviti; document.getElementById('d1_tarikh').value = item.tarikh; document.getElementById('d1_masa').value = item.masa; document.getElementById('d1_lokasi').value = item.lokasi; document.getElementById('d1_keterangan').value = item.keterangan; document.getElementById('d1_tindakan').value = item.tindakan; document.getElementById('d1_cadangan').value = item.cadangan;
-      bukaMenu('d1');
-    }
-
-    function padamD1(rowId) {
-      if(!confirm("Anda pasti mahu MEMADAM laporan Near Miss ini?")) return;
-      document.getElementById('jadual-senarai-d1').innerHTML = `<tr><td colspan="5" class="text-center p-8 text-rose-500 font-bold"><i class="fa-solid fa-spinner fa-spin mr-2"></i> Sedang memadam...</td></tr>`;
-      fetch(API_URL, { method: 'POST', headers: { 'Content-Type': 'text/plain;charset=utf-8' }, body: JSON.stringify({ type: 'DELETE_D1', rowId: rowId })
-      }).then(res => res.json()).then(res => { alert(res.mesej); muatSenaraiD1(); }).catch(err => { alert("Gagal memadam data."); muatSenaraiD1(); });
-    }
-
-    function cetakD1() {
-      document.getElementById('out_d1_nama').innerText = document.getElementById('d1_nama').value; document.getElementById('out_d1_nokp').innerText = document.getElementById('d1_nokp').value; document.getElementById('out_d1_peranan').innerText = document.getElementById('d1_peranan').value; document.getElementById('out_d1_aktiviti').innerText = document.getElementById('d1_aktiviti').value; document.getElementById('out_d1_tarikh').innerText = document.getElementById('d1_tarikh').value; document.getElementById('out_d1_masa').innerText = document.getElementById('d1_masa').value; document.getElementById('out_d1_lokasi').innerText = document.getElementById('d1_lokasi').value; document.getElementById('out_d1_keterangan').innerText = document.getElementById('d1_keterangan').value; document.getElementById('out_d1_tindakan').innerText = document.getElementById('d1_tindakan').value; document.getElementById('out_d1_cadangan').innerText = document.getElementById('d1_cadangan').value;
-      document.getElementById('d1-form').style.display = 'none'; document.getElementById('d1-print').style.display = 'block';
-    }
-
-    function simpanD1() {
-      let btn = document.getElementById('btnSimpanD1'); btn.innerHTML = `<i class="fa-solid fa-spinner fa-spin mr-2"></i> MENYIMPAN...`;
-      const data = { nama: document.getElementById('d1_nama').value, nokp: document.getElementById('d1_nokp').value, peranan: document.getElementById('d1_peranan').value, tarikh: document.getElementById('d1_tarikh').value, masa: document.getElementById('d1_masa').value, lokasi: document.getElementById('d1_lokasi').value, aktiviti: document.getElementById('d1_aktiviti').value, keterangan: document.getElementById('d1_keterangan').value, tindakan: document.getElementById('d1_tindakan').value, cadangan: document.getElementById('d1_cadangan').value };
-      if(!data.nama || !data.keterangan) { alert("Sila isi Nama Pelapor dan Keterangan Kejadian."); btn.innerHTML = ID_EDIT_SEMASA_D1 ? `<i class="fa-solid fa-rotate mr-2"></i> KEMASKINI CLOUD` : `<i class="fa-solid fa-cloud-arrow-up mr-2"></i> SIMPAN LAPORAN`; return; }
-      
-      let payload = { type: ID_EDIT_SEMASA_D1 ? 'EDIT_D1' : 'D1', data: data };
-      if(ID_EDIT_SEMASA_D1) payload.rowId = ID_EDIT_SEMASA_D1;
-      
-      fetch(API_URL, { method: 'POST', headers: { 'Content-Type': 'text/plain;charset=utf-8' }, body: JSON.stringify(payload) })
-      .then(res => res.json()).then(res => {
-        alert(res.mesej); 
-        btn.innerHTML = ID_EDIT_SEMASA_D1 ? `<i class="fa-solid fa-rotate mr-2"></i> KEMASKINI CLOUD` : `<i class="fa-solid fa-cloud-arrow-up mr-2"></i> SIMPAN LAPORAN D1`;
-        if(ID_EDIT_SEMASA_D1) { bukaMenu('senarai-d1'); muatSenaraiD1(); }
-      }).catch(err => { alert("Gagal menyimpan data."); btn.innerHTML = ID_EDIT_SEMASA_D1 ? `<i class="fa-solid fa-rotate mr-2"></i> KEMASKINI CLOUD` : `<i class="fa-solid fa-cloud-arrow-up mr-2"></i> SIMPAN LAPORAN D1`; });
-    }
-
-    // INIT
-    window.onload = () => { bukaBorangA1Baru(); binaB1(); bukaMenu('a1'); };
-  </script>
-</body>
-</html>
+        if(rows.length === 0) { html += `<tr><td class="font-bold text-center">${kategori.toUpperCase()}</td>
