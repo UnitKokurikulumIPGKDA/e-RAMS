@@ -48,7 +48,7 @@
   <aside class="sidebar-menu">
     <div class="p-6 border-b border-white/10 text-center sticky top-0 bg-[#020617]/90 z-10 backdrop-blur">
       <h1 class="text-2xl font-bold text-yellow-400 tracking-wider"><i class="fas fa-shield-alt mr-2"></i>RAMS</h1>
-      <p class="text-[10px] text-gray-400 mt-1 uppercase tracking-widest">e-RAMS UKO IPGKDA</p>
+      <p class="text-[10px] text-gray-400 mt-1 uppercase tracking-widest">Sistem Pengurusan Risiko</p>
     </div>
     <nav class="p-4 pb-20">
       <p class="text-[10px] font-bold text-gray-500 uppercase mt-2 mb-2 tracking-wider">Modul Risiko</p>
@@ -108,7 +108,7 @@
         </div>
         <div class="flex gap-4">
           <button onclick="simpanA1()" id="btnSimpanA1" class="w-full btn-emas py-3 rounded-xl font-bold uppercase tracking-wider"><i class="fas fa-cloud-upload-alt mr-2"></i> Simpan Rekod</button>
-          <button onclick="cetakA1()" class="w-full bg-slate-700 hover:bg-slate-600 text-white py-3 rounded-xl font-bold uppercase tracking-wider transition border border-slate-500"><i class="fas fa-print mr-2"></i> Jana Cetakan (PDF)</button>
+          <button onclick="cetakA1()" class="w-full bg-slate-700 hover:bg-slate-600 text-white py-3 rounded-xl font-bold uppercase tracking-wider transition border border-slate-500"><i class="fas fa-print mr-2"></i> Jana Cetakan</button>
         </div>
       </div>
 
@@ -159,10 +159,15 @@
       <div id="d1-form" class="form-view max-w-4xl mx-auto glass p-8 rounded-2xl border-orange-500/30 border">
         <div class="flex justify-between items-center mb-6 border-b border-white/10 pb-4"><h2 class="text-2xl font-bold text-orange-400"><i class="fas fa-exclamation-triangle mr-2"></i>Borang D1: Near Miss</h2><span id="label-d1-edit" class="hidden bg-yellow-500 text-black px-3 py-1 rounded-full text-xs font-bold animate-pulse"><i class="fas fa-pen mr-1"></i>MOD KEMASKINI</span></div>
         <input type="hidden" id="d1_ts">
-        <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6"><input type="date" id="d1_tarikh" class="glass-input rounded"><input type="time" id="d1_masa" class="glass-input rounded"><input type="text" id="d1_lokasi" placeholder="LOKASI" class="glass-input rounded col-span-2"><input type="text" id="d1_aktiviti" placeholder="AKTIVITI" class="glass-input rounded col-span-2 uppercase"></div>
-        <textarea id="d1_penerangan" class="glass-input w-full rounded h-24 mb-4" placeholder="PENERANGAN KEJADIAN NYARIS"></textarea>
-        <textarea id="d1_tindakan" class="glass-input w-full rounded h-24 mb-4" placeholder="TINDAKAN DIAMBIL"></textarea>
-        <input type="text" id="d1_pelapor" class="glass-input w-full rounded mb-6 uppercase font-bold" placeholder="NAMA PELAPOR">
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
+          <div><label class="text-xs font-bold text-gray-400 uppercase">Tarikh Kejadian</label><input type="date" id="d1_tarikh" class="glass-input w-full rounded"></div>
+          <div><label class="text-xs font-bold text-gray-400 uppercase">Masa</label><input type="time" id="d1_masa" class="glass-input w-full rounded"></div>
+          <div class="md:col-span-2"><label class="text-xs font-bold text-gray-400 uppercase">Lokasi Kejadian</label><input type="text" id="d1_lokasi" class="glass-input w-full rounded"></div>
+          <div class="md:col-span-2"><label class="text-xs font-bold text-gray-400 uppercase">Aktiviti / Program</label><input type="text" id="d1_aktiviti" class="glass-input w-full rounded uppercase"></div>
+        </div>
+        <div class="mb-4"><label class="text-xs font-bold text-gray-400 uppercase">Penerangan Kejadian Nyaris</label><textarea id="d1_penerangan" class="glass-input w-full rounded h-24"></textarea></div>
+        <div class="mb-6"><label class="text-xs font-bold text-gray-400 uppercase">Tindakan Diambil</label><textarea id="d1_tindakan" class="glass-input w-full rounded h-24"></textarea></div>
+        <div class="mb-6"><label class="text-xs font-bold text-gray-400 uppercase">Pegawai Pelapor</label><input type="text" id="d1_pelapor" class="glass-input w-full rounded uppercase font-bold"></div>
         <div class="flex gap-4"><button onclick="simpanD1()" id="btnSimpanD1" class="w-full btn-emas py-3 rounded-xl font-bold uppercase"><i class="fas fa-cloud-upload-alt mr-2"></i>Simpan Rekod</button><button onclick="cetakD1()" class="w-full bg-slate-700 hover:bg-slate-600 text-white py-3 rounded-xl font-bold uppercase border border-slate-500"><i class="fas fa-print mr-2"></i>Jana Cetakan</button></div>
       </div>
       <div id="d1-print" class="print-template">
@@ -171,20 +176,38 @@
          <table><tr><td width="30%" class="font-bold bg-gray-100">Tarikh & Masa</td><td><span id="out_d1_tarikh"></span> | <span id="out_d1_masa"></span></td></tr><tr><td class="font-bold bg-gray-100">Lokasi / Aktiviti</td><td><span id="out_d1_lokasi"></span> (<span id="out_d1_aktiviti" class="uppercase"></span>)</td></tr></table>
          <table class="mt-4"><tr><td class="font-bold bg-gray-100 text-center">PENERANGAN KEJADIAN</td></tr><tr><td class="h-32"><span id="out_d1_penerangan" style="white-space:pre-wrap"></span></td></tr></table>
          <table class="mt-4"><tr><td class="font-bold bg-gray-100 text-center">TINDAKAN DIAMBIL</td></tr><tr><td class="h-32"><span id="out_d1_tindakan" style="white-space:pre-wrap"></span></td></tr></table>
-         <div class="mt-12 flex justify-between text-[11pt]"><div>Disediakan Oleh:<br><br><br>___________________________<br>Nama: <span id="out_d1_pelapor" class="font-bold uppercase"></span></div><div>Disahkan Oleh:<br><br><br>___________________________<br>Nama / Cop:</div></div>
+         <div class="mt-12">Disediakan Oleh: ___________________ (<span id="out_d1_pelapor" class="font-bold uppercase"></span>)</div>
       </div>
     </div>
 
     <div id="view-d2" style="display:none">
       <div id="d2-form" class="form-view max-w-4xl mx-auto glass p-8 rounded-2xl border-red-500/30 border">
-        <div class="flex justify-between items-center mb-6 border-b border-white/10 pb-4"><h2 class="text-2xl font-bold text-red-400"><i class="fas fa-ambulance mr-2"></i>Borang D2: Kemalangan 1 Mangsa</h2><span id="label-d2-edit" class="hidden bg-yellow-500 text-black px-3 py-1 rounded-full text-xs font-bold animate-pulse"><i class="fas fa-pen mr-1"></i>MOD KEMASKINI</span></div>
+        <div class="flex justify-between items-center mb-6 border-b border-white/10 pb-4"><h2 class="text-2xl font-bold text-red-400"><i class="fas fa-ambulance mr-2"></i>Borang D2: Kemalangan (1 Mangsa)</h2><span id="label-d2-edit" class="hidden bg-yellow-500 text-black px-3 py-1 rounded-full text-xs font-bold animate-pulse"><i class="fas fa-pen mr-1"></i>MOD KEMASKINI</span></div>
         <input type="hidden" id="d2_ts">
-        <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6"><input type="date" id="d2_tarikh" class="glass-input rounded"><input type="time" id="d2_masa" class="glass-input rounded"><input type="text" id="d2_lokasi" placeholder="LOKASI" class="glass-input rounded"><input type="text" id="d2_aktiviti" placeholder="AKTIVITI" class="glass-input rounded col-span-3 uppercase"></div>
-        <div class="bg-white/5 p-4 rounded mb-6 border border-white/10"><h3 class="font-bold text-yellow-400 mb-2">MAKLUMAT MANGSA</h3><div class="grid grid-cols-1 md:grid-cols-2 gap-4"><input type="text" id="d2_nama_mangsa" placeholder="NAMA MANGSA" class="glass-input rounded uppercase"><input type="text" id="d2_nokp_mangsa" placeholder="NO KP" class="glass-input rounded"></div></div>
-        <select id="d2_kategori" class="glass-input w-full rounded font-bold text-red-400 mb-4"><option value="Ringan" class="text-black">Ringan (Rawatan Asas)</option><option value="Parah" class="text-black">Parah (Klinik/Hospital)</option><option value="Maut" class="text-black">Maut</option></select>
-        <textarea id="d2_penerangan" class="glass-input w-full rounded h-20 mb-4" placeholder="PENERANGAN & PUNCA KECEDERAAN"></textarea>
-        <textarea id="d2_rawatan" class="glass-input w-full rounded h-20 mb-6" placeholder="RAWATAN DIBERIKAN"></textarea>
-        <input type="text" id="d2_pelapor" class="glass-input w-full rounded mb-6 uppercase font-bold" placeholder="PEGAWAI PELAPOR">
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
+          <div><label class="text-xs font-bold text-gray-400 uppercase">Tarikh Kejadian</label><input type="date" id="d2_tarikh" class="glass-input w-full rounded"></div>
+          <div><label class="text-xs font-bold text-gray-400 uppercase">Masa</label><input type="time" id="d2_masa" class="glass-input w-full rounded"></div>
+          <div><label class="text-xs font-bold text-gray-400 uppercase">Lokasi</label><input type="text" id="d2_lokasi" class="glass-input w-full rounded"></div>
+          <div class="col-span-3"><label class="text-xs font-bold text-gray-400 uppercase">Aktiviti / Program</label><input type="text" id="d2_aktiviti" class="glass-input w-full rounded uppercase"></div>
+        </div>
+        <div class="bg-white/5 p-4 rounded mb-6 border border-white/10"><h3 class="font-bold text-yellow-400 mb-2">MAKLUMAT MANGSA</h3><div class="grid grid-cols-1 md:grid-cols-2 gap-4"><div><label class="text-xs font-bold text-gray-400 uppercase">Nama Mangsa</label><input type="text" id="d2_nama_mangsa" class="glass-input w-full rounded uppercase"></div><div><label class="text-xs font-bold text-gray-400 uppercase">No KP</label><input type="text" id="d2_nokp_mangsa" class="glass-input w-full rounded"></div></div></div>
+        
+        <div class="mb-4">
+          <label class="text-xs font-bold text-gray-400 uppercase">Kategori Kecederaan</label>
+          <select id="d2_kategori" class="glass-input w-full rounded font-bold text-red-400 mt-1">
+            <option value="Ringan" class="text-black">Ringan</option>
+            <option value="Sederhana" class="text-black">Sederhana</option>
+            <option value="Parah" class="text-black">Parah</option>
+            <option value="Maut" class="text-black">Maut</option>
+            <option value="Ringan (Rawatan Asas)" class="hidden text-black">Ringan (Rawatan Asas)</option>
+            <option value="Parah (Klinik/Hospital)" class="hidden text-black">Parah (Klinik/Hospital)</option>
+            <option value="Ringan (First Aid)" class="hidden text-black">Ringan (First Aid)</option>
+          </select>
+        </div>
+
+        <div class="mb-4"><label class="text-xs font-bold text-gray-400 uppercase">Penerangan & Punca Kecederaan</label><textarea id="d2_penerangan" class="glass-input w-full rounded h-20 mt-1"></textarea></div>
+        <div class="mb-6"><label class="text-xs font-bold text-gray-400 uppercase">Rawatan Diberikan</label><textarea id="d2_rawatan" class="glass-input w-full rounded h-20 mt-1"></textarea></div>
+        <div class="mb-6"><label class="text-xs font-bold text-gray-400 uppercase">Pegawai Pelapor</label><input type="text" id="d2_pelapor" class="glass-input w-full rounded uppercase font-bold mt-1"></div>
         <div class="flex gap-4"><button onclick="simpanD2()" id="btnSimpanD2" class="w-full btn-emas py-3 rounded-xl font-bold uppercase"><i class="fas fa-cloud-upload-alt mr-2"></i>Simpan Rekod</button><button onclick="cetakD2()" class="w-full bg-slate-700 text-white py-3 rounded-xl font-bold uppercase border border-slate-500"><i class="fas fa-print mr-2"></i>Jana Cetakan</button></div>
       </div>
       <div id="d2-print" class="print-template">
@@ -201,9 +224,16 @@
       <div id="d3-form" class="form-view max-w-6xl mx-auto glass p-8 rounded-2xl border-red-500/30 border">
         <div class="flex justify-between items-center mb-6 border-b border-white/10 pb-4"><h2 class="text-2xl font-bold text-red-400"><i class="fas fa-users mr-2"></i>Borang D3: Kemalangan (>1 Mangsa)</h2><span id="label-d3-edit" class="hidden bg-yellow-500 text-black px-3 py-1 rounded-full text-xs font-bold animate-pulse"><i class="fas fa-pen mr-1"></i>MOD KEMASKINI</span></div>
         <input type="hidden" id="d3_ts">
-        <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6 bg-white/5 p-4 rounded border border-white/10"><input type="text" id="d3_pelapor" placeholder="NAMA PELAPOR" class="glass-input rounded uppercase"><input type="text" id="d3_program" placeholder="NAMA PROGRAM" class="glass-input rounded uppercase"><input type="date" id="d3_tarikh" class="glass-input rounded"></div>
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6 bg-white/5 p-4 rounded border border-white/10">
+          <div><label class="text-xs font-bold text-gray-400 uppercase">Nama Pelapor</label><input type="text" id="d3_pelapor" class="glass-input w-full rounded uppercase mt-1"></div>
+          <div><label class="text-xs font-bold text-gray-400 uppercase">Nama Program</label><input type="text" id="d3_program" class="glass-input w-full rounded uppercase mt-1"></div>
+          <div><label class="text-xs font-bold text-gray-400 uppercase">Tarikh</label><input type="date" id="d3_tarikh" class="glass-input w-full rounded mt-1"></div>
+        </div>
         <div class="mb-6 bg-white/5 p-4 rounded border border-white/10"><div class="flex justify-between mb-3"><h3 class="font-bold text-yellow-400">SENARAI MANGSA</h3><button onclick="tambahMangsaD3()" class="btn-emas px-3 py-1 rounded text-xs font-bold">+ TAMBAH</button></div><div id="cont_d3_mangsa" class="space-y-2"></div></div>
-        <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6"><input type="text" id="d3_lokasi" placeholder="LOKASI" class="glass-input rounded"><input type="text" id="d3_punca" placeholder="PUNCA KEMALANGAN" class="glass-input rounded"></div>
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
+          <div><label class="text-xs font-bold text-gray-400 uppercase">Lokasi Kejadian</label><input type="text" id="d3_lokasi" class="glass-input w-full rounded mt-1"></div>
+          <div><label class="text-xs font-bold text-gray-400 uppercase">Punca Kemalangan</label><input type="text" id="d3_punca" class="glass-input w-full rounded mt-1"></div>
+        </div>
         <div class="flex gap-4"><button onclick="simpanD3()" id="btnSimpanD3" class="w-full btn-emas py-3 rounded-xl font-bold uppercase"><i class="fas fa-cloud-upload-alt mr-2"></i>Simpan Rekod</button><button onclick="cetakD3()" class="w-full bg-slate-700 text-white py-3 rounded-xl font-bold uppercase border border-slate-500"><i class="fas fa-print mr-2"></i>Jana Cetakan</button></div>
       </div>
       <div id="d3-print" class="print-template">
@@ -254,7 +284,8 @@
     // MASUKKAN URL API ANDA DI SINI
     const API_URL = "https://script.google.com/macros/s/AKfycbycOlQR2plUHk3kGVAxNKPstPjQAtcNIJ_-XA5XSyAYMuDlTZrsUMyIq63NDDGdeUSE/exec";
 
-    window.DB = {}; // Menyimpan Data
+    // Pangkalan Data Sementara (Cache)
+    window.DB = {};
 
     // --- NAVIGASI ---
     function bukaMenu(m) {
@@ -278,9 +309,9 @@
       bukaMenu(type);
     }
 
-    // --- FETCH DATA (SENARAI) ---
+    // --- FETCH PANGKALAN DATA (SENARAI) ---
     function muatSenarai(type, tableId) {
-      document.getElementById(tableId).innerHTML = `<tr><td colspan="5" class="text-center p-4 italic text-yellow-400"><i class="fas fa-spinner fa-spin mr-2"></i>Menarik data...</td></tr>`;
+      document.getElementById(tableId).innerHTML = `<tr><td colspan="5" class="text-center p-4 italic text-yellow-400"><i class="fas fa-spinner fa-spin mr-2"></i>Menarik data dari Cloud...</td></tr>`;
       fetch(API_URL + "?type=" + type).then(r => r.json()).then(d => {
         window.DB[type] = d; 
         if(d.length === 0) { document.getElementById(tableId).innerHTML = `<tr><td colspan="5" class="text-center p-4 text-gray-400">Tiada Rekod Dijumpai.</td></tr>`; return; }
@@ -347,6 +378,7 @@
       .then(r => r.json()).then(res => { alert(res.mesej); muatSenarai(type, 'jadual-senarai-'+type.toLowerCase()); }).catch(e => alert("Gagal padam."));
     }
 
+    // --- FUNGSI API PANGKALAN DATA (SIMPAN/UPDATE) ---
     function hantarDataAPI(type, data, btnId) {
       let btn = document.getElementById(btnId); let oriText = btn.innerHTML; btn.innerHTML = `<i class="fas fa-spinner fa-spin mr-2"></i>Menyimpan...`;
       let ts = document.getElementById(type.toLowerCase()+'_ts').value;
@@ -397,7 +429,7 @@
     function simpanD2() { const d = { tarikh: document.getElementById('d2_tarikh').value, masa: document.getElementById('d2_masa').value, lokasi: document.getElementById('d2_lokasi').value, aktiviti: document.getElementById('d2_aktiviti').value, nama_mangsa: document.getElementById('d2_nama_mangsa').value, nokp_mangsa: document.getElementById('d2_nokp_mangsa').value, kategori: document.getElementById('d2_kategori').value, penerangan: document.getElementById('d2_penerangan').value, rawatan: document.getElementById('d2_rawatan').value, pelapor: document.getElementById('d2_pelapor').value }; if(!d.nama_mangsa) return alert("Isi Borang"); hantarDataAPI('D2', d, 'btnSimpanD2'); }
 
     // --- LOGIK BORANG D3 ---
-    function tambahMangsaD3() { const d = document.createElement('div'); d.className = `flex gap-2 mb-2 r-mangsa-d3`; d.innerHTML = `<input type="text" class="glass-input w-2/5 rounded text-sm d3-nama" placeholder="Nama Mangsa"><input type="text" class="glass-input w-1/5 rounded text-sm d3-nokp" placeholder="No KP"><select class="glass-input w-2/5 rounded text-sm font-bold text-red-400 d3-tahap"><option value="Ringan" class="text-black">Cedera Ringan</option><option value="Parah" class="text-black">Cedera Parah</option><option value="Maut" class="text-black">Maut</option></select><button onclick="this.parentElement.remove()" class="text-red-500 font-bold px-2 hover:text-red-400"><i class="fas fa-times"></i></button>`; document.getElementById('cont_d3_mangsa').appendChild(d); }
+    function tambahMangsaD3() { const d = document.createElement('div'); d.className = `flex gap-2 mb-2 r-mangsa-d3`; d.innerHTML = `<input type="text" class="glass-input w-2/5 rounded text-sm d3-nama" placeholder="Nama Mangsa"><input type="text" class="glass-input w-1/5 rounded text-sm d3-nokp" placeholder="No KP"><select class="glass-input w-2/5 rounded text-sm font-bold text-red-400 d3-tahap"><option value="Ringan" class="text-black">Cedera Ringan</option><option value="Sederhana" class="text-black">Cedera Sederhana</option><option value="Parah" class="text-black">Cedera Parah</option><option value="Maut" class="text-black">Maut</option></select><button onclick="this.parentElement.remove()" class="text-red-500 font-bold px-2 hover:text-red-400"><i class="fas fa-times"></i></button>`; document.getElementById('cont_d3_mangsa').appendChild(d); }
     function cetakD3() { ['pelapor','program','tarikh','lokasi','punca'].forEach(id => { document.getElementById(`out_d3_${id}`).innerText = document.getElementById(`d3_${id}`).value; }); let mangsaHtml = ''; const rows = document.querySelectorAll('.r-mangsa-d3'); if(rows.length === 0) mangsaHtml = `<tr><td colspan="4" class="text-center italic">Tiada Rekod Mangsa</td></tr>`; rows.forEach((r,i) => { mangsaHtml += `<tr><td class="text-center">${i+1}</td><td><b class="uppercase">${r.querySelector('.d3-nama').value}</b></td><td class="text-center">${r.querySelector('.d3-nokp').value}</td><td class="text-center font-bold text-red-600">${r.querySelector('.d3-tahap').value}</td></tr>`; }); document.getElementById('out_d3_mangsa_tbody').innerHTML = mangsaHtml; document.getElementById('d3-form').style.display='none'; document.getElementById('d3-print').style.display='block'; }
     function simpanD3() { let m = Array.from(document.querySelectorAll('.r-mangsa-d3')).map(r => ({ nama: r.querySelector('.d3-nama').value, nokp: r.querySelector('.d3-nokp').value, tahap: r.querySelector('.d3-tahap').value })); const d = { pelapor: document.getElementById('d3_pelapor').value, program: document.getElementById('d3_program').value, tarikh: document.getElementById('d3_tarikh').value, lokasi: document.getElementById('d3_lokasi').value, punca: document.getElementById('d3_punca').value, mangsa: m }; if(!d.pelapor) return alert("Sila isi Pelapor."); hantarDataAPI('D3', d, 'btnSimpanD3'); }
 
