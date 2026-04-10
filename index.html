@@ -392,7 +392,7 @@
 
     function muatSenarai(type, tableId) {
       let table = document.getElementById(tableId); if(!table) return;
-      table.innerHTML = `<tr><td colspan="5" class="text-center p-4 italic text-blue-500">Menyemak database...</td></tr>`;
+      table.innerHTML = `<tr><td colspan="5" class="text-center p-4 italic text-blue-500">Menghubungkan database...</td></tr>`;
       fetch(API_URL + "?type=" + type).then(r => r.json()).then(d => {
         window.DB[type] = d; 
         if(d.length === 0) { table.innerHTML = `<tr><td colspan="5" class="text-center p-4 text-gray-400">Tiada Rekod Dijumpai.</td></tr>`; return; }
@@ -420,7 +420,7 @@
 
     function muatSenaraiInsiden() {
       let table = document.getElementById('jadual-senarai-insiden'); if(!table) return;
-      table.innerHTML = `<tr><td colspan="4" class="text-center p-4 italic text-blue-500">Menarik data...</td></tr>`;
+      table.innerHTML = `<tr><td colspan="4" class="text-center p-4 italic text-blue-500">Menghubungkan data...</td></tr>`;
       
       Promise.all([
         fetch(API_URL + "?type=D1").then(r=>r.json()).catch(()=>[]),
