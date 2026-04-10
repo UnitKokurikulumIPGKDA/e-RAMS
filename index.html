@@ -478,7 +478,7 @@
           let cb = document.getElementById(`cat_${id}`); if(cb) cb.value = j[id].catatan || ""; 
         }
       }
-      else if(type === 'C1') { ['program','tarikh_program','nama_pelajar','no_kp','institusi'].forEach(id => { let key = id; if(id==='tarikh_program') key='tarikh'; if(id==='nama_pelajar') key='nama'; if(id==='no_kp') key='nokp'; let el = document.getElementById('c1_'+key); if(el) el.value = getVal(rec,id); }); }
+      else if(type === 'C1') { ['program','tarikh','nama','nokp','institusi'].forEach(id => { let el = document.getElementById('c1_'+id); if(el) el.value = getVal(rec,id); }); }
       else if(type === 'D1') { ['tarikh','masa','lokasi','aktiviti','penerangan','tindakan','pelapor'].forEach(id => { let el = document.getElementById('d1_'+id); if(el) el.value = getVal(rec,id); }); }
       else if(type === 'D2') { ['tarikh','masa','lokasi','aktiviti','nama_mangsa','kategori','penerangan','rawatan','pelapor'].forEach(id => { let el = document.getElementById('d2_'+id); if(el) el.value = getVal(rec,id); }); let nokp = document.getElementById('d2_nokp_mangsa'); if(nokp) nokp.value = getVal(rec, 'no_kp') || getVal(rec, 'nokp_mangsa') || ""; }
       else if(type === 'D3') {
