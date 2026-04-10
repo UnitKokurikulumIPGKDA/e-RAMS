@@ -340,7 +340,7 @@
       <div id="view-senarai-insiden" style="display:none" class="view-senarai"><div class="max-w-6xl mx-auto bg-white p-6 md:p-8 rounded-xl shadow-sm border border-gray-200"><h2 class="text-xl md:text-2xl font-bold text-red-600 mb-4"><i class="fas fa-list mr-2"></i>Semua Rekod Insiden</h2><div class="overflow-x-auto"><table class="w-full text-left glass-table"><thead><tr><th class="p-3">Jenis</th><th class="p-3">Masa</th><th class="p-3">Info/Mangsa</th><th class="p-3 text-center">Tindakan</th></tr></thead><tbody id="jadual-senarai-insiden"></tbody></table></div></div></div>
 
     </div> <div class="footer-kredit no-print">
-       <p class="font-bold uppercase tracking-wider text-gray-700">DIBANGUNKAN OLEH : HANIFF FAIZAL BIN CHEK ANI</p>
+       <p class="font-bold uppercase tracking-wider text-gray-400">DIBANGUNKAN OLEH : HANIFF FAIZAL BIN CHEK ANI</p>
        <p class="font-semibold text-gray-600">UNIT KOKURIKULUM | IPG KAMPUS DARULAMAN</p>
        <p class="mt-3 text-xs text-gray-400 italic max-w-xl mx-auto leading-relaxed">Penafian: Segala maklumat di dalam sistem ini adalah bagi tujuan operasi rekreasi luar. Pembangun tidak bertanggungjawab atas sebarang manipulasi atau salah guna maklumat.</p>
     </div>
@@ -392,7 +392,7 @@
 
     function muatSenarai(type, tableId) {
       let table = document.getElementById(tableId); if(!table) return;
-      table.innerHTML = `<tr><td colspan="5" class="text-center p-4 italic text-blue-500">Menarik data dari Cloud...</td></tr>`;
+      table.innerHTML = `<tr><td colspan="5" class="text-center p-4 italic text-blue-500">Semakan data dari database...</td></tr>`;
       fetch(API_URL + "?type=" + type).then(r => r.json()).then(d => {
         window.DB[type] = d; 
         if(d.length === 0) { table.innerHTML = `<tr><td colspan="5" class="text-center p-4 text-gray-400">Tiada Rekod Dijumpai.</td></tr>`; return; }
