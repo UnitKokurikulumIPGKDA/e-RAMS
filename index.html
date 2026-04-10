@@ -9,27 +9,22 @@
   <style>
     @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&family=Times+New+Roman&display=swap');
     
-    /* TEMA GELAP & GLASSMORPHISM */
     body { font-family: 'Poppins', sans-serif; background-color: #0f172a; color: #f8fafc; background-image: radial-gradient(circle at 10% 20%, rgba(234, 179, 8, 0.15) 0%, transparent 40%), radial-gradient(circle at 90% 80%, rgba(234, 179, 8, 0.1) 0%, transparent 40%); min-height: 100vh; background-attachment: fixed; }
-    
     .glass { background: rgba(15, 23, 42, 0.7); backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px); border: 1px solid rgba(234, 179, 8, 0.2); box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37); }
     .glass-input { background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); color: white; padding: 0.5rem; outline: none; transition: all 0.3s; }
     .glass-input:focus { border-color: #eab308; background: rgba(255,255,255,0.1); }
     .glass-table th { background: rgba(234, 179, 8, 0.15); color: #eab308; border-bottom: 1px solid rgba(234, 179, 8, 0.3); }
     .glass-table td { border-bottom: 1px solid rgba(255,255,255,0.05); }
 
-    /* BUTANG TEMA KUNING EKSKLUSIF */
-    .btn-emas { background: linear-gradient(135deg, #eab308 0%, #ca8a04 100%); color: #000; transition: transform 0.2s, box-shadow 0.2s; border: none; cursor: pointer; }
+    .btn-emas { background: linear-gradient(135deg, #eab308 0%, #ca8a04 100%); color: #000; transition: transform 0.2s, box-shadow 0.2s; border: none; }
     .btn-emas:hover { transform: translateY(-2px); box-shadow: 0 4px 15px rgba(234, 179, 8, 0.4); }
 
-    /* MENU SISI */
     .sidebar-menu { width: 270px; background: rgba(2, 6, 23, 0.85); backdrop-filter: blur(10px); border-right: 1px solid rgba(234, 179, 8, 0.1); height: 100vh; position: fixed; z-index: 50; overflow-y: auto; }
     .main-content { margin-left: 270px; padding: 2rem; width: calc(100% - 270px); }
-    .nav-btn { width: 100%; text-align: left; padding: 0.75rem 1rem; border-radius: 0.5rem; margin-bottom: 0.25rem; font-size: 0.875rem; transition: all 0.2s; color: #cbd5e1; cursor: pointer; }
+    .nav-btn { width: 100%; text-align: left; padding: 0.75rem 1rem; border-radius: 0.5rem; margin-bottom: 0.25rem; font-size: 0.875rem; transition: all 0.2s; color: #cbd5e1; }
     .nav-btn:hover { background: rgba(255, 255, 255, 0.05); color: #eab308; }
     .nav-btn.active { background: rgba(234, 179, 8, 0.15); color: #eab308; font-weight: 600; border-left: 3px solid #eab308; }
 
-    /* TEMPLAT CETAK (KEKAL PUTIH UNTUK KERTAS A4) */
     .print-template { display: none; background: white; color: black; font-family: 'Times New Roman', serif; width: 21cm; min-height: 29.7cm; padding: 1.5cm; margin: 0 auto; }
     .print-template table { width: 100%; border-collapse: collapse; margin-bottom: 8px; color: black; }
     .print-template th, .print-template td { border: 1px solid black; padding: 6px; font-size: 10pt; vertical-align: top; }
@@ -43,7 +38,7 @@
     }
   </style>
 </head>
-<body class="flex min-h-screen">
+<body>
 
   <aside class="sidebar-menu">
     <div class="p-6 border-b border-white/10 text-center sticky top-0 bg-[#020617]/90 z-10 backdrop-blur">
@@ -51,11 +46,8 @@
       <p class="text-[10px] text-gray-400 mt-1 uppercase tracking-widest">Sistem Pengurusan Risiko</p>
     </div>
     <nav class="p-4 pb-20">
-      <p class="text-[10px] font-bold text-gray-500 uppercase mt-2 mb-2 tracking-wider">Umum</p>
-      <button onclick="bukaMenu('am')" id="btn-am" class="nav-btn active"><i class="fas fa-sitemap w-5 text-center mr-2"></i> Menu Am (Carta Alir)</button>
-
-      <p class="text-[10px] font-bold text-gray-500 uppercase mt-6 mb-2 tracking-wider">Modul Risiko</p>
-      <button onclick="borangBaru('a1')" id="btn-a1" class="nav-btn"><i class="fas fa-file-alt w-5 text-center mr-2"></i> Daftar RAMS (A1)</button>
+      <p class="text-[10px] font-bold text-gray-500 uppercase mt-2 mb-2 tracking-wider">Modul Risiko</p>
+      <button onclick="borangBaru('a1')" id="btn-a1" class="nav-btn active"><i class="fas fa-file-alt w-5 text-center mr-2"></i> Daftar RAMS (A1)</button>
       <button onclick="bukaMenu('senarai-a1'); muatSenarai('A1','jadual-senarai-a1');" id="btn-senarai-a1" class="nav-btn"><i class="fas fa-list w-5 text-center mr-2"></i> Semakan RAMS</button>
       
       <p class="text-[10px] font-bold text-gray-500 uppercase mt-6 mb-2 tracking-wider">Modul Peserta</p>
@@ -77,97 +69,8 @@
   </aside>
 
   <main class="main-content">
-
-    <div id="view-am" style="display:block">
-      <div class="max-w-4xl mx-auto glass p-8 rounded-2xl">
-        <h2 class="text-2xl font-bold text-yellow-400 mb-6 text-center border-b border-white/10 pb-4">6.1 CARTA ALIR PELAN BERTINDAK KECEMASAN</h2>
-        
-        <div class="flex flex-col items-center w-full space-y-3 text-black text-xs md:text-sm">
-          <div class="bg-yellow-500 rounded-full px-8 py-2 font-bold border-2 border-black">Mula</div>
-          <i class="fas fa-long-arrow-alt-down text-2xl text-yellow-400"></i>
-
-          <div class="flex flex-col md:flex-row items-center justify-center w-full relative">
-            <div class="bg-blue-300 font-bold border-2 border-black z-10" style="clip-path: polygon(50% 0%, 100% 50%, 50% 100%, 0% 50%); width: 140px; height: 140px; display: flex; align-items: center; justify-content: center;">
-              <span>Kemalangan?</span>
-            </div>
-
-            <div class="md:absolute md:left-[calc(50%+70px)] flex flex-col md:flex-row items-center md:items-start mt-4 md:mt-0 z-0">
-               <div class="hidden md:flex items-center">
-                  <span class="text-yellow-400 font-bold mx-2 mb-4">Tidak (Near Miss)</span>
-                  <i class="fas fa-long-arrow-alt-right text-2xl text-yellow-400"></i>
-               </div>
-               <div class="flex md:hidden flex-col items-center mb-2">
-                  <i class="fas fa-long-arrow-alt-down text-2xl text-yellow-400"></i>
-                  <span class="text-yellow-400 font-bold mb-2">Tidak (Near Miss)</span>
-               </div>
-               <div class="bg-gray-100 p-3 border-2 border-black text-center font-bold w-48 rounded shadow-lg">
-                  Rekod Dilaporkan<br>(Borang D1: Laporan Near Miss / Nyaris)
-               </div>
-            </div>
-          </div>
-
-          <div class="flex flex-col items-center">
-             <span class="text-yellow-400 font-bold mb-1">Ya</span>
-             <i class="fas fa-long-arrow-alt-down text-2xl text-yellow-400"></i>
-          </div>
-
-          <div class="bg-gray-100 p-3 border-2 border-black text-center font-bold w-64 rounded shadow-lg">
-             Prosedur 1: Peserta Maklumkan pada Jurulatih
-          </div>
-          <i class="fas fa-long-arrow-alt-down text-2xl text-yellow-400"></i>
-
-          <div class="bg-gray-100 p-3 border-2 border-black text-center font-bold w-64 rounded shadow-lg">
-             Penilaian Awal Jenis Kecederaan oleh Jurulatih / Pegawai
-          </div>
-          <i class="fas fa-long-arrow-alt-down text-2xl text-yellow-400"></i>
-
-          <div class="flex flex-col md:flex-row items-center justify-center w-full relative">
-            <div class="bg-blue-300 font-bold border-2 border-black z-10" style="clip-path: polygon(50% 0%, 100% 50%, 50% 100%, 0% 50%); width: 140px; height: 140px; display: flex; align-items: center; justify-content: center;">
-              <span>Kritikal?</span>
-            </div>
-
-            <div class="md:absolute md:left-[calc(50%+70px)] flex flex-col md:flex-row items-center md:items-start mt-4 md:mt-0 z-0">
-               <div class="hidden md:flex items-center">
-                  <span class="text-yellow-400 font-bold mx-2 mb-4">Tidak</span>
-                  <i class="fas fa-long-arrow-alt-right text-2xl text-yellow-400"></i>
-               </div>
-               <div class="flex md:hidden flex-col items-center mb-2">
-                  <i class="fas fa-long-arrow-alt-down text-2xl text-yellow-400"></i>
-                  <span class="text-yellow-400 font-bold mb-2">Tidak</span>
-               </div>
-               <div class="bg-gray-100 p-3 border-2 border-black text-center font-bold w-48 rounded shadow-lg">
-                  Rawatan Peserta di Tapak (Rawatan Asas)
-               </div>
-            </div>
-          </div>
-
-          <div class="flex flex-col items-center">
-             <span class="text-yellow-400 font-bold mb-1">Ya</span>
-             <i class="fas fa-long-arrow-alt-down text-2xl text-yellow-400"></i>
-          </div>
-
-          <div class="bg-gray-100 p-3 border-2 border-black text-center font-bold w-64 rounded shadow-lg">
-             Rawatan Peserta dihantar ke Klinik / Hospital terdekat
-          </div>
-          <i class="fas fa-long-arrow-alt-down text-2xl text-yellow-400"></i>
-
-          <div class="bg-gray-100 p-3 border-2 border-black text-center font-bold w-64 rounded shadow-lg">
-             Pihak IPG hubungi waris pesakit
-          </div>
-          <i class="fas fa-long-arrow-alt-down text-2xl text-yellow-400"></i>
-
-          <div class="bg-gray-100 p-3 border-2 border-black text-center font-bold w-64 rounded shadow-lg">
-             Rekod / Laporan Penuh (Borang D2 / D3 / D4)
-          </div>
-          <i class="fas fa-long-arrow-alt-down text-2xl text-yellow-400"></i>
-
-          <div class="bg-yellow-500 rounded-full px-8 py-2 font-bold border-2 border-black">Tamat</div>
-        </div>
-
-      </div>
-    </div>
     
-    <div id="view-a1" style="display:none">
+    <div id="view-a1">
       <div id="a1-form" class="form-view max-w-6xl mx-auto glass p-8 rounded-2xl">
         <div class="flex justify-between items-center mb-6 border-b border-white/10 pb-4">
           <h2 class="text-2xl font-bold text-yellow-400"><i class="fas fa-file-alt mr-2"></i>Borang A1: Penilaian Risiko</h2>
@@ -200,7 +103,7 @@
         </div>
         <div class="flex gap-4">
           <button onclick="simpanA1()" id="btnSimpanA1" class="w-full btn-emas py-3 rounded-xl font-bold uppercase tracking-wider"><i class="fas fa-cloud-upload-alt mr-2"></i> Simpan Rekod</button>
-          <button onclick="cetakA1()" class="w-full bg-slate-700 hover:bg-slate-600 text-white py-3 rounded-xl font-bold uppercase tracking-wider transition border border-slate-500"><i class="fas fa-print mr-2"></i> Jana Cetakan</button>
+          <button onclick="cetakA1()" class="w-full bg-slate-700 hover:bg-slate-600 text-white py-3 rounded-xl font-bold uppercase tracking-wider transition border border-slate-500"><i class="fas fa-print mr-2"></i> Jana Cetakan (PDF)</button>
         </div>
       </div>
 
@@ -244,12 +147,10 @@
         <div class="text-center font-bold text-[12pt] mb-6 uppercase">BORANG AKUAN LEPAS TANGGUNG PELAJAR / PESERTA</div>
         <p class="text-[10pt] mb-8 italic text-center">(*Diisi dan dikembalikan kepada pegawai bertanggungjawab)</p>
         
-        <div class="mb-4">
-          <table style="border: none !important; margin: 0; width: 100%;">
-            <tr style="border: none !important;"><td style="border: none !important; padding: 2px; width: 15%; font-weight: bold;">PROGRAM</td><td style="border: none !important; padding: 2px;">: <span id="out_c1_program" class="uppercase"></span></td></tr>
-            <tr style="border: none !important;"><td style="border: none !important; padding: 2px; font-weight: bold;">TARIKH</td><td style="border: none !important; padding: 2px;">: <span id="out_c1_tarikh"></span></td></tr>
-          </table>
-        </div>
+        <table style="border: none !important; margin-bottom: 20px;">
+          <tr style="border: none !important;"><td width="15%" style="border: none !important; font-weight: bold;">PROGRAM</td><td style="border: none !important;">: <span id="out_c1_program" class="uppercase"></span></td></tr>
+          <tr style="border: none !important;"><td style="border: none !important; font-weight: bold;">TARIKH</td><td style="border: none !important;">: <span id="out_c1_tarikh"></span></td></tr>
+        </table>
         
         <p class="text-[11pt] mb-6 text-justify leading-loose">
           Bahawasanya, saya <span id="out_c1_nama" class="font-bold border-b border-black inline-block min-w-[280px] text-center uppercase"></span><br>
@@ -258,52 +159,27 @@
         </p>
         
         <p class="text-[11pt] mb-6 text-justify leading-relaxed">
-          DENGAN INI, bagi pihak diri saya, waris saya, wakil, pendaftar atau wakil-wakil lain di sisi undang-undang atau mana-mana satu daripada mereka, menolak segala tuntutan dan tindakan terhadap apa-apa kecederaan kepada badan atau hilang upaya atau mati atau apa jenis kerosakan sama ada kepada diri atau kepada harta saya, yang mungkin saya hadapi atau alami semasa tempoh saya mengikuti program yang dinyatakan (di atas).
+          <b>DENGAN INI</b>, bagi pihak diri saya, waris saya, wakil, pendaftar atau wakil-wakil lain di sisi undang-undang atau mana-mana satu daripada mereka, menolak segala tuntutan dan tindakan terhadap apa-apa kecederaan kepada badan atau hilang upaya atau mati atau apa jenis kerosakan sama ada kepada diri atau kepada harta saya, yang mungkin saya hadapi atau alami semasa tempoh saya mengikuti program yang dinyatakan (di atas).
         </p>
         
         <p class="text-[11pt] mb-12 text-justify leading-relaxed">
-          SAYA FAHAM DAN BERSETUJU, melepaskan tanggungjawab dan tanggungan penganjur, institusi atau mana-mana kumpulan atau individu berkaitan ke atas kecederaan kepada badan atau hilang upaya atau mati atau apa jenis kerosakan sama ada kepada diri atau kepada harta saya.
+          <b>SAYA FAHAM DAN BERSETUJU</b>, melepaskan tanggungjawab dan tanggungan penganjur, institusi atau mana-mana kumpulan atau individu berkaitan ke atas kecederaan kepada badan atau hilang upaya atau mati atau apa jenis kerosakan sama ada kepada diri atau kepada harta saya.
         </p>
         
         <div class="text-[11pt]">
            <p class="mb-6">DITANDATANGANI OLEH YANG TERSEBUT NAMANYA DI ATAS,</p>
            <table style="border: none !important; width: 100%;">
-             <tr style="border: none !important;">
-                <td style="border: none !important; width: 50%; padding-bottom: 25px;">........................................................................</td>
-                <td style="border: none !important; width: 50%; vertical-align: bottom;">)</td>
-             </tr>
-             <tr style="border: none !important;">
-                <td style="border: none !important; padding-bottom: 10px;">NAMA :</td>
-                <td style="border: none !important;">)</td>
-             </tr>
-             <tr style="border: none !important;">
-                <td style="border: none !important; padding-bottom: 10px;">NO. KAD PENGENALAN :</td>
-                <td style="border: none !important;">)</td>
-             </tr>
-             <tr style="border: none !important;">
-                <td style="border: none !important; padding-bottom: 30px;">TARIKH (pada hari tandatangan) :</td>
-                <td style="border: none !important;">)</td>
-             </tr>
+             <tr style="border: none !important;"><td style="border: none !important; width: 50%; padding-bottom: 30px;">........................................................................</td><td style="border: none !important; width: 50%; vertical-align: bottom;">)</td></tr>
+             <tr style="border: none !important;"><td style="border: none !important;">NAMA :</td><td style="border: none !important;">)</td></tr>
+             <tr style="border: none !important;"><td style="border: none !important;">NO. KAD PENGENALAN :</td><td style="border: none !important;">)</td></tr>
+             <tr style="border: none !important;"><td style="border: none !important; padding-bottom: 40px;">TARIKH (pada hari tandatangan) :</td><td style="border: none !important;">)</td></tr>
            </table>
-
-           <p class="mb-6 mt-4">DI HADAPAN,</p>
+           <p class="mb-6">DI HADAPAN,</p>
            <table style="border: none !important; width: 100%;">
-             <tr style="border: none !important;">
-                <td style="border: none !important; width: 50%; padding-bottom: 25px;">........................................................................</td>
-                <td style="border: none !important; width: 50%; vertical-align: bottom;">)</td>
-             </tr>
-             <tr style="border: none !important;">
-                <td style="border: none !important; padding-bottom: 10px;">NAMA SAKSI :</td>
-                <td style="border: none !important;">)</td>
-             </tr>
-             <tr style="border: none !important;">
-                <td style="border: none !important; padding-bottom: 10px;">NO. KAD PENGENALAN :</td>
-                <td style="border: none !important;">)</td>
-             </tr>
-             <tr style="border: none !important;">
-                <td style="border: none !important; padding-bottom: 10px;">TARIKH (pada hari tandatangan) :</td>
-                <td style="border: none !important;">)</td>
-             </tr>
+             <tr style="border: none !important;"><td style="border: none !important; width: 50%; padding-bottom: 30px;">........................................................................</td><td style="border: none !important; width: 50%; vertical-align: bottom;">)</td></tr>
+             <tr style="border: none !important;"><td style="border: none !important;">NAMA SAKSI :</td><td style="border: none !important;">)</td></tr>
+             <tr style="border: none !important;"><td style="border: none !important;">NO. KAD PENGENALAN :</td><td style="border: none !important;">)</td></tr>
+             <tr style="border: none !important;"><td style="border: none !important;">TARIKH (pada hari tandatangan) :</td><td style="border: none !important;">)</td></tr>
            </table>
         </div>
       </div>
@@ -331,44 +207,48 @@
 
     <div id="view-d2" style="display:none">
       <div id="d2-form" class="form-view max-w-4xl mx-auto glass p-8 rounded-2xl border-red-500/30 border">
-        <div class="flex justify-between items-center mb-6 border-b border-white/10 pb-4"><h2 class="text-2xl font-bold text-red-400"><i class="fas fa-ambulance mr-2"></i>Borang D2: Kemalangan 1 Mangsa</h2><span id="label-d2-edit" class="hidden bg-yellow-500 text-black px-3 py-1 rounded-full text-xs font-bold animate-pulse"><i class="fas fa-pen mr-1"></i>MOD KEMASKINI</span></div>
+        <div class="flex justify-between items-center mb-6 border-b border-white/10 pb-4"><h2 class="text-2xl font-bold text-red-400"><i class="fas fa-ambulance mr-2"></i>Borang D2: Kemalangan Laporan</h2><span id="label-d2-edit" class="hidden bg-yellow-500 text-black px-3 py-1 rounded-full text-xs font-bold animate-pulse"><i class="fas fa-pen mr-1"></i>MOD KEMASKINI</span></div>
         <input type="hidden" id="d2_ts">
-        <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
-          <div><label class="text-xs font-bold text-gray-400 uppercase">Tarikh Kejadian</label><input type="date" id="d2_tarikh" class="glass-input w-full rounded"></div>
-          <div><label class="text-xs font-bold text-gray-400 uppercase">Masa</label><input type="time" id="d2_masa" class="glass-input w-full rounded"></div>
-          <div><label class="text-xs font-bold text-gray-400 uppercase">Lokasi</label><input type="text" id="d2_lokasi" class="glass-input w-full rounded"></div>
-          <div class="col-span-3"><label class="text-xs font-bold text-gray-400 uppercase">Aktiviti / Program</label><input type="text" id="d2_aktiviti" class="glass-input w-full rounded uppercase"></div>
+        
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
+          <input type="text" id="d2_program" placeholder="PROGRAM" class="glass-input uppercase col-span-2">
+          <div><label class="text-[10px] text-gray-400 font-bold uppercase">Tarikh Kejadian</label><input type="date" id="d2_tarikh" class="glass-input rounded"></div>
+          <div><label class="text-[10px] text-gray-400 font-bold uppercase">Masa Kejadian</label><input type="time" id="d2_masa" class="glass-input rounded"></div>
+          <input type="text" id="d2_lokasi" placeholder="LOKASI" class="glass-input uppercase"><input type="text" id="d2_aktiviti" placeholder="AKTIVITI" class="glass-input uppercase">
         </div>
-        <div class="bg-white/5 p-4 rounded mb-6 border border-white/10"><h3 class="font-bold text-yellow-400 mb-2">MAKLUMAT MANGSA</h3><div class="grid grid-cols-1 md:grid-cols-2 gap-4"><div><label class="text-xs font-bold text-gray-400 uppercase">Nama Mangsa</label><input type="text" id="d2_nama_mangsa" class="glass-input w-full rounded uppercase"></div><div><label class="text-xs font-bold text-gray-400 uppercase">No KP</label><input type="text" id="d2_nokp_mangsa" class="glass-input w-full rounded"></div></div></div>
+        
+        <div class="bg-white/5 p-4 rounded mb-6 border border-white/10">
+           <h3 class="font-bold text-yellow-400 mb-2">MAKLUMAT MANGSA</h3>
+           <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <input type="text" id="d2_nama_mangsa" placeholder="NAMA MANGSA" class="glass-input uppercase">
+              <input type="text" id="d2_nokp_mangsa" placeholder="NO KP MANGSA" class="glass-input">
+           </div>
+           <textarea id="d2_alamat_mangsa" placeholder="ALAMAT MANGSA" class="glass-input mt-4 h-16 uppercase"></textarea>
+        </div>
         
         <div class="mb-4">
-          <label class="text-xs font-bold text-gray-400 uppercase">Kategori Kecederaan</label>
-          <select id="d2_kategori" class="glass-input w-full rounded font-bold text-red-400 mt-1">
-            <option value="Ringan" class="text-black">Ringan</option>
+          <label class="text-[10px] font-bold text-gray-400 uppercase">Kategori Kecederaan</label>
+          <select id="d2_kategori" class="glass-input rounded font-bold text-red-400 mt-1">
+            <option value="Ringan (Rawatan Asas)" class="text-black">Ringan (Rawatan Asas)</option>
             <option value="Sederhana" class="text-black">Sederhana</option>
-            <option value="Parah" class="text-black">Parah</option>
+            <option value="Parah (Klinik/Hospital)" class="text-black">Parah (Klinik/Hospital)</option>
             <option value="Maut" class="text-black">Maut</option>
-            <option value="Ringan (Rawatan Asas)" class="hidden text-black">Ringan (Rawatan Asas)</option>
-            <option value="Parah (Klinik/Hospital)" class="hidden text-black">Parah (Klinik/Hospital)</option>
-            <option value="Ringan (First Aid)" class="hidden text-black">Ringan (First Aid)</option>
           </select>
         </div>
 
-        <div class="mb-4"><label class="text-xs font-bold text-gray-400 uppercase">Penerangan & Punca Kecederaan</label><textarea id="d2_penerangan" class="glass-input w-full rounded h-20 mt-1"></textarea></div>
-        <div class="mb-6"><label class="text-xs font-bold text-gray-400 uppercase">Rawatan Diberikan</label><textarea id="d2_rawatan" class="glass-input w-full rounded h-20 mt-1"></textarea></div>
-        <div class="mb-6"><label class="text-xs font-bold text-gray-400 uppercase">Pegawai Pelapor</label><input type="text" id="d2_pelapor" class="glass-input w-full rounded uppercase font-bold mt-1"></div>
+        <textarea id="d2_penerangan" placeholder="PENERANGAN & PUNCA KECEDERAAN" class="glass-input w-full rounded h-20 mb-4"></textarea>
+        <textarea id="d2_rawatan" placeholder="RAWATAN DIBERIKAN" class="glass-input w-full rounded h-20 mb-6"></textarea>
+        <input type="text" id="d2_pelapor" placeholder="PEGAWAI PELAPOR" class="glass-input w-full rounded mb-6 uppercase font-bold">
         <div class="flex gap-4"><button onclick="simpanD2()" id="btnSimpanD2" class="w-full btn-emas py-3 rounded-xl font-bold uppercase"><i class="fas fa-cloud-upload-alt mr-2"></i>Simpan Rekod</button><button onclick="cetakD2()" class="w-full bg-slate-700 text-white py-3 rounded-xl font-bold uppercase border border-slate-500"><i class="fas fa-print mr-2"></i>Jana Cetakan</button></div>
       </div>
       <div id="d2-print" class="print-template">
          <div class="no-print mb-4 text-center"><button onclick="editMode('d2')" class="bg-slate-800 text-white px-4 py-2 rounded mr-2"><i class="fas fa-arrow-left"></i> Kembali</button><button onclick="window.print()" class="bg-red-600 text-white px-6 py-2 rounded font-bold"><i class="fas fa-print"></i> Cetak D2</button></div>
-         <div class="text-center font-bold text-[12pt] mb-6 text-red-700">BORANG LAPORAN KEMALANGAN (D2)</div>
-         <table><tr><td width="30%" class="font-bold bg-gray-100">Tarikh & Masa</td><td><span id="out_d2_tarikh"></span> pada <span id="out_d2_masa"></span></td></tr><tr><td class="font-bold bg-gray-100">Lokasi & Aktiviti</td><td><span id="out_d2_lokasi"></span> (<span id="out_d2_aktiviti" class="uppercase"></span>)</td></tr><tr><td class="font-bold bg-gray-100">Mangsa</td><td><span id="out_d2_nama_mangsa" class="font-bold uppercase"></span> (<span id="out_d2_nokp_mangsa"></span>)</td></tr><tr><td class="font-bold bg-gray-100">Kategori</td><td class="font-bold text-red-600"><span id="out_d2_kategori"></span></td></tr></table>
+         <div class="text-center font-bold text-[12pt] mb-6 text-red-700 uppercase">Borang Laporan Kemalangan (D2)</div>
+         <table><tr><td width="30%" class="font-bold bg-gray-100">Program</td><td colspan="3"><span id="out_d2_program" class="uppercase"></span></td></tr><tr><td class="font-bold bg-gray-100">Tarikh & Masa</td><td><span id="out_d2_tarikh"></span> pada <span id="out_d2_masa"></span></td><td class="font-bold bg-gray-100">Lokasi</td><td><span id="out_d2_lokasi" class="uppercase"></span></td></tr><tr><td class="font-bold bg-gray-100">Aktiviti</td><td colspan="3"><span id="out_d2_aktiviti" class="uppercase"></span></td></tr></table>
+         <table class="mt-4"><tr class="bg-gray-100 text-center"><td colspan="2"><b>MAKLUMAT MANGSA</b></td></tr><tr><td width="30%" class="font-bold bg-gray-100">Nama Mangsa</td><td><span id="out_d2_nama_mangsa" class="font-bold uppercase"></span></td></tr><tr><td class="font-bold bg-gray-100">No KP / Pengenalan</td><td><span id="out_d2_nokp_mangsa"></span></td></tr><tr><td class="font-bold bg-gray-100">Alamat</td><td><span id="out_d2_alamat_mangsa" class="uppercase"></span></td></tr><tr><td class="font-bold bg-gray-100">Kategori Kecederaan</td><td class="font-bold text-red-600"><span id="out_d2_kategori" class="uppercase"></span></td></tr></table>
          <table class="mt-4"><tr><td class="font-bold bg-gray-100 text-center">PENERANGAN & PUNCA</td></tr><tr><td class="h-24"><span id="out_d2_penerangan" style="white-space:pre-wrap"></span></td></tr></table>
-         <table class="mt-4"><tr><td class="font-bold bg-gray-100 text-center">RAWATAN</td></tr><tr><td class="h-24"><span id="out_d2_rawatan" style="white-space:pre-wrap"></span></td></tr></table>
-         <div class="mt-12 flex justify-between text-[11pt]">
-            <div>Disediakan Oleh:<br><br><br>___________________________<br>Nama: <span id="out_d2_pelapor" class="font-bold uppercase"></span></div>
-            <div>Disahkan Oleh:<br><br><br>___________________________<br>Nama / Cop:</div>
-         </div>
+         <table class="mt-4"><tr><td class="font-bold bg-gray-100 text-center">RAWATAN DIBERIKAN</td></tr><tr><td class="h-24"><span id="out_d2_rawatan" style="white-space:pre-wrap"></span></td></tr></table>
+         <div class="mt-12 flex justify-between text-[11pt]"><div>Disediakan Oleh:<br><br><br>___________________________<br>Nama: <span id="out_d2_pelapor" class="font-bold uppercase"></span></div><div>Disahkan Oleh:<br><br><br>___________________________<br>Nama / Cop:</div></div>
       </div>
     </div>
 
@@ -376,16 +256,9 @@
       <div id="d3-form" class="form-view max-w-6xl mx-auto glass p-8 rounded-2xl border-red-500/30 border">
         <div class="flex justify-between items-center mb-6 border-b border-white/10 pb-4"><h2 class="text-2xl font-bold text-red-400"><i class="fas fa-users mr-2"></i>Borang D3: Kemalangan (>1 Mangsa)</h2><span id="label-d3-edit" class="hidden bg-yellow-500 text-black px-3 py-1 rounded-full text-xs font-bold animate-pulse"><i class="fas fa-pen mr-1"></i>MOD KEMASKINI</span></div>
         <input type="hidden" id="d3_ts">
-        <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6 bg-white/5 p-4 rounded border border-white/10">
-          <div><label class="text-xs font-bold text-gray-400 uppercase">Nama Pelapor</label><input type="text" id="d3_pelapor" class="glass-input w-full rounded uppercase mt-1"></div>
-          <div><label class="text-xs font-bold text-gray-400 uppercase">Nama Program</label><input type="text" id="d3_program" class="glass-input w-full rounded uppercase mt-1"></div>
-          <div><label class="text-xs font-bold text-gray-400 uppercase">Tarikh</label><input type="date" id="d3_tarikh" class="glass-input w-full rounded mt-1"></div>
-        </div>
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6 bg-white/5 p-4 rounded border border-white/10"><input type="text" id="d3_pelapor" placeholder="NAMA PELAPOR" class="glass-input rounded uppercase"><input type="text" id="d3_program" placeholder="NAMA PROGRAM" class="glass-input rounded uppercase"><input type="date" id="d3_tarikh" class="glass-input rounded"></div>
         <div class="mb-6 bg-white/5 p-4 rounded border border-white/10"><div class="flex justify-between mb-3"><h3 class="font-bold text-yellow-400">SENARAI MANGSA</h3><button onclick="tambahMangsaD3()" class="btn-emas px-3 py-1 rounded text-xs font-bold">+ TAMBAH</button></div><div id="cont_d3_mangsa" class="space-y-2"></div></div>
-        <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
-          <div><label class="text-xs font-bold text-gray-400 uppercase">Lokasi Kejadian</label><input type="text" id="d3_lokasi" class="glass-input w-full rounded mt-1"></div>
-          <div><label class="text-xs font-bold text-gray-400 uppercase">Punca Kemalangan</label><input type="text" id="d3_punca" class="glass-input w-full rounded mt-1"></div>
-        </div>
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6"><input type="text" id="d3_lokasi" placeholder="LOKASI" class="glass-input rounded"><input type="text" id="d3_punca" placeholder="PUNCA KEMALANGAN" class="glass-input rounded"></div>
         <div class="flex gap-4"><button onclick="simpanD3()" id="btnSimpanD3" class="w-full btn-emas py-3 rounded-xl font-bold uppercase"><i class="fas fa-cloud-upload-alt mr-2"></i>Simpan Rekod</button><button onclick="cetakD3()" class="w-full bg-slate-700 text-white py-3 rounded-xl font-bold uppercase border border-slate-500"><i class="fas fa-print mr-2"></i>Jana Cetakan</button></div>
       </div>
       <div id="d3-print" class="print-template">
@@ -452,7 +325,7 @@
     
     function borangBaru(type) {
       document.getElementById(type+'_ts').value = ""; // Clear timestamp
-      document.getElementById('label-'+type+'-edit').classList.add('hidden');
+      let editLabel = document.getElementById('label-'+type+'-edit'); if(editLabel) editLabel.classList.add('hidden');
       document.querySelectorAll(`#${type}-form input[type="text"], #${type}-form input[type="date"], #${type}-form input[type="time"], #${type}-form input[type="number"], #${type}-form textarea`).forEach(el => el.value = "");
       if(type === 'a1') { ['manusia','peralatan','persekitaran'].forEach(k => { document.getElementById('cont_'+k).innerHTML=''; tambahBaris(k); }); }
       if(type === 'b1') document.querySelectorAll('input[value="TIDAK"]').forEach(el => el.checked = true);
@@ -495,34 +368,34 @@
       if(!rec) return;
       bukaMenu(type.toLowerCase());
       document.getElementById(type.toLowerCase()+'_ts').value = ts;
-      document.getElementById('label-'+type.toLowerCase()+'-edit').classList.remove('hidden');
+      let editLabel = document.getElementById('label-'+type.toLowerCase()+'-edit'); if(editLabel) editLabel.classList.remove('hidden');
 
       if(type === 'A1') {
-        document.getElementById('a1_penganjur').value = rec.penganjur; document.getElementById('a1_pegawai').value = rec.pegawai; document.getElementById('a1_tarikh_lapor').value = rec.tarikh_lapor; document.getElementById('a1_aktiviti').value = rec.aktiviti; document.getElementById('a1_tarikh_aktiviti').value = rec.tarikh_aktiviti; document.getElementById('a1_sasaran').value = rec.sasaran; document.getElementById('a1_normal').value = rec.s_normal; document.getElementById('a1_kecemasan').value = rec.s_kecemasan; document.getElementById('a1_rujukan').value = rec.rujukan; document.getElementById('a1_saranan').value = rec.saranan; document.getElementById('a1_kemahiran').value = rec.kemahiran; document.getElementById('a1_keputusan').value = rec.keputusan;
+        document.getElementById('a1_penganjur').value = rec.penganjur || ""; document.getElementById('a1_pegawai').value = rec.pegawai || ""; document.getElementById('a1_tarikh_lapor').value = rec.tarikh_lapor || ""; document.getElementById('a1_aktiviti').value = rec.aktiviti || ""; document.getElementById('a1_tarikh_aktiviti').value = rec.tarikh_aktiviti || ""; document.getElementById('a1_sasaran').value = rec.sasaran || ""; document.getElementById('a1_normal').value = rec.normal || ""; document.getElementById('a1_kecemasan').value = rec.kecemasan || ""; document.getElementById('a1_rujukan').value = rec.rujukan || ""; document.getElementById('a1_saranan').value = rec.saranan || ""; document.getElementById('a1_kemahiran').value = rec.kemahiran || ""; document.getElementById('a1_keputusan').value = rec.keputusan || "Diluluskan";
         ['manusia','peralatan','persekitaran'].forEach(k => document.getElementById('cont_'+k).innerHTML='');
-        let rj = JSON.parse(rec.risiko_json || '{}');
+        let rj = JSON.parse(rec.risiko || '{}');
         ['manusia','peralatan','persekitaran'].forEach(k => { if(rj[k] && rj[k].length>0) rj[k].forEach(i => { tambahBaris(k); let last = document.getElementById('cont_'+k).lastChild; last.querySelector('.r-p').value = i.p; last.querySelector('.r-tk').value = i.tk; last.querySelector('.r-tt').value = i.tt; last.querySelector('.r-o').value = i.o; }); else tambahBaris(k); });
       }
       else if(type === 'B1') {
-        document.getElementById('b1_nama').value = rec.nama; document.getElementById('b1_nokp').value = rec.nokp;
-        let j = JSON.parse(rec.jawapan_json || '{}');
+        document.getElementById('b1_nama').value = rec.nama || ""; document.getElementById('b1_nokp').value = rec.nokp || "";
+        let j = JSON.parse(rec.jawapan || '{}');
         for(let id in j) { let rb = document.querySelector(`input[name="q_${id}"][value="${j[id].status}"]`); if(rb) rb.checked = true; let cb = document.getElementById(`cat_${id}`); if(cb) cb.value = j[id].catatan; }
       }
-      else if(type === 'C1') { document.getElementById('c1_program').value = rec.program; document.getElementById('c1_tarikh').value = rec.tarikh; document.getElementById('c1_nama').value = rec.nama; document.getElementById('c1_nokp').value = rec.nokp; document.getElementById('c1_institusi').value = rec.institusi; }
-      else if(type === 'D1') { document.getElementById('d1_tarikh').value = rec.tarikh; document.getElementById('d1_masa').value = rec.masa; document.getElementById('d1_lokasi').value = rec.lokasi; document.getElementById('d1_aktiviti').value = rec.aktiviti; document.getElementById('d1_penerangan').value = rec.penerangan; document.getElementById('d1_tindakan').value = rec.tindakan; document.getElementById('d1_pelapor').value = rec.pelapor; }
-      else if(type === 'D2') { document.getElementById('d2_tarikh').value = rec.tarikh; document.getElementById('d2_masa').value = rec.masa; document.getElementById('d2_lokasi').value = rec.lokasi; document.getElementById('d2_aktiviti').value = rec.aktiviti; document.getElementById('d2_nama_mangsa').value = rec.nama_mangsa; document.getElementById('d2_nokp_mangsa').value = rec.nokp_mangsa; document.getElementById('d2_kategori').value = rec.kategori; document.getElementById('d2_penerangan').value = rec.penerangan; document.getElementById('d2_rawatan').value = rec.rawatan; document.getElementById('d2_pelapor').value = rec.pelapor; }
+      else if(type === 'C1') { document.getElementById('c1_program').value = rec.program || ""; document.getElementById('c1_tarikh').value = rec.tarikh || ""; document.getElementById('c1_nama').value = rec.nama || ""; document.getElementById('c1_nokp').value = rec.nokp || ""; document.getElementById('c1_institusi').value = rec.institusi || ""; }
+      else if(type === 'D1') { document.getElementById('d1_tarikh').value = rec.tarikh || ""; document.getElementById('d1_masa').value = rec.masa || ""; document.getElementById('d1_lokasi').value = rec.lokasi || ""; document.getElementById('d1_aktiviti').value = rec.aktiviti || ""; document.getElementById('d1_penerangan').value = rec.penerangan || ""; document.getElementById('d1_tindakan').value = rec.tindakan || ""; document.getElementById('d1_pelapor').value = rec.pelapor || ""; }
+      else if(type === 'D2') { document.getElementById('d2_program').value = rec.program || ""; document.getElementById('d2_tarikh').value = rec.tarikh || ""; document.getElementById('d2_masa').value = rec.masa || ""; document.getElementById('d2_lokasi').value = rec.lokasi || ""; document.getElementById('d2_aktiviti').value = rec.aktiviti || ""; document.getElementById('d2_nama_mangsa').value = rec.nama_mangsa || ""; document.getElementById('d2_nokp_mangsa').value = rec.nokp_mangsa || ""; document.getElementById('d2_alamat_mangsa').value = rec.alamat_mangsa || ""; document.getElementById('d2_kategori').value = rec.kategori || "Ringan (Rawatan Asas)"; document.getElementById('d2_penerangan').value = rec.penerangan || ""; document.getElementById('d2_rawatan').value = rec.rawatan || ""; document.getElementById('d2_pelapor').value = rec.pelapor || ""; }
       else if(type === 'D3') {
-        document.getElementById('d3_pelapor').value = rec.pelapor; document.getElementById('d3_program').value = rec.program; document.getElementById('d3_tarikh').value = rec.tarikh; document.getElementById('d3_lokasi').value = rec.lokasi; document.getElementById('d3_punca').value = rec.punca;
+        document.getElementById('d3_pelapor').value = rec.pelapor || ""; document.getElementById('d3_program').value = rec.program || ""; document.getElementById('d3_tarikh').value = rec.tarikh || ""; document.getElementById('d3_lokasi').value = rec.lokasi || ""; document.getElementById('d3_punca').value = rec.punca || "";
         document.getElementById('cont_d3_mangsa').innerHTML='';
-        let m = JSON.parse(rec.mangsa_json || '[]'); m.forEach(i => { tambahMangsaD3(); let last = document.getElementById('cont_d3_mangsa').lastChild; last.querySelector('.d3-nama').value = i.nama; last.querySelector('.d3-nokp').value = i.nokp; last.querySelector('.d3-tahap').value = i.tahap; });
+        let m = JSON.parse(rec.mangsa || '[]'); m.forEach(i => { tambahMangsaD3(); let last = document.getElementById('cont_d3_mangsa').lastChild; last.querySelector('.d3-nama').value = i.nama; last.querySelector('.d3-nokp').value = i.nokp; last.querySelector('.d3-tahap').value = i.tahap; });
       }
       else if(type === 'D4') {
-        document.getElementById('d4_tarikh').value = rec.tarikh; document.getElementById('d4_pegawai').value = rec.pegawai; document.getElementById('d4_pesakit').value = rec.pesakit; document.getElementById('d4_jantina').value = rec.jantina; document.getElementById('d4_umur').value = rec.umur; document.getElementById('d4_status').value = rec.status; document.getElementById('d4_ulasan').value = rec.ulasan;
-        let pk = JSON.parse(rec.peta_json || '{}'); for(let id in pk) { let el = document.getElementById(`d4_kod_${id}`); if(el) el.value = pk[id]; }
+        document.getElementById('d4_tarikh').value = rec.tarikh || ""; document.getElementById('d4_pegawai').value = rec.pegawai || ""; document.getElementById('d4_pesakit').value = rec.pesakit || ""; document.getElementById('d4_jantina').value = rec.jantina || ""; document.getElementById('d4_umur').value = rec.umur || ""; document.getElementById('d4_status').value = rec.status || ""; document.getElementById('d4_ulasan').value = rec.ulasan || "";
+        let pk = JSON.parse(rec.peta || '{}'); for(let id in pk) { let el = document.getElementById(`d4_kod_${id}`); if(el) el.value = pk[id]; }
       }
     }
 
-    function cetakSemula(type, ts) { editRekod(type, ts); setTimeout(() => { if(type==='A1') cetakA1(); else if(type==='B1') cetakB1(); else if(type==='C1') cetakC1(); else if(type==='D1') cetakD1(); else if(type==='D2') cetakD2(); else if(type==='D3') cetakD3(); else if(type==='D4') cetakD4(); }, 100); }
+    function cetakSemula(type, ts) { editRekod(type, ts); setTimeout(() => { window['cetak'+type](); }, 100); }
 
     function padamRekod(type, ts) {
       if(!confirm("Anda pasti mahu memadam rekod ini secara kekal?")) return;
@@ -542,8 +415,16 @@
 
     // --- LOGIK BORANG A1 ---
     function tambahBaris(k) { const d = document.createElement('div'); d.className = `flex gap-2 mb-2 r-row-${k}`; d.innerHTML = `<input type="text" class="glass-input w-2/5 rounded text-xs r-p" placeholder="Risiko"><input type="date" class="glass-input w-1/5 rounded text-xs r-tk"><input type="date" class="glass-input w-1/5 rounded text-xs r-tt"><input type="text" class="glass-input w-1/5 rounded text-xs r-o" placeholder="Oleh"><button onclick="this.parentElement.remove()" class="text-red-500 font-bold px-2 hover:text-red-400"><i class="fas fa-times"></i></button>`; document.getElementById('cont_'+k).appendChild(d); }
-    function cetakA1() { ['penganjur','pegawai','tarikh_lapor','aktiviti','tarikh_aktiviti','sasaran','normal','kecemasan','rujukan','saranan','kemahiran'].forEach(id => document.getElementById(`out_a1_${id.replace('tarikh_lapor','tarikh').replace('tarikh_aktiviti','t_aktiviti')}`).innerText = document.getElementById(`a1_${id}`).value); let k = document.getElementById('a1_keputusan').value; document.getElementById('out_a1_lulus').innerText = k === "Diluluskan" ? "[ / ] Diluluskan" : "[   ] Tidak diluluskan"; document.getElementById('out_a1_gagal').innerText = k === "Tidak Diluluskan" ? "[ / ] Tidak diluluskan" : "[   ] Diluluskan"; let html = ''; ['manusia','peralatan','persekitaran'].forEach(kategori => { const rows = document.querySelectorAll('.r-row-'+kategori); if(rows.length===0) html += `<tr><td class="font-bold text-center">${kategori.toUpperCase()}</td><td colspan="4" class="text-center italic">Tiada Rekod</td></tr>`; else rows.forEach((r,i) => { html += `<tr>${i===0?`<td rowspan="${rows.length}" class="font-bold text-center bg-gray-100">${kategori.toUpperCase()}</td>`:''}<td>${r.querySelector('.r-p').value}</td><td class="text-center">${r.querySelector('.r-tk').value}</td><td class="text-center">${r.querySelector('.r-tt').value}</td><td class="text-center">${r.querySelector('.r-o').value}</td></tr>`; }); }); document.getElementById('out_a1_tbody').innerHTML = html; document.getElementById('a1-form').style.display='none'; document.getElementById('a1-print').style.display='block'; }
-    function simpanA1() { let e = (k) => Array.from(document.querySelectorAll(`.r-row-${k}`)).map(r => ({ p: r.querySelector('.r-p').value, tk: r.querySelector('.r-tk').value, tt: r.querySelector('.r-tt').value, o: r.querySelector('.r-o').value })); const d = { penganjur: document.getElementById('a1_penganjur').value, pegawai: document.getElementById('a1_pegawai').value, tarikh_lapor: document.getElementById('a1_tarikh_lapor').value, aktiviti: document.getElementById('a1_aktiviti').value, tarikh_aktiviti: document.getElementById('a1_tarikh_aktiviti').value, sasaran: document.getElementById('a1_sasaran').value, risiko: { manusia: e('manusia'), peralatan: e('peralatan'), persekitaran: e('persekitaran') }, s_normal: document.getElementById('a1_normal').value, s_kecemasan: document.getElementById('a1_kecemasan').value, rujukan: document.getElementById('a1_rujukan').value, saranan: document.getElementById('a1_saranan').value, kemahiran: document.getElementById('a1_kemahiran').value, keputusan: document.getElementById('a1_keputusan').value }; hantarDataAPI('A1', d, 'btnSimpanA1'); }
+    function cetakA1() { 
+      ['penganjur','pegawai','tarikh_lapor','aktiviti','tarikh_aktiviti','sasaran','normal','kecemasan','rujukan','saranan','kemahiran'].forEach(id => {
+        let el = document.getElementById('a1_'+id); let out = document.getElementById('out_a1_'+id.replace('tarikh_lapor','tarikh').replace('tarikh_aktiviti','t_aktiviti'));
+        if(el && out) out.innerText = el.value;
+      }); 
+      let k = document.getElementById('a1_keputusan').value; let lulus = document.getElementById('out_a1_lulus'); let gagal = document.getElementById('out_a1_gagal');
+      if(lulus && gagal) { lulus.innerText = k === "Diluluskan" ? "[ / ] Diluluskan" : "[   ] Diluluskan"; gagal.innerText = k === "Tidak Diluluskan" ? "[ / ] Tidak diluluskan" : "[   ] Tidak diluluskan"; }
+      let html = ''; ['manusia','peralatan','persekitaran'].forEach(kategori => { const rows = document.querySelectorAll('.r-row-'+kategori); if(rows.length===0) html += `<tr><td class="font-bold text-center">${kategori.toUpperCase()}</td><td colspan="4" class="text-center italic">Tiada Rekod</td></tr>`; else rows.forEach((r,i) => { html += `<tr>${i===0?`<td rowspan="${rows.length}" class="font-bold text-center bg-gray-100">${kategori.toUpperCase()}</td>`:''}<td>${r.querySelector('.r-p').value}</td><td class="text-center">${r.querySelector('.r-tk').value}</td><td class="text-center">${r.querySelector('.r-tt').value}</td><td class="text-center">${r.querySelector('.r-o').value}</td></tr>`; }); }); document.getElementById('out_a1_tbody').innerHTML = html; document.getElementById('a1-form').style.display='none'; document.getElementById('a1-print').style.display='block'; 
+    }
+    function simpanA1() { let e = (k) => Array.from(document.querySelectorAll(`.r-row-${k}`)).map(r => ({ p: r.querySelector('.r-p').value, tk: r.querySelector('.r-tk').value, tt: r.querySelector('.r-tt').value, o: r.querySelector('.r-o').value })); const d = { penganjur: document.getElementById('a1_penganjur').value, pegawai: document.getElementById('a1_pegawai').value, tarikh_lapor: document.getElementById('a1_tarikh_lapor').value, aktiviti: document.getElementById('a1_aktiviti').value, tarikh_aktiviti: document.getElementById('a1_tarikh_aktiviti').value, sasaran: document.getElementById('a1_sasaran').value, risiko: { manusia: e('manusia'), peralatan: e('peralatan'), persekitaran: e('persekitaran') }, normal: document.getElementById('a1_normal').value, kecemasan: document.getElementById('a1_kecemasan').value, rujukan: document.getElementById('a1_rujukan').value, saranan: document.getElementById('a1_saranan').value, kemahiran: document.getElementById('a1_kemahiran').value, keputusan: document.getElementById('a1_keputusan').value }; hantarDataAPI('A1', d, 'btnSimpanA1'); }
     
     // --- LOGIK BORANG B1 LENGKAP (27 SOALAN) ---
     const B1_SOALAN = [
@@ -568,27 +449,27 @@
     ];
     function binaB1() { document.getElementById('b1_soalan_container').innerHTML = B1_SOALAN.map(i => i.isHeader ? `<h3 class="font-bold text-[11pt] bg-white/10 p-2 mt-4 mb-2 uppercase border-b border-white/20 text-yellow-400">BAHAGIAN ${i.bhg}: ${i.text}</h3>` : `<div class="bg-white/5 p-2 border-b border-white/10 flex flex-col md:flex-row justify-between items-center gap-2"><span class="text-sm w-full md:w-1/2">${i.no}. ${i.soalan}</span><div class="flex gap-4 w-full md:w-1/2"><label class="text-xs text-red-400 font-bold"><input type="radio" name="q_${i.id}" value="YA"> YA</label><label class="text-xs text-green-400 font-bold"><input type="radio" name="q_${i.id}" value="TIDAK" checked> TIDAK</label><input type="text" id="cat_${i.id}" class="glass-input rounded text-xs w-full" placeholder="Catatan"></div></div>`).join(''); }
     function cetakB1() { let n = document.getElementById('b1_nama').value, kp = document.getElementById('b1_nokp').value; if(!n||!kp) return alert("Sila isi Nama & KP."); document.getElementById('out_b1_nama').innerText = n; document.getElementById('out_b1_nokp').innerText = kp; document.getElementById('out_b1_tbody').innerHTML = B1_SOALAN.map(i => i.isHeader ? `<tr class="bg-gray-100 font-bold"><td align="center">${i.bhg}</td><td colspan="4">${i.text}</td></tr>` : `<tr><td align="center">${i.bhg}</td><td class="text-[9pt]">${i.no}. ${i.soalan}</td><td align="center">${document.querySelector(`input[name="q_${i.id}"]:checked`).value==='YA'?'/':''}</td><td align="center">${document.querySelector(`input[name="q_${i.id}"]:checked`).value==='TIDAK'?'/':''}</td><td class="italic">${document.getElementById(`cat_${i.id}`).value}</td></tr>`).join(''); document.getElementById('b1-form').style.display='none'; document.getElementById('b1-print').style.display='block'; }
-    function simpanB1() { let j = {}; B1_SOALAN.forEach(i => { if(!i.isHeader) j[i.id] = { soalan: i.soalan, status: document.querySelector(`input[name="q_${i.id}"]:checked`).value, catatan: document.getElementById(`cat_${i.id}`).value }; }); const d = { nama: document.getElementById('b1_nama').value, nokp: document.getElementById('b1_nokp').value, jawapan: j }; if(!d.nama) return alert("Isi Nama"); hantarDataAPI('B1', d, 'btnSimpanB1'); }
+    function simpanB1() { let j = {}; B1_SOALAN.forEach(i => { if(!i.isHeader) j[i.id] = { status: document.querySelector(`input[name="q_${i.id}"]:checked`).value, catatan: document.getElementById(`cat_${i.id}`).value }; }); const d = { nama: document.getElementById('b1_nama').value, nokp: document.getElementById('b1_nokp').value, jawapan: j }; if(!d.nama) return alert("Isi Nama"); hantarDataAPI('B1', d, 'btnSimpanB1'); }
     
     // --- LOGIK BORANG C1, D1, D2 ---
-    function cetakC1() { ['program','tarikh','nama','nokp','institusi'].forEach(id => { document.getElementById(`out_c1_${id}`).innerText = document.getElementById(`c1_${id}`).value; }); document.getElementById('out_c1_program2').innerText = document.getElementById('c1_program').value; document.getElementById('c1-form').style.display='none'; document.getElementById('c1-print').style.display='block'; }
+    function cetakC1() { ['program','tarikh','nama','nokp','institusi'].forEach(id => { let el=document.getElementById(`c1_${id}`); let out=document.getElementById(`out_c1_${id}`); if(el&&out) out.innerText = el.value; }); let p2=document.getElementById('out_c1_program2'); let p=document.getElementById('c1_program'); if(p2&&p) p2.innerText=p.value; document.getElementById('c1-form').style.display='none'; document.getElementById('c1-print').style.display='block'; }
     function simpanC1() { const d = { program: document.getElementById('c1_program').value, tarikh: document.getElementById('c1_tarikh').value, nama: document.getElementById('c1_nama').value, nokp: document.getElementById('c1_nokp').value, institusi: document.getElementById('c1_institusi').value }; if(!d.nama) return alert("Isi Borang"); hantarDataAPI('C1', d, 'btnSimpanC1'); }
 
-    function cetakD1() { ['tarikh','masa','lokasi','aktiviti','penerangan','tindakan','pelapor'].forEach(id => { document.getElementById(`out_d1_${id}`).innerText = document.getElementById(`d1_${id}`).value; }); document.getElementById('d1-form').style.display='none'; document.getElementById('d1-print').style.display='block'; }
+    function cetakD1() { ['tarikh','masa','lokasi','aktiviti','penerangan','tindakan','pelapor'].forEach(id => { let el=document.getElementById(`d1_${id}`); let out=document.getElementById(`out_d1_${id}`); if(el&&out) out.innerText=el.value; }); document.getElementById('d1-form').style.display='none'; document.getElementById('d1-print').style.display='block'; }
     function simpanD1() { const d = { tarikh: document.getElementById('d1_tarikh').value, masa: document.getElementById('d1_masa').value, lokasi: document.getElementById('d1_lokasi').value, aktiviti: document.getElementById('d1_aktiviti').value, penerangan: document.getElementById('d1_penerangan').value, tindakan: document.getElementById('d1_tindakan').value, pelapor: document.getElementById('d1_pelapor').value }; if(!d.tarikh) return alert("Isi Borang"); hantarDataAPI('D1', d, 'btnSimpanD1'); }
 
-    function cetakD2() { ['tarikh','masa','lokasi','aktiviti','nama_mangsa','nokp_mangsa','kategori','penerangan','rawatan','pelapor'].forEach(id => { document.getElementById(`out_d2_${id}`).innerText = document.getElementById(`d2_${id}`).value; }); document.getElementById('d2-form').style.display='none'; document.getElementById('d2-print').style.display='block'; }
-    function simpanD2() { const d = { tarikh: document.getElementById('d2_tarikh').value, masa: document.getElementById('d2_masa').value, lokasi: document.getElementById('d2_lokasi').value, aktiviti: document.getElementById('d2_aktiviti').value, nama_mangsa: document.getElementById('d2_nama_mangsa').value, nokp_mangsa: document.getElementById('d2_nokp_mangsa').value, kategori: document.getElementById('d2_kategori').value, penerangan: document.getElementById('d2_penerangan').value, rawatan: document.getElementById('d2_rawatan').value, pelapor: document.getElementById('d2_pelapor').value }; if(!d.nama_mangsa) return alert("Isi Borang"); hantarDataAPI('D2', d, 'btnSimpanD2'); }
+    function cetakD2() { ['program','tarikh','masa','lokasi','aktiviti','nama_mangsa','nokp_mangsa','alamat_mangsa','kategori','penerangan','rawatan','pelapor'].forEach(id => { let el=document.getElementById(`d2_${id}`); let out=document.getElementById(`out_d2_${id}`); if(el&&out) out.innerText=el.value; }); document.getElementById('d2-form').style.display='none'; document.getElementById('d2-print').style.display='block'; }
+    function simpanD2() { const d = { program: document.getElementById('d2_program').value, tarikh: document.getElementById('d2_tarikh').value, masa: document.getElementById('d2_masa').value, lokasi: document.getElementById('d2_lokasi').value, aktiviti: document.getElementById('d2_aktiviti').value, nama_mangsa: document.getElementById('d2_nama_mangsa').value, nokp_mangsa: document.getElementById('d2_nokp_mangsa').value, alamat_mangsa: document.getElementById('d2_alamat_mangsa').value, kategori: document.getElementById('d2_kategori').value, penerangan: document.getElementById('d2_penerangan').value, rawatan: document.getElementById('d2_rawatan').value, pelapor: document.getElementById('d2_pelapor').value }; if(!d.nama_mangsa) return alert("Isi Borang"); hantarDataAPI('D2', d, 'btnSimpanD2'); }
 
     // --- LOGIK BORANG D3 ---
     function tambahMangsaD3() { const d = document.createElement('div'); d.className = `flex gap-2 mb-2 r-mangsa-d3`; d.innerHTML = `<input type="text" class="glass-input w-2/5 rounded text-sm d3-nama" placeholder="Nama Mangsa"><input type="text" class="glass-input w-1/5 rounded text-sm d3-nokp" placeholder="No KP"><select class="glass-input w-2/5 rounded text-sm font-bold text-red-400 d3-tahap"><option value="Ringan" class="text-black">Cedera Ringan</option><option value="Sederhana" class="text-black">Cedera Sederhana</option><option value="Parah" class="text-black">Cedera Parah</option><option value="Maut" class="text-black">Maut</option></select><button onclick="this.parentElement.remove()" class="text-red-500 font-bold px-2 hover:text-red-400"><i class="fas fa-times"></i></button>`; document.getElementById('cont_d3_mangsa').appendChild(d); }
-    function cetakD3() { ['pelapor','program','tarikh','lokasi','punca'].forEach(id => { document.getElementById(`out_d3_${id}`).innerText = document.getElementById(`d3_${id}`).value; }); let mangsaHtml = ''; const rows = document.querySelectorAll('.r-mangsa-d3'); if(rows.length === 0) mangsaHtml = `<tr><td colspan="4" class="text-center italic">Tiada Rekod Mangsa</td></tr>`; rows.forEach((r,i) => { mangsaHtml += `<tr><td class="text-center">${i+1}</td><td><b class="uppercase">${r.querySelector('.d3-nama').value}</b></td><td class="text-center">${r.querySelector('.d3-nokp').value}</td><td class="text-center font-bold text-red-600">${r.querySelector('.d3-tahap').value}</td></tr>`; }); document.getElementById('out_d3_mangsa_tbody').innerHTML = mangsaHtml; document.getElementById('d3-form').style.display='none'; document.getElementById('d3-print').style.display='block'; }
+    function cetakD3() { ['pelapor','program','tarikh','lokasi','punca'].forEach(id => { let el=document.getElementById(`d3_${id}`); let out=document.getElementById(`out_d3_${id}`); if(el&&out) out.innerText=el.value; }); let mangsaHtml = ''; const rows = document.querySelectorAll('.r-mangsa-d3'); if(rows.length === 0) mangsaHtml = `<tr><td colspan="4" class="text-center italic">Tiada Rekod Mangsa</td></tr>`; rows.forEach((r,i) => { mangsaHtml += `<tr><td class="text-center">${i+1}</td><td><b class="uppercase">${r.querySelector('.d3-nama').value}</b></td><td class="text-center">${r.querySelector('.d3-nokp').value}</td><td class="text-center font-bold text-red-600">${r.querySelector('.d3-tahap').value}</td></tr>`; }); document.getElementById('out_d3_mangsa_tbody').innerHTML = mangsaHtml; document.getElementById('d3-form').style.display='none'; document.getElementById('d3-print').style.display='block'; }
     function simpanD3() { let m = Array.from(document.querySelectorAll('.r-mangsa-d3')).map(r => ({ nama: r.querySelector('.d3-nama').value, nokp: r.querySelector('.d3-nokp').value, tahap: r.querySelector('.d3-tahap').value })); const d = { pelapor: document.getElementById('d3_pelapor').value, program: document.getElementById('d3_program').value, tarikh: document.getElementById('d3_tarikh').value, lokasi: document.getElementById('d3_lokasi').value, punca: document.getElementById('d3_punca').value, mangsa: m }; if(!d.pelapor) return alert("Sila isi Pelapor."); hantarDataAPI('D3', d, 'btnSimpanD3'); }
 
     // --- LOGIK BORANG D4 ---
     const D4_ANATOMI = [ { id: 'kepala', nama: 'Kepala / Muka' }, { id: 'leher', nama: 'Leher' }, { id: 'dada', nama: 'Dada' }, { id: 'perut', nama: 'Perut / Pinggang' }, { id: 'bahu_kanan', nama: 'Bahu Kanan' }, { id: 'tangan_kanan', nama: 'Tangan Kanan' }, { id: 'bahu_kiri', nama: 'Bahu Kiri' }, { id: 'tangan_kiri', nama: 'Tangan Kiri' }, { id: 'paha_kanan', nama: 'Paha Kanan' }, { id: 'kaki_kanan', nama: 'Kaki Kanan' }, { id: 'paha_kiri', nama: 'Paha Kiri' }, { id: 'kaki_kiri', nama: 'Kaki Kiri' } ];
     function binaD4Anatomi() { document.getElementById('d4_anatomi_container').innerHTML = D4_ANATOMI.map(a => `<div class="bg-white/5 border border-white/10 p-2 rounded text-center"><label class="text-[11px] font-bold uppercase block border-b border-white/10 mb-1 pb-1 text-gray-300">${a.nama}</label><select id="d4_kod_${a.id}" class="glass-input w-full text-xs p-1 rounded text-red-400 font-bold"><option value="TIADA" class="text-black">Tiada Cedera</option><option value="A" class="text-black">A - Luka/Calar</option><option value="B" class="text-black">B - Pendarahan</option><option value="C" class="text-black">C - Melecur</option><option value="D" class="text-black">D - Luka Dalam</option><option value="E" class="text-black">E - Kepatahan</option><option value="F" class="text-black">F - Patah Tulang</option><option value="G" class="text-black">G - Bengkak</option><option value="H" class="text-black">H - Lain-lain</option></select></div>`).join(''); }
-    function cetakD4() { ['tarikh','masa','pegawai','pesakit','jantina','umur','status','ulasan'].forEach(id => { document.getElementById(`out_d4_${id}`).innerText = document.getElementById(`d4_${id}`).value; }); let html = ''; D4_ANATOMI.forEach(a => { let kod = document.getElementById(`d4_kod_${a.id}`).value; if(kod !== "TIADA") html += `<tr><td width="40%" class="font-bold">${a.nama}</td><td class="text-red-600 font-bold">KOD: ${kod}</td></tr>`; }); if(html === '') html = `<tr><td colspan="2" class="text-center italic">Tiada kecederaan fizikal direkodkan.</td></tr>`; document.getElementById('out_d4_anatomi_tbody').innerHTML = html; document.getElementById('d4-form').style.display='none'; document.getElementById('d4-print').style.display='block'; }
+    function cetakD4() { ['tarikh','masa','pegawai','pesakit','jantina','umur','status','ulasan'].forEach(id => { let el=document.getElementById(`d4_${id}`); let out=document.getElementById(`out_d4_${id}`); if(el&&out) out.innerText=el.value; }); let html = ''; D4_ANATOMI.forEach(a => { let kod = document.getElementById(`d4_kod_${a.id}`).value; if(kod !== "TIADA") html += `<tr><td width="40%" class="font-bold">${a.nama}</td><td class="text-red-600 font-bold">KOD: ${kod}</td></tr>`; }); if(html === '') html = `<tr><td colspan="2" class="text-center italic">Tiada kecederaan fizikal direkodkan.</td></tr>`; document.getElementById('out_d4_anatomi_tbody').innerHTML = html; document.getElementById('d4-form').style.display='none'; document.getElementById('d4-print').style.display='block'; }
     function simpanD4() { let peta = {}; D4_ANATOMI.forEach(a => { peta[a.id] = document.getElementById(`d4_kod_${a.id}`).value; }); const d = { tarikh: document.getElementById('d4_tarikh').value, masa: document.getElementById('d4_masa').value, pegawai: document.getElementById('d4_pegawai').value, pesakit: document.getElementById('d4_pesakit').value, jantina: document.getElementById('d4_jantina').value, umur: document.getElementById('d4_umur').value, status: document.getElementById('d4_status').value, ulasan: document.getElementById('d4_ulasan').value, peta_kecederaan: peta }; if(!d.pesakit) return alert("Isi Nama Pesakit"); hantarDataAPI('D4', d, 'btnSimpanD4'); }
 
     // INIT MULA
